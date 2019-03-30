@@ -1,5 +1,8 @@
 <template>
 
+    <div>
+        qiqi beautiful
+    </div>
 </template>
 
 <script>

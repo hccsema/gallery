@@ -3,7 +3,7 @@
 </template>
 
 <script>
-    import Slider from '../components/Slider'
+    import Slider from '@/components/Slider'
     export default {
         name: "login",
         components:{

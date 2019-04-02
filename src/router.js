@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Load from './pages/Load';
 import Login from './pages/Login'
 import Sex from "@/pages/Sex";
+import TimeLine from "@/pages/TimeLine";
 
 Vue.use(Router);
 
@@ -14,25 +15,31 @@ export default new Router({
         {
             path: '/',
             component: Home,
+            children:[
+                {
+                    path:'/',
+                    component: TimeLine
+                },
+                {
+                    path: '/load',
+                    name: '下载/上传',
+                    component: Load
 
-        },
-        {
-            path: '/about',
-            component: About
+                },
+                {
+                    path: '/sex',
+                    component: Sex
+                },
+                {
+                    path: '/about',
+                    component: About
+                },
+            ]
+
         },
         {
             path:'/login',
             component: Login
         },
-        {
-            path: '/load',
-            component: Load
-
-        },
-        {
-            path: '/sex',
-            component: Sex
-        }
-
     ]
 })

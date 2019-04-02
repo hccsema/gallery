@@ -26,7 +26,7 @@
               <span slot="title">About</span>
             </el-menu-item>
 
-            <el-menu-item index="5" >
+            <el-menu-item index="/login"  >
               <i class="el-icon-d-arrow-left"></i>
             </el-menu-item>
 

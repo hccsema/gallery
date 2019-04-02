@@ -12,14 +12,14 @@
                     <img :style="{width:imgWidth+'px'}" :src="sliders[0].img" alt="">
                 </li>
             </ul>
-            <ul class="direction">
-                <li class="left" @click="move(600, 1, speed)">
-                    <svg class="icon" width="30px" height="30.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#ffffff" d="M481.233 904c8.189 0 16.379-3.124 22.628-9.372 12.496-12.497 12.496-32.759 0-45.256L166.488 512l337.373-337.373c12.496-12.497 12.496-32.758 0-45.255-12.498-12.497-32.758-12.497-45.256 0l-360 360c-12.496 12.497-12.496 32.758 0 45.255l360 360c6.249 6.249 14.439 9.373 22.628 9.373z"  /></svg>
-                </li>
-                <li class="right" @click="move(600, -1, speed)">
-                    <svg class="icon" width="30px" height="30.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#ffffff" d="M557.179 904c-8.189 0-16.379-3.124-22.628-9.372-12.496-12.497-12.496-32.759 0-45.256L871.924 512 534.551 174.627c-12.496-12.497-12.496-32.758 0-45.255 12.498-12.497 32.758-12.497 45.256 0l360 360c12.496 12.497 12.496 32.758 0 45.255l-360 360c-6.249 6.249-14.439 9.373-22.628 9.373z"  /></svg>
-                </li>
-            </ul>
+<!--            <ul class="direction">-->
+<!--                <li class="left" @click="move(600, 1, speed)">-->
+<!--                    <svg class="icon" width="30px" height="30.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#ffffff" d="M481.233 904c8.189 0 16.379-3.124 22.628-9.372 12.496-12.497 12.496-32.759 0-45.256L166.488 512l337.373-337.373c12.496-12.497 12.496-32.758 0-45.255-12.498-12.497-32.758-12.497-45.256 0l-360 360c-12.496 12.497-12.496 32.758 0 45.255l360 360c6.249 6.249 14.439 9.373 22.628 9.373z"  /></svg>-->
+<!--                </li>-->
+<!--                <li class="right" @click="move(600, -1, speed)">-->
+<!--                    <svg class="icon" width="30px" height="30.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#ffffff" d="M557.179 904c-8.189 0-16.379-3.124-22.628-9.372-12.496-12.497-12.496-32.759 0-45.256L871.924 512 534.551 174.627c-12.496-12.497-12.496-32.758 0-45.255 12.498-12.497 32.758-12.497 45.256 0l360 360c12.496 12.497 12.496 32.758 0 45.255l-360 360c-6.249 6.249-14.439 9.373-22.628 9.373z"  /></svg>-->
+<!--                </li>-->
+<!--            </ul>-->
             <ul class="dots">
                 <li v-for="(dot, i) in sliders" :key="i"
                     :class="{dotted: i === (currentIndex-1)}"
@@ -33,7 +33,7 @@
 
 <script>
     export default {
-        name: 'slider',
+        name: 'Slider',
         props: {
             initialSpeed: {
                 type: Number,
@@ -48,19 +48,19 @@
             return {
                 sliders:[
                     {
-                        img:'http://img.hb.aicdn.com/adbde61e4343dedd21e97ea7f22666825a8db7d077ffe-qn8Pjn_fw658'
+                        img:'D:\\webstorm\\gallery\\src\\assets\\beach.jpg'
                     },
                     {
-                        img:'http://img.hb.aicdn.com/adeed7d28df6e776c2fa6032579c697381d1a82b7fe00-fwRqgn_fw658'
+                        img:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2475510023,19665381&fm=26&gp=0.jpg'
                     },
                     {
-                        img:'http://img.hb.aicdn.com/ab7f48509b3c0353017d9a85ef1d12400c9b2724540d4-p3zouo_fw658'
+                        img:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2475510023,19665381&fm=26&gp=0.jpg'
                     },
                     {
-                        img:'http://img.hb.aicdn.com/60f788fc2a846192f224b9e6d4904b30e54926211d3d67-ACFJ9G_fw658'
+                        img:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2475510023,19665381&fm=26&gp=0.jpg'
                     },
                     {
-                        img:'http://img.hb.aicdn.com/22ded455284aab361b8d2056e82f74a891a019704296a-PSraEB_fw658'
+                        img:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2475510023,19665381&fm=26&gp=0.jpg'
                     },
                 ],
                 imgWidth:600,
@@ -154,8 +154,8 @@
     }
     .window{
         position:relative;
-        width:600px;
-        height:400px;
+        width:1550px;
+        height:710px;
         margin:0 auto;
         overflow:hidden;
     }

@@ -33,7 +33,7 @@
 
 <script>
     export default {
-        name: 'slider',
+        name: 'Slider',
         props: {
             initialSpeed: {
                 type: Number,

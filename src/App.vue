@@ -1,20 +1,16 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <Left>
-
-    </Left>
+    <Index></Index>
   </div>
 </template>
 
 <script>
-import Left from './components/left.vue'
-
+    import tac from './pages/index'
 export default {
   name: 'app',
-  components: {
-    Left
-  }
+  components:{
+      'Index':tac
+  },
 }
 </script>
 

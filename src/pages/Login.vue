@@ -3,11 +3,11 @@
 </template>
 
 <script>
-    import slider from './components/slider'
+    import Slider from '../components/Slider'
     export default {
         name: "login",
         components:{
-            'Slider':slider
+            'Slider':Slider
         },
     }
 </script>

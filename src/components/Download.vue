@@ -1,13 +1,12 @@
 <template>
-
     <div>
-        qiqi beautiful
+    this is download component
     </div>
 </template>
 
 <script>
     export default {
-        name: "about"
+        name: "Download"
     }
 </script>
 

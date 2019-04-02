@@ -1,13 +1,12 @@
 <template>
-
     <div>
-        qiqi beautiful
+        this is a about page
     </div>
 </template>
 
 <script>
     export default {
-        name: "index"
+        name: "About"
     }
 </script>
 

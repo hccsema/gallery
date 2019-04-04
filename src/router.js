@@ -4,8 +4,9 @@ import About from './pages/About';
 import Home from './pages/Home';
 import Load from './pages/Load';
 import Login from './pages/Login'
-import Sex from "@/pages/Sex";
-import TimeLine from "@/pages/TimeLine";
+import Sex from "./pages/Sex";
+import TimeLine from "./pages/TimeLine";
+import Register from "./pages/Register";
 
 Vue.use(Router);
 
@@ -40,6 +41,10 @@ export default new Router({
         {
             path:'/login',
             component: Login
+        },
+        {
+            path:'/register',
+            component: Register
         },
     ]
 })

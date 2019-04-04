@@ -1,6 +1,10 @@
 <template>
     <div id="slider">
+        <div class="Login-box">
+            <LoginBox></LoginBox>
+        </div>
         <div class="window" @mouseover="stop" @mouseleave="play">
+            <!--图片列表，无限回滚-->
             <ul class="container" :style="containerStyle">
                 <li>
                     <img :style="{width:imgWidth+'px'}" :src="sliders[sliders.length - 1].img" alt="">
@@ -12,14 +16,7 @@
                     <img :style="{width:imgWidth+'px'}" :src="sliders[0].img" alt="">
                 </li>
             </ul>
-<!--            <ul class="direction">-->
-<!--                <li class="left" @click="move(600, 1, speed)">-->
-<!--                    <svg class="icon" width="30px" height="30.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#ffffff" d="M481.233 904c8.189 0 16.379-3.124 22.628-9.372 12.496-12.497 12.496-32.759 0-45.256L166.488 512l337.373-337.373c12.496-12.497 12.496-32.758 0-45.255-12.498-12.497-32.758-12.497-45.256 0l-360 360c-12.496 12.497-12.496 32.758 0 45.255l360 360c6.249 6.249 14.439 9.373 22.628 9.373z"  /></svg>-->
-<!--                </li>-->
-<!--                <li class="right" @click="move(600, -1, speed)">-->
-<!--                    <svg class="icon" width="30px" height="30.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#ffffff" d="M557.179 904c-8.189 0-16.379-3.124-22.628-9.372-12.496-12.497-12.496-32.759 0-45.256L871.924 512 534.551 174.627c-12.496-12.497-12.496-32.758 0-45.255 12.498-12.497 32.758-12.497 45.256 0l360 360c12.496 12.497 12.496 32.758 0 45.255l-360 360c-6.249 6.249-14.439 9.373-22.628 9.373z"  /></svg>-->
-<!--                </li>-->
-<!--            </ul>-->
+            <!--图片下面的切换点-->
             <ul class="dots">
                 <li v-for="(dot, i) in sliders" :key="i"
                     :class="{dotted: i === (currentIndex-1)}"
@@ -32,40 +29,47 @@
 </template>
 
 <script>
+    import LoginBox from "./LoginBox";
     export default {
         name: 'Slider',
+        components: {
+            'LoginBox':LoginBox
+        },
         props: {
+            //切换图片速度
             initialSpeed: {
                 type: Number,
                 default: 30
             },
+            //图片停顿时间长度
             initialInterval: {
                 type: Number,
-                default: 3
+                default: 5
             }
         },
         data () {
             return {
+                //将图片加入图片列表
                 sliders:[
                     {
-                        img:'D:\\webstorm\\gallery\\src\\assets\\beach.jpg'
+                        img:require('../assets/beach.jpg')
                     },
                     {
-                        img:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2475510023,19665381&fm=26&gp=0.jpg'
+                        img:require('../assets/cat.jpg')
                     },
                     {
-                        img:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2475510023,19665381&fm=26&gp=0.jpg'
+                        img:require('../assets/family.jpg')
                     },
                     {
-                        img:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2475510023,19665381&fm=26&gp=0.jpg'
+                        img:require('../assets/familyphoto.jpg')
                     },
                     {
-                        img:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2475510023,19665381&fm=26&gp=0.jpg'
+                        img:require('../assets/pet.jpeg')
                     },
                 ],
-                imgWidth:600,
+                imgWidth:1550,
                 currentIndex:1,
-                distance:-600,
+                distance:-1550,
                 transitionEnd: true,
                 speed: this.initialSpeed
             }
@@ -93,7 +97,7 @@
                 console.log(speed)
                 if (!this.transitionEnd) return
                 this.transitionEnd = false
-                direction === -1 ? this.currentIndex += offset/600 : this.currentIndex -= offset/600
+                direction === -1 ? this.currentIndex += offset/1550 : this.currentIndex -= offset/1550
                 if (this.currentIndex > 5) this.currentIndex = 1
                 if (this.currentIndex < 1) this.currentIndex = 5
 
@@ -112,14 +116,14 @@
                         this.transitionEnd = true
                         window.clearInterval(this.temp)
                         this.distance = des
-                        if (des < -3000) this.distance = -600
-                        if (des > -600) this.distance = -3000
+                        if (des < -7750) this.distance = -1550
+                        if (des > -1550) this.distance = -7750
                     }
                 }, 20)
             },
             jump(index) {
                 const direction = index - this.currentIndex >= 0 ? -1 : 1;
-                const offset = Math.abs(index - this.currentIndex) * 600;
+                const offset = Math.abs(index - this.currentIndex) * 1550;
                 const jumpSpeed = Math.abs(index - this.currentIndex) === 0 ? this.speed : Math.abs(index - this.currentIndex) * this.speed ;
                 this.move(offset, direction, jumpSpeed)
             },
@@ -129,7 +133,7 @@
                     this.timer = null
                 }
                 this.timer = window.setInterval(() => {
-                    this.move(600, -1, this.speed)
+                    this.move(1550, -1, this.speed)
                 }, this.interval)
             },
             stop() {
@@ -163,26 +167,6 @@
         display:flex;
         position:absolute;
     }
-    .left, .right{
-        position:absolute;
-        top:50%;
-        transform:translateY(-50%);
-        width:50px;
-        height:50px;
-        background-color:rgba(0,0,0,.3);
-        border-radius:50%;
-        cursor:pointer;
-    }
-    .left{
-        left:3%;
-        padding-left:12px;
-        padding-top:10px;
-    }
-    .right{
-        right:3%;
-        padding-right:12px;
-        padding-top:10px;
-    }
     img{
         user-select: none;
     }
@@ -204,5 +188,13 @@
     }
     .dots .dotted{
         background-color:orange;
+    }
+    .Login-box{
+        top: 60%;
+        right: 30%;
+        margin-top: -230px;
+        margin-right: -200px;
+        position: absolute;
+        z-index:999;
     }
 </style>

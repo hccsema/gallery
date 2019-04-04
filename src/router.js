@@ -6,6 +6,7 @@ import Load from './pages/Load';
 import Login from './pages/Login'
 import Sex from "@/pages/Sex";
 import TimeLine from "@/pages/TimeLine";
+import MapAlbum from "@/pages/MapAlbum";
 
 Vue.use(Router);
 
@@ -34,6 +35,10 @@ export default new Router({
                     path: '/about',
                     component: About
                 },
+                {
+                    path: '/Map',
+                    component: MapAlbum
+                }
             ]
 
         },

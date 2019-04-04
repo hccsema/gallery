@@ -1,12 +1,13 @@
 <template>
-    <el-tabs el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
-        <el-tab-pane label="UPLOAD" name="first" >
-        <Upload></Upload>
+    <el-tabs  v-model="activeName" type="border-card" @tab-click="handleClick">
+        <el-tab-pane name="upload">
+            <span slot="label"><i class="el-icon-upload2"></i> UPLOAD</span>
+            <Upload></Upload>
         </el-tab-pane>
-        <el-tab-pane label="DOWNLOAD" name="second">
+        <el-tab-pane label="DOWNLOAD" name="download">
+            <span slot="label"><i class="el-icon-download"></i> DOWNLOAD</span>
         <Download></Download>
         </el-tab-pane>
-
     </el-tabs>
 </template>
 
@@ -17,7 +18,7 @@
         components: {Download, Upload},
         data() {
             return {
-                activeName2: 'first'
+                activeName: 'upload'
             };
         },
         methods: {

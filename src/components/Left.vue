@@ -7,23 +7,26 @@
                 @close="handleClose"
                 router>
             <el-menu-item index="/">
-              <i class="el-icon-menu"></i>
-              <span slot="title">主页</span>
+              <i class="el-icon-picture-outline"></i>
+              <span slot="title">时光轴</span>
             </el-menu-item>
-
-          <el-menu-item index="/load" >
-              <i class="el-icon-menu" ></i>
-              <span slot="title" > 上传下载</span>
+            <el-menu-item index="#">
+                <i class="el-icon-menu"></i>
+                <span slot="title">分类相册</span>
+            </el-menu-item>
+             <el-menu-item index="/load" >
+              <i class="el-icon-d-caret" ></i>
+              <span slot="title">上传下载</span>
             </el-menu-item>
 
             <el-menu-item index="/sex" >
-              <i class="el-icon-document" to="/sex"></i>
+              <i class="el-icon-news" to="/sex"></i>
               <span slot="title">隐藏空间</span>
             </el-menu-item>
 
-            <el-menu-item index="/about" >
-              <i class="el-icon-setting"></i>
-              <span slot="title">About</span>
+            <el-menu-item index="/map" >
+              <i class="el-icon-location"></i>
+              <span slot="title">地图相册</span>
             </el-menu-item>
 
             <el-menu-item index="/login"  >
@@ -36,15 +39,15 @@
 
 <script>
   export default {
-      name: "Left",
-    methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      }
-    }
+        name: "Left",
+        methods: {
+          handleOpen(key, keyPath) {
+            console.log(key, keyPath);
+          },
+          handleClose(key, keyPath) {
+            console.log(key, keyPath);
+          }
+        }
   }
 </script>
 

@@ -1,8 +1,7 @@
 <template>
     <div>
-        <el-container>
-
-            <el-header>
+        <el-container ref="homePage">
+            <el-header >
                 <Header></Header>
             </el-header>
             <el-container>
@@ -14,8 +13,6 @@
                 </el-main>
             </el-container>
         </el-container>
-
-
     </div>
 </template>
 
@@ -24,10 +21,32 @@
     import Header from '@/components/Header'
     export default {
         name: "Home",
+        data(){
+            return{
+                clientHeight:'',
+            }
+
+        },
         components:{
             Left,
             Header,
-        }
+        },
+        mounted() {
+            this.clientHeight = `${document.documentElement.clientHeight}`;
+            window.onresize = function temp() {
+                this.clientHeight = `${document.documentElement.clientHeight}`;
+            };
+        },
+        watch:{
+            clientHeight: function () {
+                this.changeFixed(this.clientHeight)
+            }
+        },
+        methods: {
+            changeFixed(clientHeight){
+                this.$refs.homePage.$el.style.height = clientHeight+'px'
+            }
+    },
     }
 </script>
 
@@ -52,7 +71,7 @@
       background-color: white;
       color: #333;
       text-align: center;
-      line-height: 160px;
+      /*line-height: 160px;*/
     }
 
     body > .el-container {

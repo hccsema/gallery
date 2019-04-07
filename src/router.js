@@ -4,6 +4,8 @@ import About from './pages/About';
 import Home from './pages/Home';
 import Load from './pages/Load';
 import Login from './pages/Login'
+import ChangePassword from "./pages/ChangePassword";
+import Info from "./pages/Info";
 import Register from "./pages/Register";
 import Sex from "@/pages/Sex";
 import TimeLine from "@/pages/TimeLine";
@@ -39,6 +41,14 @@ export default new Router({
                 {
                     path: '/Map',
                     component: MapAlbum
+                },
+                {
+                    path: '/changepassword',
+                    component: ChangePassword
+                },
+                {
+                    path: '/info',
+                    component: Info
                 }
             ]
 

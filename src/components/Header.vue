@@ -19,7 +19,7 @@
         <!--头部-->
         <el-col :span="6" class="topbar-wrap fixed-top">
             <div class="topbar-logo topbar-btn fixed-top">
-               <h3 style="color: greenyellow">huang huang are you riding?</h3>
+               <h3 style="color: greenyellow">Wonder4 智能分类云相册</h3>
             </div>
         </el-col>
 
@@ -33,12 +33,12 @@
 <!--              </span>-->
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>
-                        <div @click="jumpTo('')">
+                        <div @click="infomation">
                             <span style="color: #555;font-size: 14px;">个人信息</span>
                         </div>
                     </el-dropdown-item>
                     <el-dropdown-item>
-                        <div @click="jumpTo('')">
+                        <div @click="changepassword">
                             <span style="color: #555;font-size: 14px;">修改密码</span>
                         </div>
                     </el-dropdown-item>
@@ -77,8 +77,11 @@
                 this.fetchNavData();
             },
             methods: {
-                jumpTo(url){
-                    this.$router.push(url); //用go刷新
+                changepassword() {
+                    window.location.href="#/changepassword";
+                },
+                infomation() {
+                    window.location.href="#/info";
                 },
                 handleSelect(index){
                     this.defaultActiveIndex = index;
@@ -125,7 +128,7 @@
                     }).then(() => {
                         //确认
                         localStorage.removeItem('access-user');
-                        road.$emit('goto', '/login');
+                        window.location.href="#/login";
                     }).catch(() => {});
                 }
             },

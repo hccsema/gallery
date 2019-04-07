@@ -5,7 +5,7 @@
                 class="el-menu-vertical"
                 @open="handleOpen"
                 @close="handleClose"
-                router>
+                router="true">
             <el-menu-item index="/">
               <i class="el-icon-picture-outline"></i>
               <span slot="title">时光轴</span>
@@ -14,7 +14,7 @@
                 <i class="el-icon-menu"></i>
                 <span slot="title">分类相册</span>
             </el-menu-item>
-             <el-menu-item index="/load" >
+             <el-menu-item index="load" :route="{path: '/load'}" >
               <i class="el-icon-d-caret" ></i>
               <span slot="title">上传下载</span>
             </el-menu-item>
@@ -39,8 +39,13 @@
 
 <script>
   export default {
-        name: "Left",
-        methods: {
+      name: "Left",
+      data(){
+          return{
+
+          }
+      },
+      methods: {
           handleOpen(key, keyPath) {
             console.log(key, keyPath);
           },

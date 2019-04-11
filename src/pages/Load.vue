@@ -1,5 +1,5 @@
 <template>
-    <el-tabs  v-model="activeName" type="border-card" @tab-click="handleClick">
+    <el-tabs  v-model="activeName" type="border-card" @tab-click="handleClick" style="height: 500px">
         <el-tab-pane name="upload">
             <span slot="label"><i class="el-icon-upload2"></i> UPLOAD</span>
             <Upload></Upload>

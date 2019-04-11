@@ -1,7 +1,7 @@
 <template>
     <div class="amap-page-container">
-        <div :style="{width:'100%',height:'620px'}">
-            <el-amap vid="amap" :plugin="plugin" class="amap-demo" :center="center">
+        <div :style="{width:'100%',height:'515px'}">
+            <el-amap vid="amap" :plugin="plugin"  :center="center">
             </el-amap>
         </div>
 
@@ -12,9 +12,7 @@
         </span>
 <!--            <span v-else>正在定位</span>-->
         </div>
-        <div
-                v-on:click="req_post()"
-        >
+        <div v-on:click="req_post()">
 <!--            查询周边-->
         </div>
     </div>
@@ -62,7 +60,7 @@
     }
 </script>
 <style>
-    .amap-demo {
-        height: 300px;
+    .amap {
+        height: 200px;
     }
 </style>

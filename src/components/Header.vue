@@ -152,10 +152,6 @@
 </script>
 
 <style scoped>
-    .ddd{
-        float: right;
-
-    }
 
     .el-dropdown-link {
         cursor: pointer;

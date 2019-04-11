@@ -1,33 +1,29 @@
 <template>
-        <el-main>
-            <el-form
-                    :model="ReginForm"
-                    ref="ReginForm"
-                    class="regform"
-                    label-width="0">
+    <el-main>
+        <el-form :model="ReginForm" ref="ReginForm" class="regform" label-width="0" :rules="FormRule">
 
-                <h3>账号密码登录</h3>
-                <br>
-                <el-form-item prop="username">
-                    <el-input
-                            type="text"
-                            v-model="ReginForm.username"
-                            placeholder="请输入账号">
-                    </el-input>
-                </el-form-item>
+            <h3>账号密码登录</h3>
+            <br>
+            <el-form-item prop="username">
+                <el-input
+                        type="text"
+                        v-model="ReginForm.username"
+                        placeholder="请输入账号">
+                </el-input>
+            </el-form-item>
 
-                <el-form-item prop="password">
-                    <el-input
-                            type="password"
-                            v-model="ReginForm.password"
-                            placeholder="请输入密码">
-                    </el-input>
-                </el-form-item>
+            <el-form-item prop="password">
+                <el-input
+                        type="password"
+                        v-model="ReginForm.password"
+                        placeholder="请输入密码">
+                </el-input>
+            </el-form-item>
 
-                <el-button @click="submit">登录</el-button>
-                <el-button @click="register">注册</el-button>
-            </el-form>
-        </el-main>
+            <el-button @click="submit('ReginForm')">登录</el-button>
+            <el-button @click="register">注册</el-button>
+        </el-form>
+    </el-main>
 </template>
 <script>
     export default {
@@ -35,22 +31,36 @@
         data () {
             return {
                 ReginForm:{
-                    username:'',
-                    password:'',
+                    username:this.username,
+                    password:this.password,
                 },
+                FormRule:{
+                    username: [
+                        { required: true, message: '请填写用户名！', trigger: 'blur' },
+                        { type: 'string', min: 6, message: '用户名长度不小于6位！', trigger: 'blur' }
+                    ],
+                    password: [
+                        { required: true, message: '请填写密码！', trigger: 'blur' },
+                        { type: 'string', min: 6, message: '密码长度不小于6位！', trigger: 'blur' }
+                    ]}
             }
         },
         methods:{
             /*提交进行判断的函数 */
             submit:function(){
-                if(this.ReginForm.username==="1"&&this.ReginForm.password==="1")
-                    window.location.href="#/"
-                else
-                    alert("账号或密码错误")
+                this.axios.post("http://photo.upc.pub/login",this.ReginForm)
+                    .then(res => {
+                        alert("ok");
+                        this.$router.pop('/login');
+                    })
+                    .catch(error => {
+                        alert("no");
+                        console.log(error);
+                    }) ;
             },
             register:function () {
                 window.location.href="#/register"
-            }
+            },
         },
     }
 </script>

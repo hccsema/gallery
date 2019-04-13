@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import Sex from "@/pages/Sex";
 import TimeLine from "@/pages/TimeLine";
 import MapAlbum from "@/pages/MapAlbum";
+import Userinfo from "@/pages/Userinfo";
 
 Vue.use(Router);
 
@@ -39,6 +40,10 @@ export default new Router({
                     component: About
                 },
                 {
+                    path: '/info',
+                    component: Userinfo
+                },
+                {
                     path: '/map',
                     component: MapAlbum
                 },
@@ -46,10 +51,7 @@ export default new Router({
                 //     path: '/changepassword',
                 //     component: ChangePassword
                 // },
-                // {
-                //     path: '/info',
-                //     component: Info
-                // }
+
             ]
 
         },

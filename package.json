@@ -10,24 +10,30 @@
   "dependencies": {
     "axios": "^0.18.0",
     "element-ui": "^2.7.0",
+    "qs": "latest",
     "qs.js": "^0.1.12",
     "vue": "^2.6.6",
     "vue-amap": "^0.5.9",
     "vue-axios": "^2.1.4",
+    "vue-property-decorator": "^8.1.0",
     "vue-router": "latest",
     "vuex": "^3.1.0",
-    "qs": "latest"
+    "vuex-class": "^0.3.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",
     "@vue/cli-plugin-eslint": "^3.5.0",
     "@vue/cli-service": "^3.5.0",
     "babel-eslint": "^10.0.1",
+    "css-loader": "^2.1.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
+    "handlebars": "^4.1.1",
     "normalize.css": "^8.0.1",
+    "style-loader": "^0.23.1",
     "vue-awesome": "^3.5.1",
-    "vue-template-compiler": "^2.5.21"
+    "vue-template-compiler": "^2.5.21",
+    "webpack": "^4.30.0"
   },
   "eslintConfig": {
     "root": true,

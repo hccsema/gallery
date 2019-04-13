@@ -5,19 +5,11 @@
             <h3>账号密码登录</h3>
             <br>
             <el-form-item prop="username">
-                <el-input
-                        type="text"
-                        v-model="ReginForm.username"
-                        placeholder="请输入账号">
-                </el-input>
+                <el-input type="text" v-model="ReginForm.username" placeholder="请输入账号"></el-input>
             </el-form-item>
 
             <el-form-item prop="password">
-                <el-input
-                        type="password"
-                        v-model="ReginForm.password"
-                        placeholder="请输入密码">
-                </el-input>
+                <el-input type="password" v-model="ReginForm.password" placeholder="请输入密码"></el-input>
             </el-form-item>
 
             <el-button @click="submit('ReginForm')">登录</el-button>
@@ -26,10 +18,12 @@
     </el-main>
 </template>
 <script>
+
     export default {
         name: "LoginBox",
         data () {
             return {
+                userToken:'',
                 ReginForm:{
                     username:this.username,
                     password:this.password,
@@ -42,26 +36,36 @@
                     password: [
                         { required: true, message: '请填写密码！', trigger: 'blur' },
                         { type: 'string', min: 6, message: '密码长度不小于6位！', trigger: 'blur' }
-                    ]}
+                    ]},
             }
         },
-        methods:{
+        methods: {
             /*提交进行判断的函数 */
-            submit:function(){
-                this.axios.post("http://photo.upc.pub/login",this.ReginForm)
-                    .then(res => {
-                        alert("ok");
-                        this.$router.pop('/login');
-                    })
-                    .catch(error => {
-                        alert("no");
-                        console.log(error);
-                    }) ;
+            submit(ReginForm) {
+                this.$refs[ReginForm].validate((valid) => {
+                    if (valid) {
+                        this.login();
+                        alert('成功！');
+                    } else {
+                        console.log('失败！');
+                        return false;
+                    }
+                });
             },
-            register:function () {
-                window.location.href="#/register"
-            },
-        },
+
+            login() {
+                let _this = this;
+                this.$store.dispatch('Login',this.ReginForm).then(res => {
+                    _this.userToken =  res.data.token;
+                    //_this.getUserInfo();
+                    _this.$router.push('/');
+                    alert('登陆成功');
+                }).catch(error => {
+                    alert('账号或密码错误');
+                    console.log(error);
+                })
+            }
+        }
     }
 </script>
 

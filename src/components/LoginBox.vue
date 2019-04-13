@@ -1,71 +1,76 @@
 <template>
-    <el-main>
-        <el-form :model="ReginForm" ref="ReginForm" class="regform" label-width="0" :rules="FormRule">
+        <el-main>
+            <el-form :model="reginForm"
+                    ref="ReginForm"
+                    class="regform"
+                    label-width="0">
 
-            <h3>账号密码登录</h3>
-            <br>
-            <el-form-item prop="username">
-                <el-input type="text" v-model="ReginForm.username" placeholder="请输入账号"></el-input>
-            </el-form-item>
-
-            <el-form-item prop="password">
-                <el-input type="password" v-model="ReginForm.password" placeholder="请输入密码"></el-input>
-            </el-form-item>
-
-            <el-button @click="submit('ReginForm')">登录</el-button>
-            <el-button @click="register">注册</el-button>
-        </el-form>
-    </el-main>
+                <h3>账号密码登录</h3>
+                <br>
+                <el-form-item prop="username">
+                    <el-input
+                            type="text"
+                            v-model="reginForm.username"
+                            placeholder="请输入账号">
+                    </el-input>
+                </el-form-item>
+                <el-form-item prop="password">
+                    <el-input
+                            type="password"
+                            v-model="reginForm.password"
+                            placeholder="请输入密码">
+                    </el-input>
+                </el-form-item>
+                <el-button @click="submit(reginForm)">登录</el-button>
+                <el-button @click="register">注册</el-button>
+            </el-form>
+        </el-main>
 </template>
 <script>
+    import $store from "@/store";
+    import axios from "@/axios";
 
     export default {
         name: "LoginBox",
         data () {
             return {
-                userToken:'',
-                ReginForm:{
-                    username:this.username,
-                    password:this.password,
+                reginForm:{
+                    username:'',
+                    password:'',
                 },
-                FormRule:{
-                    username: [
-                        { required: true, message: '请填写用户名！', trigger: 'blur' },
-                        { type: 'string', min: 6, message: '用户名长度不小于6位！', trigger: 'blur' }
-                    ],
-                    password: [
-                        { required: true, message: '请填写密码！', trigger: 'blur' },
-                        { type: 'string', min: 6, message: '密码长度不小于6位！', trigger: 'blur' }
-                    ]},
             }
         },
-        methods: {
-            /*提交进行判断的函数 */
-            submit(ReginForm) {
-                this.$refs[ReginForm].validate((valid) => {
-                    if (valid) {
-                        this.login();
-                        alert('成功！');
-                    } else {
-                        console.log('失败！');
-                        return false;
-                    }
-                });
-            },
 
-            login() {
+        methods:{
+            submit :function()  {
+                // axios.post('http://photo.upc.pub/login',{
+                //     username: this.reginForm.username,
+                //     password: this.reginForm.password
+                // }).then(function (response) {
+                //     alert('success');
+                //     console.log(response.headers)
+                // }).catch(function (error) {
+                //     alert('error');
+                //     console.log(('fffff'))
+                // })
                 let _this = this;
-                this.$store.dispatch('Login',this.ReginForm).then(res => {
-                    _this.userToken =  res.data.token;
+
+                this.$store.dispatch('Login',this.reginForm).then( res=> {
+                    // _this.userToken =  res.headers.authorization;
                     //_this.getUserInfo();
-                    _this.$router.push('/');
-                    alert('登陆成功');
+                    localStorage.setItem("currentViewName",'home');
+                    _this.$router.push( '/');
+                    alert('success');
                 }).catch(error => {
-                    alert('账号或密码错误');
+                    alert('error');
                     console.log(error);
                 })
+
+            },
+            register:function () {
+                window.location.href="#/register"
             }
-        }
+        },
     }
 </script>
 

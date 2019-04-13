@@ -33,7 +33,7 @@
 <!--              </span>-->
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>
-                        <div @click="infomation">
+                        <div>
                             <span style="color: #555;font-size: 14px;">个人信息</span>
                         </div>
                     </el-dropdown-item>
@@ -79,9 +79,6 @@
             methods: {
                 changepassword() {
                     window.location.href="#/changepassword";
-                },
-                infomation() {
-                    window.location.href="#/info";
                 },
                 handleSelect(index){
                     this.defaultActiveIndex = index;
@@ -152,10 +149,6 @@
 </script>
 
 <style scoped>
-    .ddd{
-        float: right;
-
-    }
 
     .el-dropdown-link {
         cursor: pointer;

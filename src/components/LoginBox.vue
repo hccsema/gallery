@@ -1,7 +1,6 @@
 <template>
         <el-main>
-            <el-form
-                    :model="ReginForm"
+            <el-form :model="reginForm"
                     ref="ReginForm"
                     class="regform"
                     label-width="0">
@@ -11,42 +10,62 @@
                 <el-form-item prop="username">
                     <el-input
                             type="text"
-                            v-model="ReginForm.username"
+                            v-model="reginForm.username"
                             placeholder="请输入账号">
                     </el-input>
                 </el-form-item>
-
                 <el-form-item prop="password">
                     <el-input
                             type="password"
-                            v-model="ReginForm.password"
+                            v-model="reginForm.password"
                             placeholder="请输入密码">
                     </el-input>
                 </el-form-item>
-
-                <el-button @click="submit">登录</el-button>
+                <el-button @click="submit(reginForm)">登录</el-button>
                 <el-button @click="register">注册</el-button>
             </el-form>
         </el-main>
 </template>
 <script>
+    import $store from "@/store";
+    import axios from "@/axios";
+
     export default {
         name: "LoginBox",
         data () {
             return {
-                ReginForm:{
+                reginForm:{
                     username:'',
                     password:'',
                 },
             }
         },
+
         methods:{
-            /*提交进行判断的函数 */
-            submit:function(){
-                if(this.ReginForm.username==="1"&&this.ReginForm.password==="1")
-                    window.location.href="#/"
-                else
-                    alert("账号或密码错误")
+            submit :function()  {
+                // axios.post('http://photo.upc.pub/login',{
+                //     username: this.reginForm.username,
+                //     password: this.reginForm.password
+                // }).then(function (response) {
+                //     alert('success');
+                //     console.log(response.headers)
+                // }).catch(function (error) {
+                //     alert('error');
+                //     console.log(('fffff'))
+                // })
+                let _this = this;
+
+                this.$store.dispatch('Login',this.reginForm).then( res=> {
+                    // _this.userToken =  res.headers.authorization;
+                    //_this.getUserInfo();
+                    localStorage.setItem("currentViewName",'home');
+                    _this.$router.push( '/');
+                    alert('success');
+                }).catch(error => {
+                    alert('error');
+                    console.log(error);
+                })
+
             },
             register:function () {
                 window.location.href="#/register"

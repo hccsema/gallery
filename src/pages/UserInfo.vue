@@ -48,39 +48,22 @@
                 // }
             }
         },
+        created(){
+            let _this = this;
+            this.$store.dispatch('getUserInfo').then(function (res) {
+                console.log(res);
+                const data = res.data;
+                _this.userInfo.username = data.username;
+                _this.userInfo.email = data.email;
+                _this.userInfo.nickname = data.nickname;
+            }).catch(function (error) {
+            });
+        },
 
         mounted:{
 
         },
         methods: {
-
-            getUserInfo(){
-                let _this = this;
-                this.$store.dispatch('getUserInfo').then(function (res) {
-                        console.log(res);
-                        data = res.data;
-                        _this.userInfo.username = res.data.username;
-                        _this.userInfo.email = data.email;
-                        _this.userInfo.nickname = data.nickname;
-                }).catch(function (error) {
-
-                })
-                // axios({
-                //     methods: 'get',
-                //     url: 'http://photo.upc.pub/user/get_info',
-                //
-                //     headers:{
-                //         'authorization' : 'Bearer ' + window.localStorage.getItem('Authorization')
-                //     },
-                // }).then(function (response) {
-                //     _this.userInfo.username = response.data.username;
-                //     console.log(response)
-                //
-                // }).catch(function (error) {
-                //     console.log(error)
-                //
-                // })
-            },
 
             submitForm(userInfo) {
                 this.$refs[userInfo].validate((valid) => {

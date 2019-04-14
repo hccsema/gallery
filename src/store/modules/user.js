@@ -6,8 +6,9 @@ Vue.use(Vuex);
 
 export default {
     state: {
-        Authorization: localStorage.getItem('Authorization') ? localStorage.getItem('Authorization') : '',
-        UserName: localStorage.getItem('userName') ? localStorage.getItem('userName') : '',
+        // Authorization: localStorage.getItem('Authorization') ? localStorage.getItem('Authorization') : '',
+        Authorization: '',
+        userInfo: localStorage.getItem('userInfo') ? localStorage.getItem('userInfo') : '',
     },
 
     actions: {
@@ -36,7 +37,7 @@ export default {
             return new Promise((resolve, reject) => {
                 getUserInfo().then(response => {
                     const data = response.data;
-                    commit('saveUserName', data.username);
+                    commit('saveUserInfo', data);
                     resolve(response);
                 }).catch(
                     error => {
@@ -50,14 +51,19 @@ export default {
             state.Authorization = authorization;
             localStorage.setItem('Authorization', authorization);
         },
-        saveUserName(state, userName) {
-            state.UserName = userName;
-            localStorage.setItem('userName', userName);
+        saveUserInfo(state, userInfo) {
+            state.UserInfo = userInfo;
+            localStorage.setItem('userInfo', userInfo);
         },
+        delToken(state){
+            state.Authorization = '';
+            localStorage.setItem('Authorization', state.Authorization);
+
+        }
     },
 
     getters:{
-        getUserName(state) {
+        getUserInfo(state) {
             return state.UserName;
         },
     }

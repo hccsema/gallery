@@ -33,12 +33,12 @@
 <!--              </span>-->
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>
-                        <div @click="infomation">
+                        <div @click="userInfo">
                             <span style="color: #555;font-size: 14px;">个人信息</span>
                         </div>
                     </el-dropdown-item>
                     <el-dropdown-item>
-                        <div @click="changepassword">
+                        <div @click="changePassword">
                             <span style="color: #555;font-size: 14px;">修改密码</span>
                         </div>
                     </el-dropdown-item>
@@ -63,25 +63,25 @@
                 }
             },
             created() {
-                road.$on('setNickName', (text) => {
-                    this.nickname = text;
-                });
-
-                road.$on('goto', (url) => {
-                    if(url === "/login") {
-                        localStorage.removeItem('access-user');
-                        this.$router.push(url);
-                    }
-                });
-                // 组件创建完后获取数据
-                this.fetchNavData();
+                // road.$on('setNickName', (text) => {
+                //     this.nickname = text;
+                // });
+                //
+                // road.$on('goto', (url) => {
+                //     if(url === "/login") {
+                //         localStorage.removeItem('access-user');
+                //         this.$router.push(url);
+                //     }
+                // });
+                // // 组件创建完后获取数据
+                // this.fetchNavData();
             },
             methods: {
-                changepassword() {
-                    window.location.href="#/changepassword";
+                changePassword() {
+                    window.location.href="#/changePwd";
                 },
-                infomation() {
-                    window.location.href="#/info";
+                userInfo(){
+                    window.location.href='#/info';
                 },
                 handleSelect(index){
                     this.defaultActiveIndex = index;

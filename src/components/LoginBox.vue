@@ -55,7 +55,7 @@
                 // })
                 let _this = this;
 
-                this.$store.dispatch('Login',this.reginForm).then( res=> {
+                this.$store.dispatch('Login',this.reginForm).then( res => {
                     // _this.userToken =  res.headers.authorization;
                     //_this.getUserInfo();
                     localStorage.setItem("currentViewName",'home');

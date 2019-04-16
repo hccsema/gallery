@@ -14,7 +14,7 @@ axios.interceptors.request.use(function (config) {
            config.headers.common['authorization'] = 'Bearer ' + window.localStorage.getItem('Authorization');
    }
    return config;
-}), error=>{
+}),error=>{
     router.push('/login');
     return Promise.reject(error);
 };

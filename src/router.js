@@ -10,15 +10,38 @@ import Sex from "@/pages/Sex";
 import TimeLine from "@/pages/TimeLine";
 import MapAlbum from "@/pages/MapAlbum";
 import UserInfo from "@/pages/UserInfo";
+import TestHome from './newView/Home'
+
 
 Vue.use(Router);
 
 export default new Router({
-    //配置路由
+    mode: 'history',
     routes: [
         {
             path: '/',
             component: Home,
+            meta: {
+                title: '',
+                requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+            },
+            // beforeEnter: (to, from, next)=>{
+            //     if (to.matched.some(record => record.meta.requireAuth)) {
+            //         if (localStorage.userName) {
+            //             next();
+            //         } else {
+            //             next({
+            //                 path: '/login',
+            //                 // //登陆成功后跳转至该路由
+            //                  query: {
+            //                 //    redirect: to.fullPath
+            //                  }
+            //             });
+            //         }
+            //     } else {
+            //         next();
+            //     }
+            // },
             children:[
                 {
                     path:'/',
@@ -27,8 +50,7 @@ export default new Router({
                 {
                     path: '/load',
                     name: '下载/上传',
-                    component: Load
-
+                    component: Load,
                 },
                 {
                     path: '/sex',
@@ -47,20 +69,58 @@ export default new Router({
                     component: MapAlbum
                 },
                 {
-                     path: '/changePwd',
-                     component: ChangePassword
+                    path: '/changePwd',
+                    component: ChangePassword
                 },
 
             ]
 
         },
         {
+            path: '/test/',
+            component: TestHome,
+            children:[
+                {
+                    path:'/test/',
+                    component: TimeLine
+                },
+                {
+                    path: '/test/load',
+                    name: '下载/上传',
+                    component: Load,
+                },
+                {
+                    path: 'sex',
+                    component: Sex
+                },
+                {
+                    path: 'about',
+                    component: About
+                },
+                {
+                    path: 'info',
+                    component: UserInfo
+                },
+                {
+                    path: 'map',
+                    component: MapAlbum
+                },
+                {
+                    path: 'changePwd',
+                    component: ChangePassword
+                },
+            ]
+        },
+        {
             path:'/login',
             component: Login
         },
+
         {
             path:'/register',
             component: Register
         },
     ]
-})
+});
+
+

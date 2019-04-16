@@ -64,7 +64,7 @@ export default {
 
     getters:{
         getUserInfo(state) {
-            return state.UserName;
+            return state.UserInfo;
         },
     }
 }

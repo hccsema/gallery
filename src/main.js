@@ -4,10 +4,11 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from './axios'
-import NormailizeCss from 'normalize.css'
-import Icon from 'vue-awesome/components/Icon'
+//import NormailizeCss from 'normalize.css'
+//import Icon from 'vue-awesome/components/Icon'
 import VueAMap from 'vue-amap'
 import store from './store'
+import "bootstrap";
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
@@ -23,7 +24,8 @@ VueAMap.initAMapApiLoader({
 
 new Vue({
   render: h => h(App),
-  router,
   store, //取值：$store
+  router,
 
-}).$mount('#app')
+}).$mount('#app');
+

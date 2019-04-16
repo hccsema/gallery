@@ -1,36 +1,16 @@
 <template>
-<!--    <div class="header">-->
-<!--        <el-menu :default-active="activeIndex"-->
-<!--                 class="el-menu"-->
-<!--                 mode="horizontal"-->
-<!--                 @select="handleSelect"-->
-<!--                 background-color="#545c64"-->
-<!--                 text-color="#fff"-->
-<!--                 active-text-color="#ffd04b">-->
-
-<!--            <el-menu-item index="1" class="ddd">写点</el-menu-item>-->
-<!--            <el-menu-item index="3" >什么</el-menu-item>-->
-<!--            <el-menu-item index="4" >好呢</el-menu-item>-->
-
-<!--        </el-menu>-->
-<!--    </div>-->
-
     <el-row class="container ">
-        <!--头部-->
         <el-col :span="6" class="topbar-wrap fixed-top">
             <div class="topbar-logo topbar-btn fixed-top">
                <h3 style="color: greenyellow">Wonder4 智能分类云相册</h3>
             </div>
         </el-col>
-
         <el-col :span="17"></el-col>
         <el-col :span="1">
         <el-dropdown>
-<!--              <span class="el-dropdown-link">-->
                    <div class="topbar-logo topbar-btn fixed-top">
                             <a href="/"><img src="../assets/1.jpg" class="round_icon"></a>
                    </div>
-<!--              </span>-->
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>
                         <div @click="userInfo">
@@ -51,6 +31,7 @@
 
 <script>
     import 'element-ui/lib/theme-chalk/display.css'
+    import router from '../router.js'
         export default {
             data(){
                 return {
@@ -78,10 +59,10 @@
             },
             methods: {
                 changePassword() {
-                    window.location.href="#/changePwd";
+                    router.push('/changePwd');
                 },
                 userInfo(){
-                    window.location.href='#/info';
+                    router.push('/info');
                 },
                 handleSelect(index){
                     this.defaultActiveIndex = index;
@@ -113,13 +94,13 @@
                             }
                         }
                     }
-                    this.$store.state.topNavState = nav_type;
-                    this.$store.state.leftNavState = nav_name;
-                    if(nav_type == "home"){
-                        this.defaultActiveIndex = "/";
-                    } else {
-                        this.defaultActiveIndex = "/" + nav_name + "Manager";
-                    }
+                    // this.$store.state.topNavState = nav_type;
+                    // this.$store.state.leftNavState = nav_name;
+                    // if(nav_type == "home"){
+                    //     this.defaultActiveIndex = "/";
+                    // } else {
+                    //     this.defaultActiveIndex = "/" + nav_name + "Manager";
+                    // }
                 },
                 logout(){
                     //logout
@@ -127,24 +108,23 @@
                         confirmButtonClass: 'el-button--warning'
                     }).then(() => {
                         //确认
-                        localStorage.removeItem('access-user');
-                        window.location.href="#/login";
+                        localStorage.removeItem('userInfo');
+                        localStorage.removeItem('Authorization');
+                        router.push('/login');
                     }).catch(() => {});
                 }
             },
             mounted() {
-                let user = window.localStorage.getItem('access-user');
+                let user = window.localStorage.getItem('userInfo');
                 if (user) {
+                    //将json改为js对象
                     user = JSON.parse(user);
                     this.nickname = user.nickname || '';
-                    this.companyName = user.companyName || '';
+                    //this.companyName = user.companyName || '';
                 }
             },
             watch: {
-                '$route': function(to, from){ // 路由改变时执行
-                    //console.info("to.path:" + to.path);
-                    this.fetchNavData();
-                }
+
             }
         }
 

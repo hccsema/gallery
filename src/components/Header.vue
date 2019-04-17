@@ -2,7 +2,7 @@
     <el-row class="container ">
         <el-col :span="6" class="topbar-wrap fixed-top">
             <div class="topbar-logo topbar-btn fixed-top">
-               <h3 style="color: greenyellow">Wonder4 智能分类云相册</h3>
+               <h3 style="color: greenyellow"></h3>
             </div>
         </el-col>
         <el-col :span="17"></el-col>
@@ -115,13 +115,13 @@
                 }
             },
             mounted() {
-                let user = window.localStorage.getItem('userInfo');
-                if (user) {
-                    //将json改为js对象
-                    user = JSON.parse(user);
-                    this.nickname = user.nickname || '';
-                    //this.companyName = user.companyName || '';
-                }
+                // let user = window.localStorage.getItem('userInfo');
+                // if (user) {
+                //     //将json改为js对象
+                //     user = JSON.parse(user);
+                //     this.nickname = user.nickname || '';
+                //     //this.companyName = user.companyName || '';
+                // }
             },
             watch: {
 

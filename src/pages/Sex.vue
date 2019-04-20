@@ -1,8 +1,8 @@
 <template>
     <div>
-        <h5>place enter 2CD PIN,
-        if you under 18 years old, please fxxk away
-        </h5>
+        <h1>
+            这是隐私空间
+        </h1>
     </div>
 </template>
 

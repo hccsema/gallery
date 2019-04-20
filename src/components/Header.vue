@@ -2,26 +2,26 @@
     <el-row class="container ">
         <el-col :span="6" class="topbar-wrap fixed-top">
             <div class="topbar-logo topbar-btn fixed-top">
-               <h3 style="color: greenyellow"></h3>
+                <h1 style="color: slateblue">Gallery</h1>
             </div>
         </el-col>
-        <el-col :span="17"></el-col>
-        <el-col :span="1">
-        <el-dropdown>
-                   <div class="topbar-logo topbar-btn fixed-top">
-                            <a href="/"><img src="../assets/1.jpg" class="round_icon"></a>
-                   </div>
+        <!--        <el-col :span="16"></el-col>-->
+        <el-col :span="2" :offset="16">
+            <el-dropdown>
+                <div class="topbar-logo topbar-btn fixed-top">
+                    <img src="../assets/1.jpg" class="round_icon" @click="userInfo">
+                </div>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>
                         <div @click="userInfo">
                             <span style="color: #555;font-size: 14px;">个人信息</span>
                         </div>
                     </el-dropdown-item>
-                    <el-dropdown-item>
-                        <div @click="changePassword">
-                            <span style="color: #555;font-size: 14px;">修改密码</span>
-                        </div>
-                    </el-dropdown-item>
+                    <!--                    <el-dropdown-item>-->
+                    <!--                        <div @click="changePassword">-->
+                    <!--                            <span style="color: #555;font-size: 14px;">修改密码</span>-->
+                    <!--                        </div>-->
+                    <!--                    </el-dropdown-item>-->
                     <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
@@ -32,101 +32,101 @@
 <script>
     import 'element-ui/lib/theme-chalk/display.css'
     import router from '../router.js'
-        export default {
-            data(){
-                return {
-                    loading: false,
-                    companyName: '',
-                    nickname: '',
-                    defaultActiveIndex: '/',
-                    homeMenu: false,
-                    messageCount: 5
-                }
+    export default {
+        data(){
+            return {
+                loading: false,
+                companyName: '',
+                nickname: '',
+                defaultActiveIndex: '/',
+                homeMenu: false,
+                messageCount: 5
+            }
+        },
+        created() {
+            // road.$on('setNickName', (text) => {
+            //     this.nickname = text;
+            // });
+            //
+            // road.$on('goto', (url) => {
+            //     if(url === "/login") {
+            //         localStorage.removeItem('access-user');
+            //         this.$router.push(url);
+            //     }
+            // });
+            // // 组件创建完后获取数据
+            // this.fetchNavData();
+        },
+        methods: {
+            changePassword() {
+                router.push('/changePwd');
             },
-            created() {
-                // road.$on('setNickName', (text) => {
-                //     this.nickname = text;
-                // });
-                //
-                // road.$on('goto', (url) => {
-                //     if(url === "/login") {
-                //         localStorage.removeItem('access-user');
-                //         this.$router.push(url);
-                //     }
-                // });
-                // // 组件创建完后获取数据
-                // this.fetchNavData();
+            userInfo(){
+                router.push('/info');
             },
-            methods: {
-                changePassword() {
-                    router.push('/changePwd');
-                },
-                userInfo(){
-                    router.push('/info');
-                },
-                handleSelect(index){
-                    this.defaultActiveIndex = index;
-                },
-                fetchNavData () { // 初始化菜单激活项
-                    let cur_path = this.$route.path; //获取当前路由
-                    let routers = this.$router.options.routes; // 获取路由对象
-                    let nav_type = "", nav_name = "";
-                    for (var i = 0; i < routers.length; i++) {
-                        let children = routers[i].children;
-                        if(children){
-                            for (let j = 0; j < children.length; j++) {
-                                if (children[j].path === cur_path) {
-                                    nav_type = routers[i].type;
-                                    nav_name = routers[i].name;
-                                    break;
-                                }
-                                // 如果该菜单下还有子菜单
-                                if(children[j].children) {
-                                    let grandChildren = children[j].children;
-                                    for(let z=0; z<grandChildren.length; z++) {
-                                        if(grandChildren[z].path === cur_path) {
-                                            nav_type = routers[i].type;
-                                            nav_name = routers[i].name;
-                                            break;
-                                        }
+            handleSelect(index){
+                this.defaultActiveIndex = index;
+            },
+            fetchNavData () { // 初始化菜单激活项
+                let cur_path = this.$route.path; //获取当前路由
+                let routers = this.$router.options.routes; // 获取路由对象
+                let nav_type = "", nav_name = "";
+                for (var i = 0; i < routers.length; i++) {
+                    let children = routers[i].children;
+                    if(children){
+                        for (let j = 0; j < children.length; j++) {
+                            if (children[j].path === cur_path) {
+                                nav_type = routers[i].type;
+                                nav_name = routers[i].name;
+                                break;
+                            }
+                            // 如果该菜单下还有子菜单
+                            if(children[j].children) {
+                                let grandChildren = children[j].children;
+                                for(let z=0; z<grandChildren.length; z++) {
+                                    if(grandChildren[z].path === cur_path) {
+                                        nav_type = routers[i].type;
+                                        nav_name = routers[i].name;
+                                        break;
                                     }
                                 }
                             }
                         }
                     }
-                    // this.$store.state.topNavState = nav_type;
-                    // this.$store.state.leftNavState = nav_name;
-                    // if(nav_type == "home"){
-                    //     this.defaultActiveIndex = "/";
-                    // } else {
-                    //     this.defaultActiveIndex = "/" + nav_name + "Manager";
-                    // }
-                },
-                logout(){
-                    //logout
-                    this.$confirm('确认退出吗?', '提示', {
-                        confirmButtonClass: 'el-button--warning'
-                    }).then(() => {
-                        //确认
-                        localStorage.removeItem('userInfo');
-                        localStorage.removeItem('Authorization');
-                        router.push('/login');
-                    }).catch(() => {});
                 }
-            },
-            mounted() {
-                // let user = window.localStorage.getItem('userInfo');
-                // if (user) {
-                //     //将json改为js对象
-                //     user = JSON.parse(user);
-                //     this.nickname = user.nickname || '';
-                //     //this.companyName = user.companyName || '';
+                // this.$store.state.topNavState = nav_type;
+                // this.$store.state.leftNavState = nav_name;
+                // if(nav_type == "home"){
+                //     this.defaultActiveIndex = "/";
+                // } else {
+                //     this.defaultActiveIndex = "/" + nav_name + "Manager";
                 // }
             },
-            watch: {
-
+            logout(){
+                //logout
+                this.$confirm('确认退出吗?', '提示', {
+                    confirmButtonClass: 'el-button--warning'
+                }).then(() => {
+                    //确认
+                    localStorage.removeItem('userInfo');
+                    localStorage.removeItem('Authorization');
+                    router.push('/login');
+                }).catch(() => {});
             }
+        },
+        mounted() {
+            // let user = window.localStorage.getItem('userInfo');
+            // if (user) {
+            //     //将json改为js对象
+            //     user = JSON.parse(user);
+            //     this.nickname = user.nickname || '';
+            //     //this.companyName = user.companyName || '';
+            // }
+        },
+        watch: {
+
         }
+    }
 
 
 </script>

@@ -7,34 +7,32 @@
             label-width="100px"
             class="ruleForm">
         <el-form-item label="nickname" prop="nickname">
-            <el-input type="text" v-model="userInfo.nickname"></el-input>
+            <el-input type="text" v-model="nickname"></el-input>
         </el-form-item>
         <el-form-item label="username" prop="checkPass">
-            <el-input type="text" v-model="userInfo.username" ></el-input>
+            <el-input type="text" v-model="username" ></el-input>
         </el-form-item>
         <el-form-item label="email" prop="email">
-            <el-input v-model="userInfo.email"></el-input>
+            <el-input v-model="email"></el-input>
         </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click="submitForm('userInfo')">更新</el-button>
-            <el-button type="primary" @click="getUserInfo"><get></get></el-button>
-        </el-form-item>
+        <!--        <el-form-item>-->
+        <!--            <el-button type="primary" @click="submitForm('userInfo')">更新</el-button>-->
+        <!--            <el-button type="primary" @click="getUserInfo"><get>显示</get></el-button>-->
+        <!--        </el-form-item>-->
     </el-form>
 </template>
 
 <script>
-    import {getUserInfo} from "@/api/user";
-    import axios from 'axios'
+    //import {getUserInfo} from "@/api/user";
+    import axios from "../axios";
 
     export default {
         name:'UserInfo',
         data() {
             return{
-                userInfo:{
-                    nickname:'  ',
-                    username:'',
-                    email:'',
-                },
+                nickname:'  ',
+                username:'',
+                email:'',
                 // rules2: {
                 //     nickname: [
                 //         { validator: validatePass, trigger: 'blur' }
@@ -50,13 +48,19 @@
         },
         created(){
             let _this = this;
-            this.$store.dispatch('getUserInfo').then(function (res) {
-                console.log(res);
-                const data = res.data;
-                _this.userInfo.username = data.username;
-                _this.userInfo.email = data.email;
-                _this.userInfo.nickname = data.nickname;
-            }).catch(function (error) {
+            axios({
+                method:'get',
+                url: 'http://photo.upc.pub/user/get_info/',
+                headers:{
+                    "authorization" : "Bearer " + window.localStorage.getItem('Authorization'),
+                }
+            }).then(res => {
+                let data = res.data;
+                _this.nickname = 'gallery',
+                    _this.username = JSON.parse(data).username;
+                _this.email = JSON.parse(data).email;
+            }).catch(function (error){
+                console.log(error);
             });
         },
 

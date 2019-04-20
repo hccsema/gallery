@@ -7,37 +7,38 @@
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :file-list="fileList"
-            list-type="picture">
+            list-type="picture"
+            multiple="True">
         <el-button size="small" type="primary">点击上传</el-button>
-        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+        <div slot="tip" class="el-upload__tip">单张图片不得超过30MB</div>
     </el-upload>
 
 </template>
 
 <script>
 
-export default {
-    data() {
-        return{
-           fileList:[],
-        }
-    },
-    computed:{
-        headers(){
+    export default {
+        data() {
             return{
-                'authorization' : 'Bearer ' + window.localStorage.getItem('Authorization')
+                fileList:[],
             }
+        },
+        computed:{
+            headers(){
+                return{
+                    'authorization' : 'Bearer ' + window.localStorage.getItem('Authorization')
+                }
+            }
+        },
+        methods: {
+            handleRemove(file, fileList) {
+                console.log(file, fileList);
+            },
+            handlePreview(file) {
+                console.log(file);
+            },
         }
-    },
-    methods: {
-        handleRemove(file, fileList) {
-            console.log(file, fileList);
-        },
-        handlePreview(file) {
-            console.log(file);
-        },
     }
-}
 </script>
 
 <style scoped>

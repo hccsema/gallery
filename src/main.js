@@ -9,7 +9,11 @@ import axios from './axios'
 import VueAMap from 'vue-amap'
 import store from './store'
 import "bootstrap";
+//import layer from 'vue-layer'
 
+
+
+//Vue.prototype.$layer = layer(Vue);
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(VueAMap);

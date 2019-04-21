@@ -52,19 +52,19 @@
                 //将图片加入图片列表
                 sliders:[
                     {
-                        img:require('../assets/beach.jpg')
+                        img : require('../assets/img/bg7.jpg')
                     },
                     {
-                        img:require('../assets/cat.jpg')
+                        img:require('../assets/img/bg5.jpg')
                     },
                     {
-                        img:require('../assets/family.jpg')
+                        img:require('../assets/img/bg6.jpg')
                     },
                     {
                         img:require('../assets/familyphoto.jpg')
                     },
                     {
-                        img:require('../assets/pet.jpeg')
+                        img:require('../assets/img/bg8.jpg')
                     },
                 ],
                 imgWidth:1550,
@@ -89,17 +89,17 @@
         },
         methods:{
             init() {
-                this.play()
-                window.onblur = function() { this.stop() }.bind(this)
-                window.onfocus = function() { this.play() }.bind(this)
+                this.play();
+                window.onblur = function() { this.stop() }.bind(this);
+                window.onfocus = function() { this.play() }.bind(this);
             },
             move(offset, direction, speed) {
-                console.log(speed)
-                if (!this.transitionEnd) return
-                this.transitionEnd = false
+                //console.log(speed);
+                if (!this.transitionEnd) return;
+                this.transitionEnd = false;
                 direction === -1 ? this.currentIndex += offset/1550 : this.currentIndex -= offset/1550
-                if (this.currentIndex > 5) this.currentIndex = 1
-                if (this.currentIndex < 1) this.currentIndex = 5
+                if (this.currentIndex > 5) this.currentIndex = 1;
+                if (this.currentIndex < 1) this.currentIndex = 5;
 
                 const destination = this.distance + offset * direction
                 this.animate(destination, direction, speed)
@@ -113,10 +113,10 @@
                     if ((direc === -1 && des < this.distance) || (direc === 1 && des > this.distance)) {
                         this.distance += speed * direc
                     } else {
-                        this.transitionEnd = true
-                        window.clearInterval(this.temp)
-                        this.distance = des
-                        if (des < -7750) this.distance = -1550
+                        this.transitionEnd = true;
+                        window.clearInterval(this.temp);
+                        this.distance = des;
+                        if (des < -7750) this.distance = -1550;
                         if (des > -1550) this.distance = -7750
                     }
                 }, 20)

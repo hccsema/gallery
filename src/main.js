@@ -4,16 +4,18 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from './axios'
-//import NormailizeCss from 'normalize.css'
-//import Icon from 'vue-awesome/components/Icon'
 import VueAMap from 'vue-amap'
 import store from './store'
-import "bootstrap";
-//import layer from 'vue-layer'
+import "bootstrap"
+import LazyLoad from 'vue-lazyload'
+import qs from 'qs';
 
 
+Vue.prototype.qs = qs;
+Vue.use(LazyLoad,{
 
-//Vue.prototype.$layer = layer(Vue);
+});
+
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(VueAMap);

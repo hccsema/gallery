@@ -6,10 +6,10 @@ import Load from './pages/Load';
 import Login from './pages/Login'
 import ChangePassword from "./pages/ChangePassword";
 import Register from "./pages/Register";
-import Sex from "@/pages/Sex";
-import TimeLine from "@/pages/TimeLine";
-import MapAlbum from "@/pages/MapAlbum";
-import UserInfo from "@/pages/UserInfo";
+import Sex from "./pages/Sex";
+import TimeLine from "./pages/TimeLine";
+import MapAlbum from "./pages/MapAlbum";
+import UserInfo from "./pages/UserInfo";
 import Classify from "./pages/Classify";
 import CreateAlbum from "./pages/CreateAlbum";
 //import TestHome from './newView/Home'
@@ -29,14 +29,14 @@ export default new Router({
             },
             // beforeEnter: (to, from, next)=>{
             //     if (to.matched.some(record => record.meta.requireAuth)) {
-            //         if (window.localStorage.getItem('userInfo')) {
+            //         if (localStorage.userName) {
             //             next();
             //         } else {
             //             next({
             //                 path: '/login',
             //                 // //登陆成功后跳转至该路由
             //                  query: {
-            //                    redirect: to.fullPath
+            //                 //    redirect: to.fullPath
             //                  }
             //             });
             //         }
@@ -75,13 +75,14 @@ export default new Router({
                     component: ChangePassword
                 },
                 {
-                    path:'/classify',
+                    path: '/classify',
                     component: Classify
                 },
                 {
-                    path:'/create',
-                    component: CreateAlbum,
+                    path: '/create',
+                    component: CreateAlbum
                 }
+
             ]
 
         },
@@ -94,8 +95,7 @@ export default new Router({
         //             component: TimeLine
         //         },
         //         {
-        //             path: '/test/load',
-        //             name: '下载/上传',
+        //             path: 'load',
         //             component: Load,
         //         },
         //         {

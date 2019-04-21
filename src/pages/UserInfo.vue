@@ -16,7 +16,7 @@
             <el-input v-model="email"></el-input>
         </el-form-item>
         <!--        <el-form-item>-->
-        <!--            <el-button type="primary" @click="submitForm('userInfo')">更新</el-button>-->
+                    <el-button type="primary" @click="submitForm('userInfo')">更新</el-button>
         <!--            <el-button type="primary" @click="getUserInfo"><get>显示</get></el-button>-->
         <!--        </el-form-item>-->
     </el-form>
@@ -56,9 +56,9 @@
                 }
             }).then(res => {
                 let data = res.data;
-                _this.nickname = 'gallery',
-                    _this.username = JSON.parse(data).username;
-                _this.email = JSON.parse(data).email;
+                _this.nickname = 'gallery';
+                _this.username = data.username;
+                _this.email = data.email;
             }).catch(function (error){
                 console.log(error);
             });

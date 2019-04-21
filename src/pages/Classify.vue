@@ -7,15 +7,17 @@
         </div>
         <el-container class="containers">
             <el-row>
-                <el-col  :span="6" v-for=" (name,index)  in album_name ">
-                    <el-card :body-style="{padding: '0px'}" class="card">
-                        <div class="checkboxs">
-                            <el-checkbox  v-show="show[index]"></el-checkbox>
-                        </div>
-                        <img src="../assets/folder.jpg"  height="230" width="240">
-                        <p>{{name}}</p>
-                    </el-card>
-                </el-col>
+                <el-checkbox-group v-model="checkedlist" >
+                    <el-col  :span="4" v-for=" art in album " :offset="2">
+                        <el-card :body-style="{padding: '0px'}" class="card">
+                            <div class="checkboxs">
+                                <el-checkbox :label="art.id" v-show="show" @click="addId(art.id)">&nbsp;</el-checkbox>
+                            </div>
+                            <img src="../assets/folder.jpg"  height="230" width="240">
+                            <p class="art_name">{{art.name}}</p>
+                        </el-card>
+                    </el-col>
+                </el-checkbox-group>
             </el-row>
         </el-container>
     </div>
@@ -23,20 +25,19 @@
 
 <script>
     import axios from '../axios'
+    import qs from 'qs'
     export default {
         name: "Classify",
         data(){
             return{
                 album:[],
-                album_name:[],
-                album_id:[],
-                show:[],
-                length:'',
+                show: false,
+                checkedlist:[],
             }
         },
         created() {
             axios({
-                methods: 'get',
+                method: 'get',
                 url:'http://photo.upc.pub/album/get_all_album',
                 headers:{
                     'authorization': 'Bearer ' + window.localStorage.getItem('Authorization'),
@@ -46,10 +47,7 @@
                 let data = res.data;
                 for(let i=0; i < data.length ;i++)
                 {
-                    _this.album_name.push(data[i]['name']);
-                    _this.album_id.push(data[i]['id']);
-                    _this.show.push(false);
-                    _this.length = data.length;
+                    _this.album.push({name:data[i]['name'],id:data[i]['id']});
                 }
             }).catch(error =>{
                 console.log(error);
@@ -60,15 +58,29 @@
                 window.location.href="/create";
             },
             del:function () {
-
+                for (let i = 0; i < this.checkedlist.length; i++) {
+                    axios({
+                        method: 'post',
+                        url: 'http://photo.upc.pub/album/delete',
+                        headers: {
+                            'authorization': 'Bearer ' + window.localStorage.getItem('Authorization'),
+                            'ContentType':'application/x-www-form-urlencoded',
+                        },
+                        async:false,
+                        data: qs.stringify({id:this.checkedlist[i]}),
+                    }).then(res => {
+                        console.log(res);
+                        window.location.href = "/classify";
+                    }).catch(error => {
+                        console.log(error);
+                    })
+                }
             },
             batchdel:function () {
-                for(let i=0; i<this.length; i++) {
-                    this.show.pop();
-                }
-                for(let i=0; i<this.length; i++){
-                    this.show.push(true);
-                }
+                this.show = !this.show;
+            },
+            addId(id){
+                this.checkedlist.push(id);
             },
         }
     }
@@ -101,5 +113,8 @@
         padding-top: 0px;
         padding-left: 235px;
         z-index: 999;
+    }
+    .art_name{
+        font-size: large;
     }
 </style>

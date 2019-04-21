@@ -43,16 +43,6 @@
 
         methods:{
             submit :function()  {
-                // axios.post('http://photo.upc.pub/login',{
-                //     username: this.reginForm.username,
-                //     password: this.reginForm.password
-                // }).then(function (response) {
-                //     alert('success');
-                //     console.log(response.headers)
-                // }).catch(function (error) {
-                //     alert('error');
-                //     console.log(('fffff'))
-                // })
                 let _this = this;
 
                 this.$store.dispatch('Login',this.reginForm).then( res => {
@@ -60,15 +50,14 @@
                     //_this.getUserInfo();
                     localStorage.setItem("currentViewName",'home');
                     _this.$router.push( '/');
-                    alert('success');
+                    alert('登陆成功');
                 }).catch(error => {
-                    alert('error');
+                    alert('账号或密码错误');
                     console.log(error);
                 })
-
             },
             register:function () {
-                window.location.href="#/register"
+                this.$router.push('register')
             }
         },
     }

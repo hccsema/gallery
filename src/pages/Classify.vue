@@ -7,9 +7,9 @@
         </div>
         <el-container class="containers">
             <el-row>
-                <el-checkbox-group v-model="checkedlist" >
-                    <el-col  :span="4" v-for=" art in album " :offset="2">
-                        <el-card :body-style="{padding: '0px'}" class="card">
+                <el-checkbox-group v-model="checkedlist">
+                    <el-col :span="6" v-for=" art in album ">
+                        <el-card :body-style="{padding: '0px'}" class="card" >
                             <div class="checkboxs">
                                 <el-checkbox :label="art.id" v-show="show" @click="addId(art.id)">&nbsp;</el-checkbox>
                             </div>
@@ -90,13 +90,12 @@
     .buttons{
         position: absolute;
         margin-left: 17px;
-        x-index: 60px;
-        z-index: 999;
     }
     .card{
         width: 280px;
         height: 290px;
         margin-left: 17px;
+        margin-right: 400px;
         margin-bottom: 25px;
         padding-top: 18px;
         border-radius:30px;
@@ -110,7 +109,6 @@
     }
     .checkboxs{
         position: absolute;
-        padding-top: 0px;
         padding-left: 235px;
         z-index: 999;
     }

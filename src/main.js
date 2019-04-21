@@ -8,7 +8,14 @@ import axios from './axios'
 //import Icon from 'vue-awesome/components/Icon'
 import VueAMap from 'vue-amap'
 import store from './store'
-import "bootstrap";
+import "bootstrap"
+import LazyLoad from 'vue-lazyload'
+
+
+Vue.use(LazyLoad,{
+  // loading: './assets/img/timg.gif',
+  // error:  './assets/img/timg1.gif',
+});
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);

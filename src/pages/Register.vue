@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-        <el-main>
+        <el-main ref="homepage">
             <el-form
                     :model="ReginForm"
                     ref="ReginForm"
@@ -167,7 +167,16 @@
                     }
                 })
             },
-        }
+            changeFixed(clientHeight){
+                this.$refs.homePage.$el.style.height = clientHeight+'px'
+            }
+        },
+        watch:{
+            clientHeight: function () {
+                this.changeFixed(this.clientHeight)
+            },
+
+        },
     }
 </script>
 
@@ -184,9 +193,9 @@
         width: 100%;
     }
     .main{
-        background:url("../assets/bg.jpg");
+        background:url("../assets/img/bg8.jpg");
         background-size:100% 100%;
-        width: 1550px;
+        /*width: 1363.33px;*/
         height: 710px;
     }
 </style>

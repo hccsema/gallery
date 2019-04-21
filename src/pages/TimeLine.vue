@@ -1,14 +1,27 @@
-<template>
-
-        <el-container>
-            <el-row>
-            <el-col :span="6" v-for=" (url, index)  in url_pic ">
-               <el-card :body-style="{padding: '0px'}">
-                    <img :src="url"  class="humbnail_photo">
-               </el-card>
+<template xmlns:el-col="http://www.w3.org/1999/html">
+    <el-container id="container">
+        <el-row>
+            <el-col  :span="4" v-for=" (pic , index)  in url_id " :offset="1" :key="index">
+                   <el-card :body-style="{padding: '0.5px'}" >
+                       <img :src="pic.url"  class="humbnail_photo"  @click="details(pic.id)">
+                   </el-card>
             </el-col>
-            </el-row>
-        </el-container>
+        </el-row>
+        <el-dialog :visible.sync="dialogPhotoVisible">
+            <div class="dialog">
+                <el-row>
+                    <el-col :span="20">
+                        <img :src="url_details[0]" class="detail_photo">
+                    </el-col>
+                    <el-col :span="4" >
+                        <el-button> delete</el-button>
+                        <el-button> remove</el-button>
+                    </el-col>
+                </el-row>
+            </div>
+        </el-dialog>
+    </el-container>
+
 
 </template>
 
@@ -23,69 +36,136 @@
             return{
                 photo_all:[],
                 photo_id_all:[],
-                url_pic:[],
+                url_id:[],
+                current_page:'',
+                total_pages:'',
+                url_details :[],
+                dialogPhotoVisible:false,
             }
         },
         created() {
-            let _this = this;
-            axios({
-                method:'get',
-                url: 'http://photo.upc.pub/photo/get_all/',
-                headers:{
-                    "authorization" : "Bearer " + window.localStorage.getItem('Authorization'),
-                }
-            }).then(function (res) {
-                _this.photo_all = res.data.content;
-                _this.photo_id_all = _this.photo_all.map( a => a.id);
-                for(let i = 0; i< _this.photo_id_all.length; i++){
-                    _this.get_thumbnail_photo(_this.photo_id_all[i]);
-                }
-            }).catch(function (error){
-                console.log(error);
-            });
+            this.getAll(0);
         },
-        methods:{
-            get_photo(id){
-                let _id = id;
+        mounted(){
+          window.addEventListener('scroll', this.windowScroll);
+        },
+        methods: {
+
+            details(id){
+                /*
+                此处完成单图片详情的展示
+                */
+                this.url_details.pop();
+                this.getPhoto(id);
+                this.dialogPhotoVisible = true;
+
+            },
+
+            getAll(page, number=20){
+                let _this = this;
                 axios({
                     method:'get',
-                    url: 'http://photo.upc.pub/photo/get__photo/' + _id,
+                    url: 'http://photo.upc.pub/photo/get_all/' + page +'/' + number,
                     headers:{
                         "authorization" : "Bearer " + window.localStorage.getItem('Authorization'),
                     }
                 }).then(function (res) {
-                    console.log(res);
+                    _this.photo_all = res.data;
+                    _this.current_page = _this.photo_all.page;
+                    _this.total_pages = _this.photo_all.totalPages;
+
+                    _this.photo_id_all = _this.photo_all.content.map( a => a.id);
+                    /*
+                    此处硬核去重
+                    重复原因 ： 在滑块向下滑动的过程中会产生多次事件触发，
+                                可能产生多次请求，暂时无较优解
+                                （若直接设置最底部触发，则触发条件变得苛刻，体验变差
+                                    ，同时加载过程中，依然会触发)
+                     */
+                    for(let i = 0; i< _this.photo_id_all.length; i++){
+                        if(!_this.url_id.some(function (x) {
+                            return _this.photo_id_all[i] === x.id
+                        })) {
+                            _this.getThumbnailPhoto(_this.photo_id_all[i]);
+                        }
+                    }
                 }).catch(function (error){
                     console.log(error);
                 });
             },
-            get_thumbnail_photo(id){
-                let _this = this;
+
+
+            windowScroll(){
+                //滚动条距离页面顶部的距离
+                let scrollTop = document.documentElement.scrollTop; //可滑动高
+                let scrollHeight = document.documentElement.scrollHeight; //全高
+                let clientHeight = document.documentElement.clientHeight; //页高
+                let current = (scrollHeight - clientHeight - scrollTop) / clientHeight;
+                if (current <= 0.05 ) {
+
+                    console.log(this.photo_all.page + '  '  + this.photo_all.totalPages);
+
+                    if(this.current_page < (this.total_pages-1) ){
+                        this.current_page +=1;
+                        this.getAll(this.current_page );
+
+                    }
+                }
+            },
+
+            getPhoto(id) {
                 let _id = id;
+                let _this = this;
                 axios({
-                    method:'get',
-                    url: 'http://photo.upc.pub/photo/get_thumbnail_photo/' + _id,
-                    headers:{
-                        "authorization" : "Bearer " + window.localStorage.getItem('Authorization'),
+                    method: 'get',
+                    url: 'http://photo.upc.pub/photo/get_photo/' + _id,
+                    headers: {
+                        "authorization": "Bearer " + window.localStorage.getItem('Authorization'),
                     },
                     responseType: 'blob',
                 }).then(function (res) {
-                    let data = res.data;
-                    let reader = new FileReader();
-
-                    reader.readAsDataURL(data);
-                    reader.onload = function () {
-                       _this.url_pic.push(this.result);
-                    };
-
-                }).catch(function (error){
+                    let url = URL.createObjectURL(res.data);
+                    _this.url_details.pop();
+                    _this.url_details.push(url);
+                }).catch(function (error) {
                     console.log(error);
                 });
-            }
+            },
+
+            getThumbnailPhoto(id) {
+                let _this = this;
+                let _id = id;
+                axios({
+                    method: 'get',
+                    url: 'http://photo.upc.pub/photo/get_thumbnail_photo/' + _id,
+                    headers: {
+                        "authorization": "Bearer " + window.localStorage.getItem('Authorization'),
+                    },
+                    responseType: 'blob',
+                }).then(function (res) {
+                    let url = URL.createObjectURL(res.data);
+                    _this.url_id.push({'url':url,'id':_id});
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+
+
+
+
         },
+
         computed:{
 
+        },
+        watch:{
+
+        },
+        destroyed () {
+            window.removeEventListener('scroll', this.windowScroll)
         }
+
+
 
     }
 </script>
@@ -93,6 +173,13 @@
 <style scoped>
     .humbnail_photo{
         width: 100%;
-        height: 270px;
+        height: 250px;
+    }
+    .detail_photo{
+        padding: 30px 0;
+        height: 500px;
+    }
+    .dialog{
+        padding-left: -30px;
     }
 </style>

@@ -17,7 +17,6 @@
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="submitForm('userInfo')">更新</el-button>
-            <el-button type="primary" @click="getUserInfo"><get></get></el-button>
         </el-form-item>
     </el-form>
 </template>

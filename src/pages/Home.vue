@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-container ref="homePage">
-            <el-header >
+            <el-header>
                 <Header></Header>
             </el-header>
             <el-container>
@@ -31,6 +31,9 @@
             Left,
             Header,
         },
+        created(){
+
+        },
         mounted() {
             this.clientHeight = `${document.documentElement.clientHeight}`;
             window.onresize = function temp() {
@@ -40,7 +43,9 @@
         watch:{
             clientHeight: function () {
                 this.changeFixed(this.clientHeight)
-            }
+            },
+
+
         },
         methods: {
             changeFixed(clientHeight){

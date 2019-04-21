@@ -11,6 +11,7 @@ import TimeLine from "@/pages/TimeLine";
 import MapAlbum from "@/pages/MapAlbum";
 import UserInfo from "@/pages/UserInfo";
 import Classify from "./pages/Classify";
+import CreateAlbum from "./pages/CreateAlbum";
 //import TestHome from './newView/Home'
 
 
@@ -76,6 +77,10 @@ export default new Router({
                 {
                     path:'/classify',
                     component: Classify
+                },
+                {
+                    path:'/create',
+                    component: CreateAlbum,
                 }
             ]
 

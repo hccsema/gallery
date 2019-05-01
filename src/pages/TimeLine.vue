@@ -1,23 +1,33 @@
 <template xmlns:el-col="http://www.w3.org/1999/html">
     <el-container id="container">
         <el-row>
-            <el-col  :span="4" v-for=" (pic , index)  in url_id " :offset="1" :key="index">
+            <el-checkbox-group v-model="checked_list" >
+            <el-col  :span="6" v-for=" (pic , index)  in url_id " :offset="0" :key="index">
+                <el-checkbox :label="pic.id">
                    <el-card :body-style="{padding: '0.5px'}" >
                        <img :src="pic.url"  class="humbnail_photo"  @click="details(pic.id)">
                    </el-card>
+                </el-checkbox>
             </el-col>
+            </el-checkbox-group>
         </el-row>
-        <el-dialog :visible.sync="dialogPhotoVisible">
+
+        <el-dialog :visible.sync="dialogPhotoVisible"
+                   center
+                   width="70%"
+                   >
             <div class="dialog">
                 <el-row>
                     <el-col :span="20">
-                        <img :src="url_details[0]" class="detail_photo">
+                        <img :src="url_detail" class="detail_photo">
                     </el-col>
                     <el-col :span="4" >
-                        <el-button> delete</el-button>
-                        <el-button> remove</el-button>
                     </el-col>
                 </el-row>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="deletePhoto(id_detail)">Delete</el-button>
+                <el-button type="primary" @click="removePhoto(id_detail)"> Remove</el-button>
             </div>
         </el-dialog>
     </el-container>
@@ -26,6 +36,7 @@
 </template>
 
 <script>
+    import $store from "@/store";
     import axios from '../axios'
     export default {
         components:{
@@ -39,8 +50,11 @@
                 url_id:[],
                 current_page:'',
                 total_pages:'',
-                url_details :[],
+                url_detail:'',
+                id_detail:'',
                 dialogPhotoVisible:false,
+                bok_show:false,
+                checked_list:[],
             }
         },
         created() {
@@ -55,10 +69,10 @@
                 /*
                 此处完成单图片详情的展示
                 */
-                this.url_details.pop();
-                this.getPhoto(id);
+                this.id_detail = id;
+                this.url_detail = '';
                 this.dialogPhotoVisible = true;
-
+                this.getPhoto(id);
             },
 
             getAll(page, number=20){
@@ -73,26 +87,41 @@
                     _this.photo_all = res.data;
                     _this.current_page = _this.photo_all.page;
                     _this.total_pages = _this.photo_all.totalPages;
-
-                    _this.photo_id_all = _this.photo_all.content.map( a => a.id);
+                    _this.photo_id_all = _this.photo_all.content.map(a => {
+                        return{
+                            id : a.id,
+                            time : new Date(a.create ? a.create : a.upload),
+                            type : a.type,
+                        }
+                    });
                     /*
-                    此处硬核去重
+                    此处去重
                     重复原因 ： 在滑块向下滑动的过程中会产生多次事件触发，
                                 可能产生多次请求，暂时无较优解
                                 （若直接设置最底部触发，则触发条件变得苛刻，体验变差
                                     ，同时加载过程中，依然会触发)
                      */
                     for(let i = 0; i< _this.photo_id_all.length; i++){
-                        if(!_this.url_id.some(function (x) {
-                            return _this.photo_id_all[i] === x.id
-                        })) {
-                            _this.getThumbnailPhoto(_this.photo_id_all[i]);
-                        }
+                        // if(!_this.url_id.some(function (x) {
+                        //     return _this.photo_id_all[i] === x.id
+                        // })) {
+                        //     _this.getThumbnailPhoto(_this.photo_id_all[i]);
+                        // }
+
+
+                        _this.getThumbnailPhoto(_this.photo_id_all[i]);
+
+
                     }
+
+                    // console.log(_this.url_id['0']);
+                    // console.log(_this.url_id);
                 }).catch(function (error){
                     console.log(error);
                 });
             },
+
+
 
 
             windowScroll(){
@@ -103,12 +132,10 @@
                 let current = (scrollHeight - clientHeight - scrollTop) / clientHeight;
                 if (current <= 0.05 ) {
 
-                    console.log(this.photo_all.page + '  '  + this.photo_all.totalPages);
-
                     if(this.current_page < (this.total_pages-1) ){
-                        this.current_page +=1;
-                        this.getAll(this.current_page );
-
+                        console.log(this.current_page + ' '  + this.photo_all.totalPages);
+                        this.current_page = this.current_page + 1;
+                        this.getAll(this.current_page);
                     }
                 }
             },
@@ -125,33 +152,59 @@
                     responseType: 'blob',
                 }).then(function (res) {
                     let url = URL.createObjectURL(res.data);
-                    _this.url_details.pop();
-                    _this.url_details.push(url);
+                     _this.url_detail = url;
                 }).catch(function (error) {
                     console.log(error);
                 });
             },
 
-            getThumbnailPhoto(id) {
+            getThumbnailPhoto(photo) {
                 let _this = this;
-                let _id = id;
+                let _photo = photo;
                 axios({
                     method: 'get',
-                    url: 'http://photo.upc.pub/photo/get_thumbnail_photo/' + _id,
+                    url: 'http://photo.upc.pub/photo/get_thumbnail_photo/' + _photo.id,
                     headers: {
                         "authorization": "Bearer " + window.localStorage.getItem('Authorization'),
                     },
                     responseType: 'blob',
                 }).then(function (res) {
                     let url = URL.createObjectURL(res.data);
-                    _this.url_id.push({'url':url,'id':_id});
+                    _this.url_id.push({'url':url, 'id':_photo.id, 'time':_photo.time, 'type': _photo.type});
+                    _this.url_id.sort(function (a, b) {
+                        let value1 = a['time'];
+                        //console.log(a.time);
+                        let value2 = b['time'];
+                        return value1 - value2;
+                    });
                 }).catch(function (error) {
                     console.log(error);
                 });
             },
 
+        //this function was used by dialog
+            // but, Delete in vuex has code and test fully.
+        deletePhoto(id){
+            let _this = this;
+            this.$store.dispatch('DeletePhoto',id).then( res =>{
+                alert('删除成功');
+                //查找删除
+                for(let i=0; i < _this.url_id.length ; i++ ){
+                    if(id === _this.url_id[i].id){
+                        _this.url_id.splice(i,1);
+                        break;
+                    }
+                }
+                //关闭dialog
+                _this.dialogPhotoVisible=false;
+            }).catch(error =>{
+                console.log(error);
+            })
 
+            },
+        removePhoto(id){
 
+        },
 
         },
 
@@ -177,9 +230,8 @@
     }
     .detail_photo{
         padding: 30px 0;
-        height: 500px;
+        height: 350px;
     }
     .dialog{
-        padding-left: -30px;
     }
 </style>

@@ -23,7 +23,8 @@
     "vue-lazyload": "^1.2.6",
     "vue-router": "latest",
     "vuex": "^3.1.0",
-    "xmlhttprequest": "^1.8.0"
+    "xmlhttprequest": "^1.8.0",
+    "vue-light-timeline": "latest"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",

@@ -9,8 +9,10 @@ import store from './store'
 import "bootstrap"
 import LazyLoad from 'vue-lazyload'
 import qs from 'qs';
+// import LightTimeline from 'vue-light-timeline';
 
 
+// Vue.use(LightTimeline);
 Vue.prototype.qs = qs;
 Vue.use(LazyLoad,{
 

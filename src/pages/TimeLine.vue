@@ -1,36 +1,37 @@
 <template xmlns:el-col="http://www.w3.org/1999/html">
-    <el-container id="container">
-        <el-row>
-            <el-col  :span="4" v-for=" (pic , index)  in url_id " :offset="1" :key="index">
-                   <el-card :body-style="{padding: '0.5px'}" >
-                       <img :src="pic.url"  class="humbnail_photo"  @click="details(pic.id)">
-                   </el-card>
-            </el-col>
-        </el-row>
-        <el-dialog :visible.sync="dialogPhotoVisible">
-            <div class="dialog">
-                <el-row>
-                    <el-col :span="20">
-                        <img :src="url_details[0]" class="detail_photo">
-                    </el-col>
-                    <el-col :span="4" >
-                        <el-button> delete</el-button>
-                        <el-button> remove</el-button>
-                    </el-col>
-                </el-row>
-            </div>
-        </el-dialog>
-    </el-container>
-
-
+    <div>
+        <div class="buttons">
+            <el-button type="primary" @click="batchoptions">批量操作</el-button>
+            <el-button type="primary" @click="del">删除照片</el-button>
+        </div>
+        <el-container class="container">
+            <el-row>
+                <el-col  :span="4" v-for=" (pic , index)  in url_id " :offset="1" :key="index">
+                    <el-card :body-style="{padding: '0.5px'}" class="card">
+                        <img :src="pic.url"  class="humbnail_photo"  @click="details(pic.id)">
+                    </el-card>
+                </el-col>
+            </el-row>
+            <el-dialog :visible.sync="dialogPhotoVisible">
+                <div class="dialog">
+                    <el-row>
+                        <el-col :span="20">
+                            <img :src="url_details[0]" class="detail_photo">
+                        </el-col>
+                        <el-col :span="4" >
+                            <el-button> delete</el-button>
+                            <el-button> remove</el-button>
+                        </el-col>
+                    </el-row>
+                </div>
+            </el-dialog>
+        </el-container>
+    </div>
 </template>
 
 <script>
     import axios from '../axios'
     export default {
-        components:{
-
-        },
         name: "TimeLine",
         data(){
             return{
@@ -41,13 +42,14 @@
                 total_pages:'',
                 url_details :[],
                 dialogPhotoVisible:false,
+                batchState:false,
             }
         },
         created() {
             this.getAll(0);
         },
         mounted(){
-          window.addEventListener('scroll', this.windowScroll);
+            window.addEventListener('scroll', this.windowScroll);
         },
         methods: {
 
@@ -55,6 +57,9 @@
                 /*
                 此处完成单图片详情的展示
                 */
+                if(this.batchState === true){
+                    return;
+                }
                 this.url_details.pop();
                 this.getPhoto(id);
                 this.dialogPhotoVisible = true;
@@ -73,7 +78,6 @@
                     _this.photo_all = res.data;
                     _this.current_page = _this.photo_all.page;
                     _this.total_pages = _this.photo_all.totalPages;
-
                     _this.photo_id_all = _this.photo_all.content.map( a => a.id);
                     /*
                     此处硬核去重
@@ -88,6 +92,10 @@
                         })) {
                             _this.getThumbnailPhoto(_this.photo_id_all[i]);
                         }
+                        // if(_this.photo_date.indexOf(res.data.content[i]['modify'].slice(0,10),0) === -1){
+                        //     _this.photo_date.push(res.data.content[i]['modify'].slice(0,10));
+                        //     _this.photo_date.sort();
+                        // }
                     }
                 }).catch(function (error){
                     console.log(error);
@@ -149,7 +157,10 @@
                     console.log(error);
                 });
             },
+            batchoptions() {
+                this.batchState = !this.batchState;
 
+            }
 
 
 
@@ -181,5 +192,19 @@
     }
     .dialog{
         padding-left: -30px;
+    }
+    .buttons{
+        position: absolute;
+        margin-left: 73px;
+    }
+    .card{
+        width: 100%;
+        height: 250px;
+        margin-left: 17px;
+        margin-right: 400px;
+        margin-bottom: 25px;
+    }
+    .container{
+        padding-top: 60px;
     }
 </style>

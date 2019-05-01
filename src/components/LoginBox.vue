@@ -48,7 +48,7 @@
                 this.$store.dispatch('Login',this.reginForm).then( res => {
                     // _this.userToken =  res.headers.authorization;
                     //_this.getUserInfo();
-                    localStorage.setItem("currentViewName",'home');
+                    //localStorage.setItem("currentViewName",'home');
                     _this.$router.push( '/');
                     alert('登陆成功');
                 }).catch(error => {

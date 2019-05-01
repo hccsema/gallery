@@ -5,14 +5,18 @@
                 class="el-menu-vertical"
                 @open="handleOpen"
                 @close="handleClose"
-                router="true">
+                :router="true">
             <el-menu-item index="/">
                 <i class="el-icon-picture-outline"></i>
                 <span slot="title">时光轴</span>
             </el-menu-item>
-            <el-menu-item index="classify" :route="{path: '/classify'}">
+            <el-menu-item index="album" :route="{path: '/album'}">
                 <i class="el-icon-menu"></i>
-                <span slot="title">分类相册</span>
+                <span slot="title">相簿</span>
+            </el-menu-item>
+            <el-menu-item index="classify" :route="{path: '/classify'}">
+                <i class="el-icon-orange"></i>
+                <span slot="title">智能分类</span>
             </el-menu-item>
             <el-menu-item index="load" :route="{path: '/load'}" >
                 <i class="el-icon-d-caret" ></i>
@@ -20,7 +24,7 @@
             </el-menu-item>
 
             <el-menu-item index="/sex" >
-                <i class="el-icon-news" to="/sex"></i>
+                <i class="el-icon-news" ></i>
                 <span slot="title">隐藏空间</span>
             </el-menu-item>
 

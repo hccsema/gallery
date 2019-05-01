@@ -1,4 +1,4 @@
-import {login, getUserInfo } from '../../api/user'
+import {login, getUserInfo, changeNickName} from '../../api/user'
 import Vuex from 'vuex';
 import Vue from 'vue';
 
@@ -45,6 +45,21 @@ export default {
                     });
             });
         },
+        //暂时只有修改 nickname 的接口
+        changeUserInfo({commit}, userInfo){
+            return new Promise(((resolve, reject) => {
+                changeNickName(userInfo.nickname).then(response =>{
+                    //此处应该注意
+                    commit('saveUserInfo',userInfo);
+
+                    resolve(response);
+                }).catch(
+                    error =>{
+                        reject(error);
+                    }
+                )
+            }))
+        }
     },
     mutations:{
         saveToken(state, authorization) {
@@ -55,6 +70,7 @@ export default {
             state.UserInfo = userInfo;
             localStorage.setItem('userInfo', userInfo);
         },
+
         delToken(state){
             state.Authorization = '';
             localStorage.setItem('Authorization', state.Authorization);

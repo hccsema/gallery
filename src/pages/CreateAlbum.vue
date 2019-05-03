@@ -14,6 +14,7 @@
 </template>
 <script>
     import axios from '../axios';
+    import router from "@/router";
     export default {
         name:'CreateAlbum',
         data() {
@@ -35,14 +36,14 @@
                     data:this.form
                 }).then(res =>{
                     if(res) {
-                        window.location.href = "/classify";
+                        router.push("album");
                     }
                 }).catch(error =>{
                     console.log(error);
                 })
             },
             onCancel:function () {
-                window.location.href="/classify";
+                router.push("album");
             }
         }
     }

@@ -12,6 +12,7 @@ import MapAlbum from "./pages/MapAlbum";
 import UserInfo from "./pages/UserInfo";
 import Classify from "./pages/Classify";
 import CreateAlbum from "./pages/CreateAlbum";
+import Album from "@/pages/Album";
 //import TestHome from './newView/Home'
 
 
@@ -81,6 +82,10 @@ export default new Router({
                 {
                     path: '/create',
                     component: CreateAlbum
+                },
+                {
+                    path:'/album',
+                    component: Album
                 }
 
             ]

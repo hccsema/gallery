@@ -2,7 +2,7 @@
     <el-row class="container ">
         <el-col :span="4" class="topbar-wrap fixed-top">
             <div class="topbar-logo topbar-btn fixed-top">
-               <h3 style="color:deepskyblue">Gallery</h3>
+               <h3 style="color:#81D8CF">Gallery</h3>
             </div>
         </el-col>
         <el-col :span="3" :offset="17">
@@ -14,9 +14,9 @@
                     <el-dropdown-item>
                         <span @click="userInfo" >个人信息</span>
                     </el-dropdown-item>
-<!--                    <el-dropdown-item>-->
-<!--                        <span @click="changePassword">修改密码</span>-->
-<!--                    </el-dropdown-item>-->
+                    <el-dropdown-item>
+                        <span @click="changePassword">修改密码</span>
+                    </el-dropdown-item>
                     <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>

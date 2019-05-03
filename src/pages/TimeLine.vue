@@ -1,15 +1,11 @@
-<template xmlns:el-col="http://www.w3.org/1999/html">
+<template>
     <el-container id="container">
         <el-row>
-            <el-checkbox-group v-model="checked_list" >
-            <el-col  :span="6" v-for=" (pic , index)  in url_id " :offset="0" :key="index">
-                <el-checkbox :label="pic.id">
-                   <el-card :body-style="{padding: '0.5px'}" >
-                       <img :src="pic.url"  class="humbnail_photo"  @click="details(pic.id)">
-                   </el-card>
-                </el-checkbox>
+            <el-col  :span="6" v-for=" (pic , index)  in getUrlId " :offset="0" :key="index">
+               <el-card :body-style="{padding: '0.5px'}" >
+                   <img :src="pic.url"  class="humbnail_photo"  @click="details(pic.id)">
+               </el-card>
             </el-col>
-            </el-checkbox-group>
         </el-row>
 
         <el-dialog :visible.sync="dialogPhotoVisible"
@@ -37,6 +33,7 @@
 
 <script>
     import axios from '@/axios'
+
     export default {
         components:{
 
@@ -46,13 +43,14 @@
             return{
                 photo_all:[],
                 photo_id_all:[],
-                url_id:[],
+
                 current_page:'',
                 total_pages:'',
+
                 url_detail:'',
                 id_detail:'',
+
                 dialogPhotoVisible:false,
-                bok_show:false,
                 checked_list:[],
             }
         },
@@ -63,7 +61,6 @@
           window.addEventListener('scroll', this.windowScroll);
         },
         methods: {
-
             details(id){
                 /*
                 此处完成单图片详情的展示
@@ -101,9 +98,10 @@
                                     ，同时加载过程中，依然会触发)
                      */
                     for(let i = 0; i< _this.photo_id_all.length; i++){
-                        if(!_this.url_id.some(function (x) {
-                            return _this.photo_id_all[i] === x.id
-                        })) {
+                        if(!(_this.getUrlId.some(function (x) {
+                            return _this.photo_id_all[i].id === x.id;
+                        })))
+                        {
                             _this.getThumbnailPhoto(_this.photo_id_all[i]);
                         }
 
@@ -112,8 +110,6 @@
                     console.log(error);
                 });
             },
-
-
 
 
             windowScroll(){
@@ -133,74 +129,55 @@
             },
 
             getPhoto(id) {
-                let _id = id;
                 let _this = this;
-                axios({
-                    method: 'get',
-                    url: 'http://photo.upc.pub/photo/get_photo/' + _id,
-                    headers: {
-                        "authorization": "Bearer " + window.localStorage.getItem('Authorization'),
-                    },
-                    responseType: 'blob',
-                }).then(function (res) {
-                    let url = URL.createObjectURL(res.data);
-                     _this.url_detail = url;
+                this.$store.dispatch('GetPhoto',id).then(function (res) {
+                    _this.url_detail = URL.createObjectURL(res.data);
                 }).catch(function (error) {
                     console.log(error);
                 });
             },
 
             getThumbnailPhoto(photo) {
-                let _this = this;
-                let _photo = photo;
-                axios({
-                    method: 'get',
-                    url: 'http://photo.upc.pub/photo/get_thumbnail_photo/' + _photo.id,
-                    headers: {
-                        "authorization": "Bearer " + window.localStorage.getItem('Authorization'),
-                    },
-                    responseType: 'blob',
-                }).then(function (res) {
-                    let url = URL.createObjectURL(res.data);
-                    _this.url_id.push({'url':url, 'id':_photo.id, 'time':_photo.time, 'type': _photo.type});
-                    _this.url_id.sort(function (a, b) {
-                        let value1 = a['time'];
-                        //console.log(a.time);
-                        let value2 = b['time'];
-                        return value1 - value2;
-                    });
+                this.$store.dispatch('GetThumbnailPhoto',photo).then(function (res) {
                 }).catch(function (error) {
                     console.log(error);
                 });
             },
 
-        //this function was used by dialog
-            // but, Delete in vuex has code and test fully.
-        deletePhoto(id){
-            let _this = this;
-            this.$store.dispatch('DeletePhoto',id).then( res =>{
-                alert('删除成功');
-                //查找删除
-                for(let i=0; i < _this.url_id.length ; i++ ){
-                    if(id === _this.url_id[i].id){
-                        _this.url_id.splice(i,1);
-                        break;
+            //this function was used by dialog
+                // but, Delete in vuex has code and test fully.
+            deletePhoto(id){
+                let _this = this;
+                this.$store.dispatch('DeletePhoto',id).then( res =>{
+                    alert('删除成功');
+                    //查找删除
+                    for(let i=0; i < _this.url_id.length ; i++ ){
+                        if(id === _this.url_id[i].id){
+                            _this.url_id.splice(i,1);
+                            break;
+                        }
                     }
-                }
-                //关闭dialog
-                _this.dialogPhotoVisible=false;
-            }).catch(error =>{
-                console.log(error);
-            })
+                    //关闭dialog
+                    _this.dialogPhotoVisible=false;
+                }).catch(error =>{
+                    console.log(error);
+                })
 
             },
-        removePhoto(id){
 
-        },
+            //移动图片至隐藏空间
+            removePhoto(id){
+
+            },
+
 
         },
 
         computed:{
+
+            getUrlId(){
+                return this.$store.getters.getUrlId;
+            }
 
         },
         watch:{

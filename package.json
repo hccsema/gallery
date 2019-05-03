@@ -10,7 +10,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap": "^3.4.1",
-    "element-ui": "^2.7.0",
+    "element-ui": "^2.8.2",
     "jsdom": "^14.0.0",
     "location": "^0.0.1",
     "navigator": "^1.0.1",

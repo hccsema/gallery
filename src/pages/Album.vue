@@ -26,6 +26,7 @@
 <script>
     import axios from '../axios'
     import qs from 'qs'
+    import router from '../router'
     export default {
         name: "Classify",
         data(){
@@ -55,7 +56,7 @@
         },
         methods:{
             create: function () {
-                window.location.href="/create";
+                router.push("create");
             },
             del:function () {
                 for (let i = 0; i < this.checkedlist.length; i++) {

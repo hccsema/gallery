@@ -36,8 +36,7 @@
 </template>
 
 <script>
-    import $store from "@/store";
-    import axios from '../axios'
+    import axios from '@/axios'
     export default {
         components:{
 
@@ -102,20 +101,13 @@
                                     ，同时加载过程中，依然会触发)
                      */
                     for(let i = 0; i< _this.photo_id_all.length; i++){
-                        // if(!_this.url_id.some(function (x) {
-                        //     return _this.photo_id_all[i] === x.id
-                        // })) {
-                        //     _this.getThumbnailPhoto(_this.photo_id_all[i]);
-                        // }
-
-
-                        _this.getThumbnailPhoto(_this.photo_id_all[i]);
-
+                        if(!_this.url_id.some(function (x) {
+                            return _this.photo_id_all[i] === x.id
+                        })) {
+                            _this.getThumbnailPhoto(_this.photo_id_all[i]);
+                        }
 
                     }
-
-                    // console.log(_this.url_id['0']);
-                    // console.log(_this.url_id);
                 }).catch(function (error){
                     console.log(error);
                 });
@@ -132,9 +124,9 @@
                 let current = (scrollHeight - clientHeight - scrollTop) / clientHeight;
                 if (current <= 0.05 ) {
 
-                    if(this.current_page < (this.total_pages-1) ){
-                        console.log(this.current_page + ' '  + this.photo_all.totalPages);
+                    if(this.current_page < this.total_pages ){
                         this.current_page = this.current_page + 1;
+                        console.log(this.current_page + ' '  + this.photo_all.totalPages);
                         this.getAll(this.current_page);
                     }
                 }

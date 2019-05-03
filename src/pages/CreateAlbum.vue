@@ -36,14 +36,14 @@
                     data:this.form
                 }).then(res =>{
                     if(res) {
-                        router.push("classify");
+                        router.push("album");
                     }
                 }).catch(error =>{
                     console.log(error);
                 })
             },
             onCancel:function () {
-                router.push("classify");
+                router.push("album");
             }
         }
     }

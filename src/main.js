@@ -7,14 +7,16 @@ import axios from './axios'
 import VueAMap from 'vue-amap'
 import store from './store'
 import "bootstrap"
-import LazyLoad from 'vue-lazyload'
-import qs from 'qs';
+//import LazyLoad from 'vue-lazyload'
+//import qs from 'qs';
+// import LightTimeline from 'vue-light-timeline';
 
 
-Vue.prototype.qs = qs;
-Vue.use(LazyLoad,{
-
-});
+// Vue.use(LightTimeline);
+//Vue.prototype.qs = qs;
+//Vue.use(LazyLoad,{
+//
+//});
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);

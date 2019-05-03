@@ -8,7 +8,7 @@
         <el-container class="containers">
             <el-row>
                 <el-checkbox-group v-model="checkedlist">
-                    <el-col :span="6" v-for=" art in album ">
+                    <el-col :span="6" v-for=" (art, index) in album  " :key="index">
                         <el-card :body-style="{padding: '0px'}" class="card" >
                             <div class="checkboxs">
                                 <el-checkbox :label="art.id" v-show="show" @click="addId(art.id)">&nbsp;</el-checkbox>
@@ -71,7 +71,7 @@
                         data: qs.stringify({id:this.checkedlist[i]}),
                     }).then(res => {
                         console.log(res);
-                        window.location.href = "/classify";
+                        router.push("album");
                     }).catch(error => {
                         console.log(error);
                     })

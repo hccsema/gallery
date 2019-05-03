@@ -1,19 +1,31 @@
 import Vue from 'vue';
 import Vuex from 'vuex'
-import {deletePhoto, getThumbnailPhoto} from "../../api/photo";
-import {getPhoto} from "@/api/photo";
+import {getPhoto, deletePhoto, getThumbnailPhoto, getAll} from "@/api/photo";
 
 Vue.use(Vuex);
 
 export default {
     state:{
         url_id: [],
+        total_pages:'',
     },
     actions:{
+
+        GetAll({commit},page,number=20){
+            return new Promise(((resolve, reject) => {
+                getAll(page,number).then(response=>{
+
+                    resolve(response);
+                }).catch(error=>{
+                    reject(error);
+                })
+            }))
+        },
+
         DeletePhoto({commit},id){
-            const _id = id;
             return new Promise( (resolve, reject)=>{
-                deletePhoto(_id).then(response=>{
+                deletePhoto(id).then(response=>{
+                    commit("deletePhotoFromUrlId",id);
                     resolve(response);
                 }).catch(error=>{
                     reject(error);
@@ -58,7 +70,6 @@ export default {
                     'time':photo.time,
                     'type':photo.type,
                     'url':photo.url});
-            console.log(state.url_id);
             },
 
 
@@ -71,7 +82,15 @@ export default {
                 });
             //对缓存进行修改！！！！
 
-        }
+        },
+        deletePhotoFromUrlId(state, id){
+            for(let i=0; i < state.url_id.length ; i++ ){
+                if(id === state.url_id[i].id){
+                    state.url_id.splice(i,1);
+                    break;
+                }
+            }
+        },
 
     },
     getters:{

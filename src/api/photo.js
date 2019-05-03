@@ -27,3 +27,10 @@ export async function getThumbnailPhoto(id) {
         responseType: 'blob',
     })
 }
+
+export async function getAll(page, number=20) {
+    return axios({
+        method:'get',
+        url: 'http://photo.upc.pub/photo/get_all/' + page +'/' + number,
+    })
+}

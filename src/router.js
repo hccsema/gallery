@@ -13,6 +13,7 @@ import UserInfo from "./pages/UserInfo";
 import Classify from "./pages/Classify";
 import CreateAlbum from "./pages/CreateAlbum";
 import Album from "@/pages/Album";
+import AlbumPhoto from "@/pages/AlbumPhoto";
 //import TestHome from './newView/Home'
 
 
@@ -85,7 +86,14 @@ export default new Router({
                 },
                 {
                     path:'/album',
-                    component: Album
+                    component: Album,
+                    children: [
+                        {
+                            name: 'AlbumPhoto',
+                            path:'albumPhoto',
+                            component: AlbumPhoto,
+                        }
+                    ]
                 }
 
             ]

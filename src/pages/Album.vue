@@ -1,19 +1,22 @@
 <template>
     <div>
         <div class="buttons">
-            <el-button type="primary" @click="create">创建相册</el-button>
+            <el-button type="primary" @click="createAlbum">创建相册</el-button>
             <el-button type="primary" @click="batchdel">批量删除</el-button>
-            <el-button type="primary" @click="del">删除相册</el-button>
+            <el-button type="primary" @click="deleteAlbum">删除相册</el-button>
         </div>
         <el-container class="containers">
             <el-row>
                 <el-checkbox-group v-model="checkedlist">
-                    <el-col :span="6" v-for=" (art, index) in album  " :key="index">
-                        <el-card :body-style="{padding: '0px'}" class="card" >
+                    <el-col :span="6" v-for=" (art, index) in album  " :key="index" >
+                        <el-card :body-style="{padding: '0px'}"
+                                 class="card"
+                                 >
                             <div class="checkboxs">
-                                <el-checkbox :label="art.id" v-show="show" @click="addId(art.id)">&nbsp;</el-checkbox>
+                                <el-checkbox :label="art.id" v-show="show"
+                                >{{nothing}}</el-checkbox>
                             </div>
-                            <img src="../assets/folder.jpg"  height="230" width="240">
+                            <img src="../assets/folder.jpg"  height="230" width="240" @click="enterAlbum(art.id, art.name)">
                             <p class="art_name">{{art.name}}</p>
                         </el-card>
                     </el-col>
@@ -34,6 +37,7 @@
                 album:[],
                 show: false,
                 checkedlist:[],
+                nothing:''
             }
         },
         created() {
@@ -55,10 +59,16 @@
             })
         },
         methods:{
-            create: function () {
+            createAlbum () {
                 router.push("create");
             },
-            del:function () {
+            enterAlbum(id, name) {
+                console.log('dd');
+                //router.push({name:'AlbumPhoto',params:{name:name, id:id}})
+                router.push('albumPhoto')
+            },
+
+            deleteAlbum() {
                 for (let i = 0; i < this.checkedlist.length; i++) {
                     axios({
                         method: 'post',
@@ -79,9 +89,6 @@
             },
             batchdel:function () {
                 this.show = !this.show;
-            },
-            addId(id){
-                this.checkedlist.push(id);
             },
         }
     }

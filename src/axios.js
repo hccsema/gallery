@@ -27,7 +27,7 @@ axios.interceptors.response.use(function (response) {
         store.commit('saveToken', response.headers.authorization)
     }
     return response;
-}), error=> {
+}),error=> {
     if (error.response){
         if(error.response.status === 401) {
                 store.commit('delToken');

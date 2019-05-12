@@ -48,10 +48,11 @@ export default {
         GetThumbnailPhoto({commit}, photo){
             return new Promise( (resolve, reject)=>{
                 getThumbnailPhoto(photo.id).then(response =>{
+                    console.log(photo);
                     photo.url = URL.createObjectURL(response.data);
                     commit('addUrlId',photo);
                     commit('sortUrlIdByTime');
-                    resolve(response);
+                    resolve(photo);
                 }).catch(error=>{
                     reject(error);
                 })
@@ -69,7 +70,8 @@ export default {
                     'id':photo.id,
                     'time':photo.time,
                     'type':photo.type,
-                    'url':photo.url});
+                    'url':photo.url,
+                    'date': photo.date,});
             },
 
 

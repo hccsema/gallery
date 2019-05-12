@@ -4,10 +4,14 @@
             <el-button type="primary"  @click="batchOptions">批量操作</el-button>
             <el-button type="primary"  @click="batchDel">删除照片</el-button>
         </div>
-        <el-container class="container" id="img_card">
+        <div v-for="(date, key) in photo_date" class="timeline_card" :key="key">
+            <h1 class="pic_date">{{date}}</h1>
+            <br><br>
+        <el-container >
             <el-row>
                 <el-col  :span="6" v-for=" (pic , index)  in getUrlId " :offset="0" :key="index">
-                    <el-card :body-style="{padding: '0.5px'}"
+                    <el-card v-if="date === pic.date"
+                             :body-style="{padding: '0.5px'}"
                              :class="chosenState[index]?  'card_chosen': 'card'">
                         <img :src="pic.url"  class="humbnail_photo"  @click="chooseCondition(index, pic.id)">
                     </el-card>
@@ -30,12 +34,11 @@
                 </div>
             </el-dialog>
         </el-container>
+        </div>
     </div>
 </template>
 
 <script>
-    import $store from "@/store";
-    import axios from '../axios'
     export default {
         components:{
         },
@@ -63,6 +66,9 @@
                 chosenState:[],
                 //选中图片id的数组
                 options_list:[],
+
+                photo_date:[],
+                show_url_id:[],
             }
         },
         created() {
@@ -73,7 +79,7 @@
         },
         methods: {
             //点击图片，根据条件选择执行事件
-            chooseCondition(index,id){
+            chooseCondition(index,  id){
                 if(this.batchState){
                     this.isChosen(index, id);
                 }
@@ -103,9 +109,18 @@
                         return{
                             id : a.id,
                             time : new Date(a.create ? a.create : a.upload),
+                            date : _this.GMTToStr(new Date(a.create ?  a.create : a.upload)).slice(0,10),
                             type : a.type,
                         }
                     });
+
+                    for(let i = 0; i< _this.photo_id_all.length; i++){
+                        _this.chosenState.push(false);
+                        if(_this.photo_date.indexOf(_this.photo_id_all[i].date) === -1){
+                            _this.photo_date.push(_this.photo_id_all[i].date);
+                        }
+                    }
+                    _this.photo_date.sort();
                     /*
                     此处去重
                     重复原因 ： 在滑块向下滑动的过程中会产生多次事件触发，
@@ -114,20 +129,14 @@
                                     ，同时加载过程中，依然会触发)
                      */
                     for(let i = 0; i< _this.photo_id_all.length; i++){
-
-                        _this.chosenState.push(false);
-
                         if(!(_this.getUrlId.some(function (x) {
                                 return _this.photo_id_all[i].id === x.id;
                             })))
                         {
                             _this.getThumbnailPhoto(_this.photo_id_all[i]);
                         }
-
                     }
 
-                    // console.log(_this.url_id['0']);
-                    // console.log(_this.url_id);
                 }).catch(function (error){
                     console.log(error);
                 });
@@ -161,6 +170,7 @@
 
             getThumbnailPhoto(photo) {
                 this.$store.dispatch('GetThumbnailPhoto',photo).then(function (res) {
+
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -233,6 +243,23 @@
                 }
             },
 
+            /**
+             * @return {string}
+             */
+            GMTToStr(time){
+                let date = new Date(time);
+                return date.getFullYear() + '-' +
+                    this.appendZero((date.getMonth() + 1)) + '-' +
+                    this.appendZero(date.getDate());
+            },
+            /**
+             * @return {string}
+             */
+            appendZero(obj){
+                if(obj<10) return "0"+ obj;
+                else return obj;
+            },
+
             //移动图片至隐藏空间
             movePhoto(id){
 
@@ -277,6 +304,14 @@
         margin-bottom: 25px;
         border-width: 4px;
     }
+    /*.container{*/
+    /*    padding-top: 59px;*/
+    /*}*/
+    .buttons{
+        position: absolute;
+        margin-left: 3px;
+        z-index: 999;
+    }
     .card_chosen{
         width: 304px;
         height: 250px;
@@ -286,13 +321,12 @@
         border-color: #1da2ff;
 
     }
-    .container{
-        padding-top: 59px;
+    .timeline_card{
+        padding-top: 80px;
     }
-    .buttons{
+    .pic_date{
         position: absolute;
-        margin-left: 3px;
-        z-index: 999;
+        margin-left: 4px;
     }
-
 </style>
+

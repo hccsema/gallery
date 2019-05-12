@@ -12,7 +12,8 @@ import MapAlbum from "./pages/MapAlbum";
 import UserInfo from "./pages/UserInfo";
 import Classify from "./pages/Classify";
 import CreateAlbum from "./pages/CreateAlbum";
-import Album from "@/pages/Album";
+import Album from "./pages/Album";
+import ClassifyPhoto from "./pages/ClassifyPhoto";
 //import TestHome from './newView/Home'
 
 
@@ -78,6 +79,10 @@ export default new Router({
                 {
                     path: '/classify',
                     component: Classify
+                },
+                {
+                    path: '/ClassifyPhoto',
+                    component: ClassifyPhoto
                 },
                 {
                     path: '/create',

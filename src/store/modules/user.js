@@ -6,7 +6,6 @@ Vue.use(Vuex);
 
 export default {
     state: {
-        // Authorization: localStorage.getItem('Authorization') ? localStorage.getItem('Authorization') : '',
         Authorization: '',
         userInfo: localStorage.getItem('userInfo') ? localStorage.getItem('userInfo') : '',
     },

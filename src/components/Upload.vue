@@ -8,7 +8,7 @@
             :on-remove="handleRemove"
             :file-list="fileList"
             list-type="picture"
-            multiple="True">
+            multiple>
         <el-button size="small" type="primary">点击上传</el-button>
         <div slot="tip" class="el-upload__tip">单张图片不得超过30MB</div>
     </el-upload>

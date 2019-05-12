@@ -5,11 +5,10 @@
             <el-button type="primary" @click="batchdel">批量删除</el-button>
             <el-button type="primary" @click="del">删除相册</el-button>
         </div>
-
         <el-container class="containers">
             <el-row>
                 <el-checkbox-group v-model="checkedlist">
-                    <el-col :span="6" v-for=" art in album ">
+                    <el-col :span="6" v-for=" (art, index) in album  " :key="index">
                         <el-card :body-style="{padding: '0px'}" class="card" >
                             <div class="checkboxs">
                                 <el-checkbox :label="art.id" v-show="show" @click="addId(art.id)">&nbsp;</el-checkbox>
@@ -27,8 +26,9 @@
 <script>
     import axios from '../axios'
     import qs from 'qs'
+    import router from '../router'
     export default {
-        name: "Classify",
+        name: "Album",
         data(){
             return{
                 album:[],
@@ -56,7 +56,7 @@
         },
         methods:{
             create: function () {
-                window.location.href="/create";
+                router.push("create");
             },
             del:function () {
                 for (let i = 0; i < this.checkedlist.length; i++) {
@@ -71,7 +71,7 @@
                         data: qs.stringify({id:this.checkedlist[i]}),
                     }).then(res => {
                         console.log(res);
-                        window.location.href = "/album";
+                        window.location.href="/album";
                     }).catch(error => {
                         console.log(error);
                     })

@@ -10,7 +10,6 @@
         <span v-if="loaded">
           location: lng = {{ lng }} lat = {{ lat }}
         </span>
-<!--            <span v-else>正在定位</span>-->
         </div>
         <div v-on:click="req_post()">
 <!--            查询周边-->
@@ -22,7 +21,7 @@
         data(){
             const self = this;
             return {
-                center: [116.397428, 39.90923],
+                center: [120.176419, 35.942632],
                 lng: 0,
                 lat: 0,
                 loaded: false,

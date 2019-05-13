@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex'
-import {getPhoto, deletePhoto, getThumbnailPhoto, getAll} from "@/api/photo";
+import {getPhoto, deletePhoto, getThumbnailPhoto, getAll} from "../../api/photo";
 
 Vue.use(Vuex);
 
@@ -24,12 +24,12 @@ export default {
 
         DeletePhoto({commit},id){
             return new Promise( (resolve, reject)=>{
-                deletePhoto(id).then(response=>{
-                    commit("deletePhotoFromUrlId",id);
-                    resolve(response);
-                }).catch(error=>{
-                    reject(error);
-                });
+                    deletePhoto(id).then(response=>{
+                        commit("deletePhotoFromUrlId",id);
+                        resolve(response);
+                    }).catch(error=>{
+                        reject(error);
+                    });
                 }
             )
         },
@@ -48,7 +48,6 @@ export default {
         GetThumbnailPhoto({commit}, photo){
             return new Promise( (resolve, reject)=>{
                 getThumbnailPhoto(photo.id).then(response =>{
-                    console.log(photo);
                     photo.url = URL.createObjectURL(response.data);
                     commit('addUrlId',photo);
                     commit('sortUrlIdByTime');
@@ -57,9 +56,20 @@ export default {
                     reject(error);
                 })
             })
-        }
+        },
 
-        //！！！！
+        GetThumbnailPhotoInCover({commit}, id){
+            return new Promise( (resolve, reject)=>{
+                getThumbnailPhoto(id).then(response =>{
+
+                    resolve(response);
+                }).catch(error=>{
+                    reject(error);
+                })
+            })
+        },
+
+        //！！！！!
         //1. 用map 将所有图片信息以此存入 state 和 缓存
         //2. 将current_page 和 total_pages存入state
 
@@ -67,12 +77,12 @@ export default {
     mutations:{
         addUrlId(state,photo){
             state.url_id.push({
-                    'id':photo.id,
-                    'time':photo.time,
-                    'type':photo.type,
-                    'url':photo.url,
-                    'date': photo.date,});
-            },
+                'id':photo.id,
+                'time':photo.time,
+                'date':photo.date,
+                'type':photo.type,
+                'url':photo.url});
+        },
 
 
         sortUrlIdByTime(state){
@@ -98,6 +108,7 @@ export default {
     getters:{
         getUrlId(state){
             return state.url_id;
-        }
+        },
+
     }
 }

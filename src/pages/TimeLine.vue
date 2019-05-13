@@ -4,48 +4,86 @@
             <el-button type="primary"  @click="batchOptions">批量操作</el-button>
             <el-button type="primary"  @click="batchDel">删除照片</el-button>
         </div>
+
         <div v-for="(date, key) in photo_date" class="timeline_card" :key="key">
             <h1 class="pic_date">{{date}}</h1>
             <br><br>
-        <el-container >
-            <el-row>
-                <el-col  :span="6" v-for=" (pic , index)  in getUrlId " :offset="0" :key="index">
-                    <el-card v-if="date === pic.date"
-                             :body-style="{padding: '0.5px'}"
-                             :class="chosenState[index]?  'card_chosen': 'card'">
-                        <img :src="pic.url"  class="humbnail_photo"  @click="chooseCondition(index, pic.id)">
-                    </el-card>
-                </el-col>
-            </el-row>
+            <container >
+                <el-row>
+                    <el-col  :span="6" v-for=" (pic , index)  in getUrlId " :offset="0" :key="index">
+                        <el-card v-if="date === pic.date"
+                                 :body-style="{padding: '0.5px'}"
+                                 :class="chosenState[index]?  'card_chosen': 'card'">
+                            <img :src="pic.url"  class="humbnail_photo"  @click="chooseCondition(index, pic)">
+                        </el-card>
+                    </el-col>
+                </el-row>
 
-            <el-dialog :visible.sync="dialogPhotoVisible" center width="70%">
-                <div class="dialog">
-                    <el-row>
-                        <el-col :span="20">
-                            <img :src="url_detail" class="detail_photo">
-                        </el-col>
-                        <el-col :span="4" >
-                        </el-col>
-                    </el-row>
-                </div>
-                <div slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="deletePhoto(id_detail)">Delete</el-button>
-                    <el-button type="primary" @click="movePhoto(id_detail)"> Remove</el-button>
-                </div>
-            </el-dialog>
-        </el-container>
+                <transition name="el-fade-in">
+                    <div class="page-up" v-show="btnFlag" @click="backTop">
+                        <i class="el-icon-caret-top"></i>
+                    </div>
+                </transition>
+
+                <el-dialog :visible.sync="dialogPhotoVisible" center width="70%">
+                    <div class="dialog">
+                        <el-row>
+                            <el-col :span="16">
+                                <img :src="url_detail" class="detail_photo">
+                            </el-col>
+                            <el-col :span="8" >
+                                <br>
+                                <h3>图片中可能包含:</h3>
+                                    <el-button round
+                                               type="primary"
+                                               size="small"
+                                               @click="enterType(pic_detail.type)">
+                                        {{pic_detail.type}}
+                                    </el-button>
+                                <br>
+                                <h3>相册:</h3>
+                                <p v-if="!pic_detail.album">该图片暂不归属于任一相册</p>
+                                <el-button round
+                                           type="primary"
+                                           v-if="pic_detail.location"
+                                           size="small"
+                                           @click="enterType(pic_detail.type)">{{pic_detail.album}}</el-button>
+
+                                <br>
+                                <h3>地点:</h3>
+                                    <p v-if="!pic_detail.location">该图片未含有位置信息</p>
+                                    <el-button round
+                                               type="primary"
+                                               v-if="pic_detail.location"
+                                               size="small"
+                                               @click="enterType(pic_detail.type)">{{pic_detail.location}}</el-button>
+
+                                <br>
+                            </el-col>
+                        </el-row>
+                    </div>
+                    <div slot="footer" class="dialog-footer">
+                        <el-button type="primary" @click="deletePhoto(pic_detail.id)">Delete</el-button>
+                        <el-button type="primary" @click="movePhoto(pic_detail.id)">Remove</el-button>
+                    </div>
+                </el-dialog>
+            </container>
         </div>
+
+
+
     </div>
 </template>
 
 <script>
+    import ScrollTop from "@/components/ScrollTop";
+    import router from "@/router";
+
     export default {
-        components:{
-        },
         name: "TimeLine",
+        components: {ScrollTop},
         data(){
             return{
-
                 //被删除的属性如下：
                 // 1. url_id:[], 已经完整封装在state中，可通过getUrlId（见computed）直接获取，
                 //         使用： 行数 9
@@ -57,7 +95,7 @@
                 total_pages:'',
                 //图片详情信息
                 url_detail:'',
-                id_detail:'',
+                pic_detail:'',
 
                 dialogPhotoVisible:false,
                 //批量操作
@@ -69,40 +107,68 @@
 
                 photo_date:[],
                 show_url_id:[],
+                btnFlag : false,
             }
         },
         created() {
             this.getAll(0);
         },
         mounted(){
-          window.addEventListener('scroll', this.windowScroll);
+            window.addEventListener('scroll', this.windowScroll);
+            window.addEventListener('scroll', this.scrollToTop);
         },
         methods: {
+
+            backTop () {
+                let that = this;
+                let timer = setInterval(() => {
+                    let ispeed = Math.floor(-that.scrollTop / 5);
+                    document.documentElement.scrollTop = document.body.scrollTop = that.scrollTop + ispeed;
+                    if (that.scrollTop === 0) {
+                        clearInterval(timer);
+                    }
+                }, 16)
+            },
+
+            // 为了计算距离顶部的高度，当高度大于60显示回顶部图标，小于60则隐藏
+            scrollToTop () {
+                let that = this;
+                that.scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+                that.btnFlag = that.scrollTop > 60;
+            },
+
             //点击图片，根据条件选择执行事件
-            chooseCondition(index,  id){
+            chooseCondition(index, pic){
                 if(this.batchState){
-                    this.isChosen(index, id);
+                    this.isChosen(index, pic.id);
                 }
                 else {
-                    this.details(id)
+                    this.details(pic)
                 }
             },
 
+
+
+            enterType(type){
+                router.push({name:'ClassifyPhoto', params:{type:type}});
+            },
+
             //单图片详情
-            details(id){
+            details(pic){
                 /*
                 此处完成单图片详情的展示
                 */
-                this.id_detail = id;
+                this.pic_detail = pic;
                 this.url_detail = '';
                 this.dialogPhotoVisible = true;
-                this.getPhoto(id);
+                this.getPhoto(pic.id);
             },
 
             getAll(page, number=20){
                 let _this = this;
-                this.$store.dispatch('GetAll',page,number).then(function (res) {
+                this.$store.dispatch('GetAll',page,number).then(res =>{
                     let data = res.data;
+                    console.log(data);
                     _this.current_page = data.page;
                     _this.total_pages = data.totalPages;
                     _this.photo_id_all = data.content.map(a => {
@@ -111,16 +177,21 @@
                             time : new Date(a.create ? a.create : a.upload),
                             date : _this.GMTToStr(new Date(a.create ?  a.create : a.upload)).slice(0,10),
                             type : a.type,
+                            album: a.album,
+                            location : a.location,
                         }
                     });
 
                     for(let i = 0; i< _this.photo_id_all.length; i++){
                         _this.chosenState.push(false);
                         if(_this.photo_date.indexOf(_this.photo_id_all[i].date) === -1){
-                            _this.photo_date.push(_this.photo_id_all[i].date);
+                            _this.photo_date.unshift(_this.photo_id_all[i].date);
                         }
                     }
-                    _this.photo_date.sort();
+                    _this.photo_date.sort(function (a, b) {
+                        return b - a;
+                    });
+
                     /*
                     此处去重
                     重复原因 ： 在滑块向下滑动的过程中会产生多次事件触发，
@@ -130,8 +201,8 @@
                      */
                     for(let i = 0; i< _this.photo_id_all.length; i++){
                         if(!(_this.getUrlId.some(function (x) {
-                                return _this.photo_id_all[i].id === x.id;
-                            })))
+                            return _this.photo_id_all[i].id === x.id;
+                        })))
                         {
                             _this.getThumbnailPhoto(_this.photo_id_all[i]);
                         }
@@ -178,7 +249,7 @@
 
 
             isChosen(index,id){
-               // let _this = this;
+                // let _this = this;
                 if (!this.chosenState[index]) {
                     this.chosenState.splice(index,1,true);
                     this.options_list.push(id);
@@ -202,12 +273,12 @@
                 }
                 else{
                     for(let i=0; i<this.options_list.length; i++) {
-                    this.$store.dispatch('DeletePhoto',this.options_list[i]).then( res =>{
-                        this.chosenState.pop();
-                        this.options_list.splice(i,1);
-                    }).catch(error =>{
-                        alert("删除失败");
-                        console.log(error);
+                        this.$store.dispatch('DeletePhoto',this.options_list[i]).then( res =>{
+                            this.chosenState.pop();
+                            this.options_list.splice(i,1);
+                        }).catch(error =>{
+                            alert("删除失败");
+                            console.log(error);
                         })
                     }
                     for (let i=0; i<this.chosenState.length; i++){
@@ -219,7 +290,7 @@
             },
 
             //this function was used by dialog only，
-                // but, Delete in vuex has code and test fully.
+            // but, Delete in vuex has code and test fully.
             deletePhoto(id){
                 let _this = this;
                 this.$store.dispatch('DeletePhoto',id).then( res =>{
@@ -278,7 +349,9 @@
 
         },
         destroyed () {
-            window.removeEventListener('scroll', this.windowScroll)
+            window.removeEventListener('scroll', this.windowScroll);
+            window.removeEventListener('scroll', this.scrollToTop);
+
         }
 
 
@@ -286,7 +359,7 @@
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
     .humbnail_photo{
         width: 100%;
         height: 250px;
@@ -298,9 +371,6 @@
     .dialog{
     }
     .card{
-        width: 304px;
-        height: 250px;
-        margin-right: 400px;
         margin-bottom: 25px;
         border-width: 4px;
     }
@@ -313,9 +383,6 @@
         z-index: 999;
     }
     .card_chosen{
-        width: 304px;
-        height: 250px;
-        margin-right: 400px;
         margin-bottom: 25px;
         border-width: 4px;
         border-color: #1da2ff;
@@ -328,5 +395,36 @@
         position: absolute;
         margin-left: 4px;
     }
+
+    .page-up{
+        background-color: #409eff;
+        position: fixed;
+        right: 50px;
+        bottom: 30px;
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: .3s;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, .5);
+        opacity: .5;
+        z-index: 100;
+        .el-icon-caret-top{
+            color: #fff;
+            display: block;
+            line-height: 40px;
+            text-align: center;
+            font-size: 18px;
+        }
+        p{
+            display: none;
+            text-align: center;
+            color: #fff;
+        }
+        &:hover{
+            opacity: 1;
+        }
+    }
+
 </style>
 

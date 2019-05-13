@@ -5,10 +5,10 @@
             <el-button type="primary" @click="batchdel">批量删除</el-button>
             <el-button type="primary" @click="deleteAlbum">删除相册</el-button>
         </div>
-        <el-container class="containers">
+        <container class="container">
             <el-row>
                 <el-checkbox-group v-model="checkedlist">
-                    <el-col :span="6" v-for=" (art, index) in album  " :key="index" >
+                    <el-col :span="6" v-for=" (art, index) in album " :key="index" >
                         <el-card :body-style="{padding: '0px'}"
                                  class="card"
                                  >
@@ -22,7 +22,7 @@
                     </el-col>
                 </el-checkbox-group>
             </el-row>
-        </el-container>
+        </container>
     </div>
 </template>
 
@@ -31,7 +31,7 @@
     import qs from 'qs'
     import router from '../router'
     export default {
-        name: "Classify",
+        name: "Album",
         data(){
             return{
                 album:[],
@@ -64,8 +64,8 @@
             },
             enterAlbum(id, name) {
                 console.log('dd');
-                //router.push({name:'AlbumPhoto',params:{name:name, id:id}})
-                router.push('albumPhoto')
+                router.push({name:'AlbumPhoto',params: {name:name, id:id}});
+                // router.push('albumPhoto')
             },
 
             deleteAlbum() {
@@ -81,7 +81,7 @@
                         data: qs.stringify({id:this.checkedlist[i]}),
                     }).then(res => {
                         console.log(res);
-                        router.push("album");
+                        window.location.href="/album";
                     }).catch(error => {
                         console.log(error);
                     })
@@ -108,12 +108,13 @@
         padding-top: 18px;
         border-radius:30px;
     }
-    .containers :hover{
+    .container :hover{
         color: #1da2ff;
         border-color: #1da2ff;
     }
-    .containers{
-        padding-top: 60px;
+    .container{
+        margin-top: 60px;
+
     }
     .checkboxs{
         position: absolute;

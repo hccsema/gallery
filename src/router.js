@@ -10,11 +10,11 @@ import Sex from "./pages/Sex";
 import TimeLine from "./pages/TimeLine";
 import MapAlbum from "./pages/MapAlbum";
 import UserInfo from "./pages/UserInfo";
-import Classify from "./pages/Classify";
 import CreateAlbum from "./pages/CreateAlbum";
+import Classify from "./pages/Classify";
+import ClassifyPhoto from "./pages/ClassifyPhoto";
 import Album from "@/pages/Album";
 import AlbumPhoto from "@/pages/AlbumPhoto";
-//import TestHome from './newView/Home'
 
 
 Vue.use(Router);
@@ -81,20 +81,25 @@ export default new Router({
                     component: Classify
                 },
                 {
+                    path: '/classifyPhoto/:type',
+                    name:'ClassifyPhoto',
+                    component: ClassifyPhoto
+                },
+                {
                     path: '/create',
                     component: CreateAlbum
                 },
                 {
                     path:'/album',
                     component: Album,
-                    children: [
-                        {
-                            name: 'AlbumPhoto',
-                            path:'albumPhoto',
-                            component: AlbumPhoto,
-                        }
-                    ]
-                }
+
+                },
+                {
+                    name: 'AlbumPhoto',
+                    path:'albumPhoto/:name',
+                    component: AlbumPhoto,
+                },
+
 
             ]
 

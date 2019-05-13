@@ -27,9 +27,6 @@
         </el-main>
 </template>
 <script>
-    import $store from "@/store";
-    import axios from "@/axios";
-
     export default {
         name: "LoginBox",
         data () {

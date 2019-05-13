@@ -10,9 +10,9 @@ import qs from 'qs';
 //import LazyLoad from 'vue-lazyload'
 // import LightTimeline from 'vue-light-timeline';
 
+Vue.prototype.qs = qs;
 
 // Vue.use(LightTimeline);
-Vue.prototype.qs = qs;
 //Vue.use(LazyLoad,{
 //
 //});

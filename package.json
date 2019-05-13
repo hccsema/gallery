@@ -15,15 +15,16 @@
     "navigator": "^1.0.1",
     "popper.js": "^1.15.0",
     "qs": "^6.7.0",
+    "sass-loader": "^7.1.0",
     "spark-md5": "^3.0.0",
     "vue": "^2.6.6",
     "vue-amap": "^0.5.9",
     "vue-axios": "^2.1.4",
     "vue-lazyload": "^1.2.6",
+    "vue-light-timeline": "latest",
     "vue-router": "latest",
     "vuex": "^3.1.0",
-    "xmlhttprequest": "^1.8.0",
-    "vue-light-timeline": "latest"
+    "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",

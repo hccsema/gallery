@@ -17,6 +17,9 @@
                     <el-dropdown-item>
                         <span @click="changePassword">修改密码</span>
                     </el-dropdown-item>
+                    <el-dropdown-item>
+                        <span @click="changeSecret">二级密码</span>
+                    </el-dropdown-item>
                     <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
@@ -43,7 +46,7 @@
             },
             methods: {
                 changePassword() {
-                    router.push('/changePwd');
+                    router.push({name:'ChangePassword',params:{index:'0'}});
                 },
                 userInfo(){
                     router.push('/info');
@@ -59,16 +62,15 @@
                         localStorage.removeItem('Authorization');
                         router.push('/login');
                     }).catch(() => {});
+                },
+
+                changeSecret(){
+                    router.push({name:'ChangePassword',params:{index:'1'}});
                 }
             },
+
             mounted() {
-                // let user = window.localStorage.getItem('userInfo');
-                // if (user) {
-                //     //将json改为js对象
-                //     user = JSON.parse(user);
-                //     this.nickname = user.nickname || '';
-                //     //this.companyName = user.companyName || '';
-                // }
+
             },
             watch: {
 

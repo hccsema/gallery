@@ -7,6 +7,10 @@ import axios from './axios'
 import VueAMap from 'vue-amap'
 import store from './store'
 import qs from 'qs';
+
+// import VueProgressiveImage from 'vue-progressive-image'
+// Vue.use(VueProgressiveImage);
+
 //import LazyLoad from 'vue-lazyload'
 // import LightTimeline from 'vue-light-timeline';
 

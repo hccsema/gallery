@@ -38,7 +38,7 @@ export default new Router({
             //                 path: '/login',
             //                 // //登陆成功后跳转至该路由
             //                  query: {
-            //                 //    redirect: to.fullPath
+            //                     redirect: to.fullPath
             //                  }
             //             });
             //         }
@@ -73,7 +73,8 @@ export default new Router({
                     component: MapAlbum
                 },
                 {
-                    path: '/changePwd',
+                    path: '/changePwd/:index',
+                    name:'ChangePassword',
                     component: ChangePassword
                 },
                 {

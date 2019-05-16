@@ -4,7 +4,7 @@ import router from './router';
 
 const axios = Service.create({
     baseURL : 'http://photo.upc.pub',
-    timeout : 15000,
+    timeout : 30000,
 });
 
 

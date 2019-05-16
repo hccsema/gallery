@@ -58,6 +58,7 @@ export default {
             })
         },
 
+
         GetThumbnailPhotoInCover({commit}, id){
             return new Promise( (resolve, reject)=>{
                 getThumbnailPhoto(id).then(response =>{
@@ -81,7 +82,10 @@ export default {
                 'time':photo.time,
                 'date':photo.date,
                 'type':photo.type,
-                'url':photo.url});
+                'url':photo.url,
+                'address':photo.address,
+                'album':photo.album,
+            });
         },
 
 

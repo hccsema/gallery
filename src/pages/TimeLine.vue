@@ -5,10 +5,10 @@
             <el-button type="primary"  @click="batchDel">删除照片</el-button>
         </div>
 
-        <div v-for="(date, key) in photo_date" class="timeline_card" :key="key">
-            <h1 class="pic_date">{{date}}</h1>
-            <br><br>
-            <container >
+            <div v-for="(date, key) in photo_date" class="timeline_card" :key="key">
+                <h1 class="pic_date">{{date}}</h1>
+             <br><br>
+
                 <el-row>
                     <el-col  :span="6" v-for=" (pic , index)  in getUrlId " :offset="0" :key="index">
                         <el-card v-if="date === pic.date"
@@ -19,56 +19,66 @@
                     </el-col>
                 </el-row>
 
-                <transition name="el-fade-in">
-                    <div class="page-up" v-show="btnFlag" @click="backTop">
-                        <i class="el-icon-caret-top"></i>
-                    </div>
-                </transition>
 
-                <el-dialog :visible.sync="dialogPhotoVisible" center width="70%">
-                    <div class="dialog">
-                        <el-row>
-                            <el-col :span="16">
-                                <img :src="url_detail" class="detail_photo">
-                            </el-col>
-                            <el-col :span="8" >
-                                <br>
-                                <h3>图片中可能包含:</h3>
-                                    <el-button round
-                                               type="primary"
-                                               size="small"
-                                               @click="enterType(pic_detail.type)">
-                                        {{pic_detail.type}}
-                                    </el-button>
-                                <br>
-                                <h3>相册:</h3>
-                                <p v-if="!pic_detail.album">该图片暂不归属于任一相册</p>
-                                <el-button round
-                                           type="primary"
-                                           v-if="pic_detail.location"
-                                           size="small"
-                                           @click="enterType(pic_detail.type)">{{pic_detail.album}}</el-button>
 
-                                <br>
-                                <h3>地点:</h3>
-                                    <p v-if="!pic_detail.location">该图片未含有位置信息</p>
-                                    <el-button round
-                                               type="primary"
-                                               v-if="pic_detail.location"
-                                               size="small"
-                                               @click="enterType(pic_detail.type)">{{pic_detail.location}}</el-button>
+             </div>
 
-                                <br>
-                            </el-col>
-                        </el-row>
-                    </div>
-                    <div slot="footer" class="dialog-footer">
-                        <el-button type="primary" @click="deletePhoto(pic_detail.id)">Delete</el-button>
-                        <el-button type="primary" @click="movePhoto(pic_detail.id)">Remove</el-button>
-                    </div>
-                </el-dialog>
-            </container>
+        <transition name="el-fade-in">
+            <div class="page-up" v-show="btnFlag" @click="backTop">
+                <i class="el-icon-caret-top"></i>
+            </div>
+        </transition>
+
+    <el-dialog :visible.sync="dialogPhotoVisible" center width="70%">
+        <div class="dialog">
+            <el-row>
+                <el-col :span="16">
+                    <img :src="url_detail" class="detail_photo" >
+                </el-col>
+                <el-col :span="8" >
+                    <br>
+                    <h3>图片中可能包含:</h3>
+                    <el-button  v-for="(type, index) in pic_detail.type" :key="index"
+                                round
+                               type="primary"
+                               size="small"
+                               @click="enterType(type)">
+                        {{type}}
+                    </el-button>
+
+                    <br>
+                    <h3>相册:</h3>
+                    <p v-if="!pic_detail.album">该图片暂不归属于任一相册</p>
+                    <el-button round
+                               type="primary"
+                               v-if="pic_detail.album"
+                               size="small"
+                               @click="enterAlbum(pic_detail.album)">
+                        {{pic_detail.album}}
+                    </el-button>
+
+                    <h3>地点:</h3>
+                    <p v-if="pic_detail.address.country === '' ">该图片未含有位置信息</p>
+                    <el-button round
+                               type="info"
+                               v-if="!(pic_detail.address.country === '')"
+                               size="small"
+                               @click="enterType(pic_detail.type)">
+                        {{pic_detail.address.country}}
+                        {{pic_detail.address.province}}
+                        {{pic_detail.address.city}}
+                        {{pic_detail.address.district}}
+                    </el-button>
+
+                    <br>
+                </el-col>
+            </el-row>
         </div>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="deletePhoto(pic_detail.id)">Delete</el-button>
+            <el-button type="primary" @click="movePhoto(pic_detail.id)">Remove</el-button>
+        </div>
+    </el-dialog>
 
 
 
@@ -95,8 +105,14 @@
                 total_pages:'',
                 //图片详情信息
                 url_detail:'',
-                pic_detail:'',
+                pic_detail:{address:{
+                        country:'',
+                        city:'',
+                        province:'',
+                        district:''
 
+
+                    }},
                 dialogPhotoVisible:false,
                 //批量操作
                 batchState:false,
@@ -158,10 +174,12 @@
                 /*
                 此处完成单图片详情的展示
                 */
+
                 this.pic_detail = pic;
                 this.url_detail = '';
                 this.dialogPhotoVisible = true;
                 this.getPhoto(pic.id);
+                //console.log(this.url_detail);
             },
 
             getAll(page, number=20){
@@ -178,7 +196,7 @@
                             date : _this.GMTToStr(new Date(a.create ?  a.create : a.upload)).slice(0,10),
                             type : a.type,
                             album: a.album,
-                            location : a.location,
+                            address : a.address,
                         }
                     });
 
@@ -231,7 +249,7 @@
             },
 
             getPhoto(id) {
-                let _this = this;
+                 let _this = this;
                 this.$store.dispatch('GetPhoto',id).then(function (res) {
                     _this.url_detail = URL.createObjectURL(res.data);
                 }).catch(function (error) {
@@ -289,8 +307,6 @@
                 }
             },
 
-            //this function was used by dialog only，
-            // but, Delete in vuex has code and test fully.
             deletePhoto(id){
                 let _this = this;
                 this.$store.dispatch('DeletePhoto',id).then( res =>{
@@ -303,7 +319,6 @@
                 })
 
             },
-
 
             batchOptions(){
                 this.batchState = !this.batchState;

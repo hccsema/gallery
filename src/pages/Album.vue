@@ -8,13 +8,10 @@
         <container class="container">
             <el-row>
                 <el-checkbox-group v-model="checkedlist">
-                    <el-col :span="6" v-for=" (art, index) in album " :key="index" >
-                        <el-card :body-style="{padding: '0px'}"
-                                 class="card"
-                                 >
+                    <el-col :span="6" v-for=" (art, index) in getAlbum " :key="index" >
+                        <el-card :body-style="{padding: '0px'}" class="card">
                             <div class="checkboxs">
-                                <el-checkbox :label="art.id" v-show="show"
-                                >{{nothing}}</el-checkbox>
+                                <el-checkbox :label="art.id" v-show="show">&nbsp</el-checkbox>
                             </div>
                             <img src="../assets/folder.jpg"  height="230" width="240" @click="enterAlbum(art.id, art.name)">
                             <p class="art_name">{{art.name}}</p>
@@ -37,35 +34,21 @@
                 album:[],
                 show: false,
                 checkedlist:[],
-                nothing:''
             }
         },
         created() {
-            axios({
-                method: 'get',
-                url:'http://photo.upc.pub/album/get_all_album',
-                headers:{
-                    'authorization': 'Bearer ' + window.localStorage.getItem('Authorization'),
-                },
-            }).then(res =>{
-                let _this = this;
-                let data = res.data;
-                for(let i=0; i < data.length ;i++)
-                {
-                    _this.album.push({name:data[i]['name'],id:data[i]['id']});
-                }
-            }).catch(error =>{
+            this.$store.dispatch('GetAlbumInfo').then(function (res) {
+
+            }).catch(function (error) {
                 console.log(error);
-            })
+            });
         },
         methods:{
             createAlbum () {
                 router.push("create");
             },
             enterAlbum(id, name) {
-                console.log('dd');
                 router.push({name:'AlbumPhoto',params: {name:name, id:id}});
-                // router.push('albumPhoto')
             },
 
             deleteAlbum() {
@@ -90,7 +73,14 @@
             batchdel:function () {
                 this.show = !this.show;
             },
-        }
+
+        },
+        computed:{
+            getAlbum(){
+                return this.$store.getters.getAlbum;
+            },
+
+        },
     }
 </script>
 

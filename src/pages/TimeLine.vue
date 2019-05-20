@@ -3,25 +3,33 @@
         <div class="buttons">
             <el-button type="primary"  @click="batchOptions">批量操作</el-button>
             <el-button type="primary"  @click="batchDel">删除照片</el-button>
+            <el-dropdown class="drop">
+                <el-button type="primary">
+                    移动照片<i class="el-icon-arrow-down el-icon--right"></i>
+                </el-button>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item v-for=" albumname in getAlbum"  @click.native="batchMove(albumname['id'])">{{albumname['name']}}</el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
         </div>
 
-            <div v-for="(date, key) in photo_date" class="timeline_card" :key="key">
-                <h1 class="pic_date">{{date}}</h1>
-             <br><br>
+        <div v-for="(date, key) in photo_date" class="timeline_card" :key="key">
+            <h1 class="pic_date">{{date}}</h1>
+            <br><br>
 
-                <el-row>
-                    <el-col  :span="6" v-for=" (pic , index)  in getUrlId " :offset="0" :key="index">
-                        <el-card v-if="date === pic.date"
-                                 :body-style="{padding: '0.5px'}"
-                                 :class="chosenState[index]?  'card_chosen': 'card'">
-                            <img :src="pic.url"  class="humbnail_photo"  @click="chooseCondition(index, pic)">
-                        </el-card>
-                    </el-col>
-                </el-row>
+            <el-row>
+                <el-col  :span="6" v-for=" (pic , index)  in getUrlId " :offset="0" :key="index">
+                    <el-card v-if="date === pic.date"
+                             :body-style="{padding: '0.5px'}"
+                             :class="chosenState[index]?  'card_chosen': 'card'">
+                        <img :src="pic.url"  class="humbnail_photo"  @click="chooseCondition(index, pic)">
+                    </el-card>
+                </el-col>
+            </el-row>
 
 
 
-             </div>
+        </div>
 
         <transition name="el-fade-in">
             <div class="page-up" v-show="btnFlag" @click="backTop">
@@ -29,56 +37,56 @@
             </div>
         </transition>
 
-    <el-dialog :visible.sync="dialogPhotoVisible" center width="70%">
-        <div class="dialog">
-            <el-row>
-                <el-col :span="16">
-                    <img :src="url_detail" class="detail_photo" >
-                </el-col>
-                <el-col :span="8" >
-                    <br>
-                    <h3>图片中可能包含:</h3>
-                    <el-button  v-for="(type, index) in pic_detail.type" :key="index"
-                                round
-                               type="primary"
-                               size="small"
-                               @click="enterType(type)">
-                        {{type}}
-                    </el-button>
+        <el-dialog :visible.sync="dialogPhotoVisible" center width="70%">
+            <div class="dialog">
+                <el-row>
+                    <el-col :span="16">
+                        <img :src="url_detail" class="detail_photo" >
+                    </el-col>
+                    <el-col :span="8" >
+                        <br>
+                        <h3>图片中可能包含:</h3>
+                        <el-button  v-for="(type, index) in pic_detail.type" :key="index"
+                                    round
+                                    type="primary"
+                                    size="small"
+                                    @click="enterType(type)">
+                            {{type}}
+                        </el-button>
 
-                    <br>
-                    <h3>相册:</h3>
-                    <p v-if="!pic_detail.album">该图片暂不归属于任一相册</p>
-                    <el-button round
-                               type="primary"
-                               v-if="pic_detail.album"
-                               size="small"
-                               @click="enterAlbum(pic_detail.album)">
-                        {{pic_detail.album}}
-                    </el-button>
+                        <br>
+                        <h3>相册:</h3>
+                        <p v-if="!pic_detail.album">该图片暂不归属于任一相册</p>
+                        <el-button round
+                                   type="primary"
+                                   v-if="pic_detail.album"
+                                   size="small"
+                                   @click="enterAlbum(pic_detail.album)">
+                            {{pic_detail.album}}
+                        </el-button>
 
-                    <h3>地点:</h3>
-                    <p v-if="pic_detail.address.country === '' ">该图片未含有位置信息</p>
-                    <el-button round
-                               type="info"
-                               v-if="!(pic_detail.address.country === '')"
-                               size="small"
-                               @click="enterType(pic_detail.type)">
-                        {{pic_detail.address.country}}
-                        {{pic_detail.address.province}}
-                        {{pic_detail.address.city}}
-                        {{pic_detail.address.district}}
-                    </el-button>
+                        <h3>地点:</h3>
+                        <p v-if="pic_detail.address.country === '' ">该图片未含有位置信息</p>
+                        <el-button round
+                                   type="info"
+                                   v-if="!(pic_detail.address.country === '')"
+                                   size="small"
+                                   @click="enterType(pic_detail.type)">
+                            {{pic_detail.address.country}}
+                            {{pic_detail.address.province}}
+                            {{pic_detail.address.city}}
+                            {{pic_detail.address.district}}
+                        </el-button>
 
-                    <br>
-                </el-col>
-            </el-row>
-        </div>
-        <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="deletePhoto(pic_detail.id)">Delete</el-button>
-            <el-button type="primary" @click="movePhoto(pic_detail.id)">Remove</el-button>
-        </div>
-    </el-dialog>
+                        <br>
+                    </el-col>
+                </el-row>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="deletePhoto(pic_detail.id)">Delete</el-button>
+                <el-button type="primary" @click="movePhoto(pic_detail.id)">Remove</el-button>
+            </div>
+        </el-dialog>
 
 
 
@@ -88,12 +96,14 @@
 <script>
     import ScrollTop from "@/components/ScrollTop";
     import router from "@/router";
+    import axios from "../axios";
 
     export default {
         name: "TimeLine",
         components: {ScrollTop},
         data(){
             return{
+                album_name:['hello','world','i am','wonder4','gallery'],
                 //被删除的属性如下：
                 // 1. url_id:[], 已经完整封装在state中，可通过getUrlId（见computed）直接获取，
                 //         使用： 行数 9
@@ -128,6 +138,11 @@
         },
         created() {
             this.getAll(0);
+            this.$store.dispatch('GetAlbumInfo').then(function (res) {
+
+            }).catch(function (error) {
+                console.log(error);
+            });
         },
         mounted(){
             window.addEventListener('scroll', this.windowScroll);
@@ -249,7 +264,7 @@
             },
 
             getPhoto(id) {
-                 let _this = this;
+                let _this = this;
                 this.$store.dispatch('GetPhoto',id).then(function (res) {
                     _this.url_detail = URL.createObjectURL(res.data);
                 }).catch(function (error) {
@@ -350,14 +365,38 @@
             movePhoto(id){
 
             },
-
+            batchMove(album_id){
+                if(this.options_list.length === 0) {
+                    alert("请先选择照片!")
+                }
+                else{
+                    for(let i=0; i<this.options_list.length; i++) {
+                        console.log(this.options_list[i]);
+                        this.$store.dispatch('MoveToAlbum',{'album_id':album_id,'photo_id':this.options_list[i]}).then( res =>{
+                            this.chosenState.pop();
+                            this.options_list.splice(i,1);
+                        }).catch(error =>{
+                            alert("移动失败");
+                            console.log(error);
+                        })
+                    }
+                    for (let i=0; i<this.chosenState.length; i++){
+                        if(this.chosenState[i])
+                            this.chosenState.splice(i,1,false);
+                    }
+                    alert("移动成功");
+                }
+            },
 
         },
 
         computed:{
             getUrlId(){
                 return this.$store.getters.getUrlId;
-            }
+            },
+            getAlbum(){
+                return this.$store.getters.getAlbum;
+            },
 
         },
         watch:{
@@ -440,6 +479,17 @@
             opacity: 1;
         }
     }
-
+    .el-dropdown {
+        vertical-align: top;
+    }
+    .el-dropdown + .el-dropdown {
+        margin-left: 15px;
+    }
+    .el-icon-arrow-down {
+        font-size: 12px;
+    }
+    .drop{
+        margin-left: 10px;
+    }
 </style>
 

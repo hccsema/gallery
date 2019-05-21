@@ -61,8 +61,8 @@
                                    type="primary"
                                    v-if="pic_detail.album"
                                    size="small"
-                                   @click="enterAlbum(pic_detail.album)">
-                            {{pic_detail.album}}
+                                   @click="enterAlbum(pic_detail.album.name, pic_detail.album.id)">
+                            {{pic_detail.album.name}}
                         </el-button>
 
                         <h3>地点:</h3>
@@ -183,7 +183,9 @@
             enterType(type){
                 router.push({name:'ClassifyPhoto', params:{type:type}});
             },
-
+            enterAlbum(name,id){
+                router.push({name:'AlbumPhoto',params: {name:name, id:id}});
+            },
             //单图片详情
             details(pic){
                 /*

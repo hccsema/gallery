@@ -10,6 +10,16 @@ export async function deletePhoto(id) {
     });
 }
 
+// export async function encryptPhoto(id) {
+//     return axios( {
+//         method : 'post',
+//         url : '/photo/change_to_security',
+//         params: {
+//             photoId: id,
+//             security: window.localStorage.getItem('securityToken')
+//         },
+//     });
+// }
 
 export async function getPhoto(id) {
     return axios({

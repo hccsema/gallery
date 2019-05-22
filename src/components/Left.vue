@@ -23,7 +23,7 @@
                 <span slot="title">上传图片</span>
             </el-menu-item>
 
-            <el-menu-item index="/sex" >
+            <el-menu-item @click="change">
                 <i class="el-icon-news" ></i>
                 <span slot="title">隐藏空间</span>
             </el-menu-item>
@@ -42,6 +42,7 @@
 </template>
 
 <script>
+    import router from "@/router";
     export default {
         name: "Left",
         data(){
@@ -55,7 +56,15 @@
             },
             handleClose(key, keyPath) {
                 console.log(key, keyPath);
-            }
+            },
+            change(){
+                if (window.localStorage.getItem('securityToken')){
+                    router.push('/loginPrivacy');
+                }
+                else{
+                    router.push('/sex');
+                }
+            },
         }
     }
 </script>

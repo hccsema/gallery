@@ -15,6 +15,8 @@ import Classify from "./pages/Classify";
 import ClassifyPhoto from "./pages/ClassifyPhoto";
 import Album from "@/pages/Album";
 import AlbumPhoto from "@/pages/AlbumPhoto";
+import Privacy from '@/pages/Privacy';
+import LoginPrivacy from '@/pages/LoginPrivacy';
 
 
 Vue.use(Router);
@@ -59,6 +61,14 @@ export default new Router({
                 {
                     path: '/sex',
                     component: Sex
+                },
+                {
+                    path: '/privacy',
+                    component: Privacy
+                },
+                {
+                    path: "/loginPrivacy",
+                    component: LoginPrivacy
                 },
                 {
                     path: '/about',

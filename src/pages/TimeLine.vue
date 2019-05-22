@@ -3,6 +3,7 @@
         <div class="buttons">
             <el-button type="primary"  @click="batchOptions">批量操作</el-button>
             <el-button type="primary"  @click="batchDel">删除照片</el-button>
+            <el-button type="primary"  @click="batchHide">加密照片</el-button>
             <el-dropdown class="drop">
                 <el-button type="primary">
                     移动照片<i class="el-icon-arrow-down el-icon--right"></i>
@@ -84,7 +85,7 @@
             </div>
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="deletePhoto(pic_detail.id)">Delete</el-button>
-                <el-button type="primary" @click="movePhoto(pic_detail.id)">Remove</el-button>
+                <el-button type="primary" @click="hidePhoto(pic_detail.id)">Remove</el-button>
             </div>
         </el-dialog>
 
@@ -364,8 +365,30 @@
             },
 
             //移动图片至隐藏空间
-            movePhoto(id){
-
+            hidePhoto(id){
+                // let _this = this;
+                // this.$store.dispatch('EncryptPhoto',id).then( res =>{
+                //     alert('加密成功');
+                //     //关闭dialog
+                //     _this.dialogPhotoVisible=false;
+                // }).catch(error =>{
+                //     alert('加密失败');
+                //     console.log(error);
+                // })
+                axios({
+                    method: 'post',
+                    url: 'http://photo.upc.pub/photo/change_to_security',
+                    headers: {
+                        'authorization': 'Bearer ' + window.localStorage.getItem('Authorization'),
+                    },
+                    params: {'photoId':id, 'securityToken':window.localStorage.getItem('securityToken')},
+                }).then(res => {
+                    alert('加密成功');
+                    this.dialogPhotoVisible=false;
+                }).catch(error => {
+                    alert('加密失败');
+                    console.log(error);
+                })
             },
             batchMove(album_id){
                 if(this.options_list.length === 0) {
@@ -389,7 +412,18 @@
                     alert("移动成功");
                 }
             },
-
+            // batchHide(){
+            //     if(this.options_list.length === 0) {
+            //         alert("请先选择照片!")
+            //     }
+            //     else{
+            //         for (let i=0; i<this.chosenState.length; i++){
+            //             if(this.chosenState[i])
+            //                 this.chosenState.splice(i,1,false);
+            //         }
+            //         alert("加密成功");
+            //     }
+            // },
         },
 
         computed:{

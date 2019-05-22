@@ -8,6 +8,7 @@ export default {
     state: {
         Authorization: '',
         userInfo: localStorage.getItem('userInfo') ? localStorage.getItem('userInfo') : '',
+        securityToken: '',
     },
 
     actions: {
@@ -31,7 +32,9 @@ export default {
                 });
             })
         },
-
+        SaveSecurityToken({commit},securityToken){
+            commit('saveSecurityToken',securityToken);
+        },
         getUserInfo({ commit }) {
             return new Promise((resolve, reject) => {
                 getUserInfo().then(response => {
@@ -64,6 +67,10 @@ export default {
         saveToken(state, authorization) {
             state.Authorization = authorization;
             localStorage.setItem('Authorization', authorization);
+        },
+        saveSecurityToken(state, securitytoken){
+            state.securityToken = securitytoken;
+            localStorage.setItem('securityToken', securitytoken);
         },
         saveUserInfo(state, userInfo) {
             state.UserInfo = userInfo;

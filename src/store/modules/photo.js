@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex'
-import {getPhoto, deletePhoto, getThumbnailPhoto, getAll} from "../../api/photo";
+import {getPhoto, deletePhoto, getThumbnailPhoto, getAll, encryptPhoto} from "../../api/photo";
 
 Vue.use(Vuex);
 
@@ -33,6 +33,17 @@ export default {
                 }
             )
         },
+        // EncryptPhoto({commit},id){
+        //     return new Promise( (resolve, reject)=>{
+        //             encryptPhoto(id).then(response=>{
+        //                 commit("encryptPhotoFromUrlId",id);
+        //                 resolve(response);
+        //             }).catch(error=>{
+        //                 reject(error);
+        //             });
+        //         }
+        //     )
+        // },
 
         GetPhoto({commit}, id){
             const _id = id;
@@ -107,7 +118,14 @@ export default {
                 }
             }
         },
-
+        // encryptPhotoFromUrlId(state, id){
+        //     for(let i=0; i < state.url_id.length ; i++ ){
+        //         if(id === state.url_id[i].id){
+        //             state.url_id.splice(i,1);
+        //             break;
+        //         }
+        //     }
+        // },
     },
     getters:{
         getUrlId(state){

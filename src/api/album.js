@@ -7,17 +7,11 @@ export async function getAlbumInfo() {
     });
 }
 
-export async function moveToAlbum(movedphoto) {
+export async function moveToAlbum(albumId,photoId) {
     return axiox({
         method: 'post',
         url:'http://photo.upc.pub/photo/change_to_album',
-        params:{albumId: movedphoto.album_id,photoId:movedphoto.photo_id},
+        params:{albumId: albumId,photoId: photoId},
     });
 }
 
-// export async function getAlbumPhoto(album_id) {
-//     return axiox({
-//         method: 'get',
-//         url:'http://photo.upc.pub/photo/get_album_photos/' + toString(album_id),
-//     });
-// }

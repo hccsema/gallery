@@ -6,15 +6,13 @@ Vue.use(Vuex);
 
 export default {
     state:{
-        url_id: [],
         total_pages:'',
     },
     actions:{
 
-        GetAll({commit},page,number=20){
+        GetAll({commit,rootState},page,number=20){
             return new Promise(((resolve, reject) => {
                 getAll(page,number).then(response=>{
-
                     resolve(response);
                 }).catch(error=>{
                     reject(error);
@@ -25,7 +23,7 @@ export default {
         DeletePhoto({commit},id){
             return new Promise( (resolve, reject)=>{
                     deletePhoto(id).then(response=>{
-                        commit("deletePhotoFromUrlId",id);
+                        commit("deletePhotoFromUrlId",id, {root:true});
                         resolve(response);
                     }).catch(error=>{
                         reject(error);
@@ -76,43 +74,8 @@ export default {
 
     },
     mutations:{
-        addUrlId(state,photo){
-            state.url_id.push({
-                'id':photo.id,
-                'time':photo.time,
-                'date':photo.date,
-                'type':photo.type,
-                'url':photo.url,
-                'address':photo.address,
-                'album':photo.album,
-            });
-        },
-
-
-        sortUrlIdByTime(state){
-            state.url_id.sort(
-                function (a, b) {
-                    let value1 = a['time'];
-                    let value2 = b['time'];
-                    return value1 - value2;
-                });
-            //对缓存进行修改！！！！
-
-        },
-        deletePhotoFromUrlId(state, id){
-            for(let i=0; i < state.url_id.length ; i++ ){
-                if(id === state.url_id[i].id){
-                    state.url_id.splice(i,1);
-                    break;
-                }
-            }
-        },
-
     },
     getters:{
-        getUrlId(state){
-            return state.url_id;
-        },
 
     }
 }

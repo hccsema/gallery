@@ -8,7 +8,11 @@
                     移动照片<i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item v-for=" albumname in getAlbum"  @click.native="batchMove(albumname['id'])">{{albumname['name']}}</el-dropdown-item>
+                    <el-dropdown-item v-for=" (album, index) in getAlbum"
+                                      @click.native="batchMove(album)"
+                                      :key="index">
+                        {{album.name}}
+                    </el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
         </div>
@@ -103,7 +107,6 @@
         components: {ScrollTop},
         data(){
             return{
-                album_name:['hello','world','i am','wonder4','gallery'],
                 //被删除的属性如下：
                 // 1. url_id:[], 已经完整封装在state中，可通过getUrlId（见computed）直接获取，
                 //         使用： 行数 9
@@ -120,8 +123,6 @@
                         city:'',
                         province:'',
                         district:''
-
-
                     }},
                 dialogPhotoVisible:false,
                 //批量操作
@@ -161,7 +162,8 @@
                 }, 16)
             },
 
-            // 为了计算距离顶部的高度，当高度大于60显示回顶部图标，小于60则隐藏
+            // 回到顶部
+            // 计算距离顶部的高度，当高度大于60显示回顶部图标，小于60则隐藏
             scrollToTop () {
                 let that = this;
                 that.scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
@@ -300,29 +302,6 @@
                 }
             },
 
-            //批量删除，循环调用DeletePhoto action
-            batchDel(){
-
-                if(this.options_list.length === 0) {
-                    alert("请先选择照片!")
-                }
-                else{
-                    for(let i=0; i<this.options_list.length; i++) {
-                        this.$store.dispatch('DeletePhoto',this.options_list[i]).then( res =>{
-                            this.chosenState.pop();
-                            this.options_list.splice(i,1);
-                        }).catch(error =>{
-                            alert("删除失败");
-                            console.log(error);
-                        })
-                    }
-                    for (let i=0; i<this.chosenState.length; i++){
-                        if(this.chosenState[i])
-                            this.chosenState.splice(i,1,false);
-                    }
-                    alert("删除成功");
-                }
-            },
 
             deletePhoto(id){
                 let _this = this;
@@ -334,6 +313,11 @@
                     alert('删除失败');
                     console.log(error);
                 })
+
+            },
+
+            //移动图片至隐藏空间
+            movePhoto(id){
 
             },
 
@@ -363,22 +347,20 @@
                 else return obj;
             },
 
-            //移动图片至隐藏空间
-            movePhoto(id){
 
-            },
-            batchMove(album_id){
+            //批量删除，循环调用DeletePhoto action
+            batchDel(){
+
                 if(this.options_list.length === 0) {
                     alert("请先选择照片!")
                 }
                 else{
                     for(let i=0; i<this.options_list.length; i++) {
-                        console.log(this.options_list[i]);
-                        this.$store.dispatch('MoveToAlbum',{'album_id':album_id,'photo_id':this.options_list[i]}).then( res =>{
+                        this.$store.dispatch('DeletePhoto',this.options_list[i]).then( res =>{
                             this.chosenState.pop();
                             this.options_list.splice(i,1);
                         }).catch(error =>{
-                            alert("移动失败");
+                            alert("删除失败");
                             console.log(error);
                         })
                     }
@@ -386,7 +368,37 @@
                         if(this.chosenState[i])
                             this.chosenState.splice(i,1,false);
                     }
-                    alert("移动成功");
+                    alert("删除成功");
+                    this.batchState = !this.batchState;
+                }
+            },
+
+
+            batchMove(album){
+                if(this.options_list.length === 0) {
+                    alert("请先选择照片!")
+                }
+                else{
+                    let faultNum=0;
+                    for(let i=0; i<this.options_list.length; i++) {
+                        console.log(album);
+                        console.log(this.options_list[i]);
+                        this.$store.dispatch('MoveToAlbum',
+                            {photoId:this.options_list[i], album : album}).then( res =>{
+                        }).catch(error =>{
+                            faultNum++;
+                            console.log(error);
+                        })
+                    }
+                    for (let i=0; i<this.chosenState.length; i++){
+                        if(this.chosenState[i]) {
+                            this.chosenState.splice(i, 1, false);
+                        }
+                    }
+                    if(!faultNum) alert("移动成功");
+                    else alert(faultNum+"张图片移动失败");
+                    this.batchState = !this.batchState;
+                    this.options_list = [];
                 }
             },
 

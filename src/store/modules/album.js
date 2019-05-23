@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {getAlbumInfo,moveToAlbum} from '../../api/album'
 
+
 Vue.use(Vuex);
 
 
@@ -15,9 +16,11 @@ export default {
             return new Promise(((resolve, reject) => {
                     getAlbumInfo().then(res=>{
                         let data = res.data;
+                        console.log(data);
+                        commit("clearAlbum");
                         for(let i=0; i < data.length ;i++)
                         {
-                            commit("getAlbum",{'name':data[i]['name'],'id':data[i]['id']});
+                            commit("updateAlbum",data[i]);
                         }
                         resolve(res);
                     }).catch(error =>{
@@ -26,9 +29,15 @@ export default {
                 })
             )
         },
-        MoveToAlbum({commit},movedphoto){
+
+        //传入对象（all）包含2个参数
+        //param1: album
+        //param2：photoId
+
+        MoveToAlbum({commit},all){
             return new Promise(((resolve, reject) => {
-                    moveToAlbum(movedphoto).then(res=>{
+                moveToAlbum(all.album.id,all.photoId).then(res=>{
+                        commit("moveToAlbumFromUrlId",all);
                         resolve(res);
                     }).catch(error =>{
                         reject(error);
@@ -36,29 +45,18 @@ export default {
                 })
             )
         },
-        // GetAlbumPhoto({commit},album_id) {
-        //     return new Promise(((resolve, reject) => {
-        //             getAlbumPhoto(album_id).then(res=>{
-        //                 let data = res.data;
-        //                 for(let i=0; i < data.length ;i++)
-        //                 {
-        //                     commit("getAlbum",{'name':data[i]['name'],'id':data[i]['id']});
-        //                 }
-        //                 resolve(res);
-        //             }).catch(error =>{
-        //                 reject(error);
-        //             })
-        //         })
-        //     )
-        // },
     },
 
     mutations: {
-        getAlbum(state, albuminfo) {
-            if(JSON.stringify(state.album).indexOf(JSON.stringify(albuminfo)) === -1){
-                state.album.push(albuminfo); // 进行动态的操作
-            }
+        clearAlbum(state){
+          state.album = [];
         },
+
+        updateAlbum(state, album) {
+            state.album.push(album); // 进行动态的操作
+        },
+
+
     },
     getters:{
         getAlbum(state){

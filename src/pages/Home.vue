@@ -10,6 +10,7 @@
                 </el-aside>
                 <el-main>
                     <router-view></router-view>
+                    <scroll-top></scroll-top>
                 </el-main>
             </el-container>
         </el-container>
@@ -19,6 +20,7 @@
 <script>
     import Left from '../components/Left'
     import Header from '../components/Header'
+    import ScrollTop from '../components/ScrollTop'
     export default {
         name: "Home",
         data(){
@@ -30,6 +32,7 @@
         components:{
             Left,
             Header,
+            ScrollTop
         },
         created(){
 

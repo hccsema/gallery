@@ -1,25 +1,31 @@
 <template>
-    <el-form
-            :model="userInfo"
-            status-icon
-            :rules="rules"
-            ref="userInfo"
-            label-width="100px"
-            class="ruleForm">
-        <el-form-item label="nickname" prop="nickname">
-            <el-input type="text" v-model="userInfo.nickname"></el-input>
-        </el-form-item>
-        <el-form-item label="username" prop="checkPass">
-            <el-input type="text" v-model="userInfo.username" ></el-input>
-        </el-form-item>
-        <el-form-item label="email" prop="email">
-            <el-input v-model="userInfo.email"></el-input>
-        </el-form-item>
-        <!--        <el-form-item>-->
-                    <el-button type="primary" @click="submitForm('userInfo')">更新</el-button>
-        <!--            <el-button type="primary" @click="getUserInfo"><get>显示</get></el-button>-->
-        <!--        </el-form-item>-->
-    </el-form>
+    <el-row >
+        <el-col :span="12" :offset="4">
+            <h1>个人信息</h1>
+            <br>
+            <el-form
+                    :model="userInfo"
+                    status-icon
+                    :rules="rules"
+                    ref="userInfo"
+                    label-width="100px"
+                    class="ruleForm">
+                <el-form-item label="昵称" prop="nickname">
+                    <el-input type="text" v-model="userInfo.nickname"></el-input>
+                </el-form-item>
+                <el-form-item label="用户名" prop="checkPass">
+                    <el-input type="text" v-model="userInfo.username" ></el-input>
+                </el-form-item>
+                <el-form-item label="email" prop="email">
+                    <el-input v-model="userInfo.email"></el-input>
+                </el-form-item>
+                <!--        <el-form-item>-->
+                            <el-button type="primary" @click="submitForm('userInfo')">更新</el-button>
+                <!--            <el-button type="primary" @click="getUserInfo"><get>显示</get></el-button>-->
+                <!--        </el-form-item>-->
+            </el-form>
+        </el-col>
+    </el-row>
 </template>
 
 <script>

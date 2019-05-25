@@ -5,7 +5,7 @@
             <el-button type="primary" @click="batchdel">批量删除</el-button>
             <el-button type="primary" @click="deleteAlbum">删除相册</el-button>
         </div>
-        <container class="container">
+        <div class="container">
             <el-row>
                 <el-checkbox-group v-model="checkedlist">
                     <el-col :span="6" v-for=" (art, index) in getAlbum " :key="index" >
@@ -19,7 +19,7 @@
                     </el-col>
                 </el-checkbox-group>
             </el-row>
-        </container>
+        </div>
     </div>
 </template>
 
@@ -48,7 +48,7 @@
                 router.push("create");
             },
             enterAlbum(id, name) {
-                router.push({name:'AlbumPhoto',params: {name:name, id:id}});
+                router.push({name:'AlbumPhoto',params: {name:name, id:id }});
             },
 
             deleteAlbum() {

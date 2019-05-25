@@ -1,5 +1,5 @@
 <template>
-    <container class="containers" >
+    <div class="containers" >
         <el-row>
             <el-col :span="6" v-for=" (art, index) in classify_cover_photo  " :key="index">
                 <el-card :body-style="{padding: '0px'}" class="card" >
@@ -8,7 +8,7 @@
                 </el-card>
             </el-col>
         </el-row>
-    </container>
+    </div>
 </template>
 
 <script>
@@ -65,7 +65,7 @@
             },
 
             enterClassifyPhoto(type){
-                router.push({name:'ClassifyPhoto', params:{type:type}});
+                router.push({name:'ClassifyPhoto', params:{name:type, id: ''}});
             },
         }
     }

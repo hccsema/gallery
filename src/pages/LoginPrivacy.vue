@@ -5,16 +5,16 @@
                  class="regform"
                  label-width="0">
 
-            <h3>请设置隐私空间密码</h3>
+            <h3>请输入隐私空间密码</h3>
             <br>
             <el-form-item prop="password">
                 <el-input
                         type="password"
                         v-model="reginForm.password"
-                        placeholder="密码长度不得低于6位">
+                        placeholder="请输入密码">
                 </el-input>
             </el-form-item>
-            <el-button @click="submit(reginForm)">提交</el-button>
+            <el-button @click="submit(reginForm)">进入隐私空间</el-button>
         </el-form>
     </el-main>
 </template>
@@ -22,7 +22,7 @@
     import router from "@/router";
     import axios from "../axios";
     export default {
-        name: "Sex",
+        name: "LoginPrivacy",
         data () {
             return {
                 reginForm:{
@@ -30,18 +30,23 @@
                 },
             }
         },
+
         methods:{
             submit()  {
                 axios({
                     method: 'post',
-                    url: 'http://photo.upc.pub/user/change_security_password',
+                    url: 'http://photo.upc.pub/user/get_security',
                     headers: {
                         'authorization': 'Bearer ' + window.localStorage.getItem('Authorization'),
                     },
                     params: {'password':this.reginForm.password},
                 }).then(res => {
-                    router.push('/loginPrivacy');
-                    alert('隐私空间密码设置成功');
+                    this.$store.dispatch('SaveSecurityToken',res.data).then( res => {
+                        console.log(res);
+                    }).catch(error => {
+                        console.log(error);
+                    });
+                    router.push('/privacy');
                 }).catch(error => {
                     console.log(error);
                 });

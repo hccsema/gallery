@@ -1,12 +1,21 @@
 import Vue from 'vue';
 import Vuex from 'vuex'
-import {getPhoto, deletePhoto, getThumbnailPhoto, getAll} from "../../api/photo";
+import {deletePhoto, getAll, getPhoto, getThumbnailPhoto} from "../../api/photo";
+import {getAllByAlbum} from "@/api/photo";
 
 Vue.use(Vuex);
 
 export default {
     state:{
         total_pages:'',
+        dialogPhotoVisible : false,
+        pic_detail:{address:{
+                country:'',
+                city:'',
+                province:'',
+                district:''
+            }},
+
     },
     actions:{
 
@@ -18,6 +27,19 @@ export default {
                     reject(error);
                 })
             }))
+        },
+
+        //obj 3 params
+
+        GetAllByAlbum({commit,rootState},obj){
+            return new Promise(((resolve, reject) => {
+                getAllByAlbum(obj.id, obj.page, obj.number).then(response=>{
+                    resolve(response);
+                }).catch(error=>{
+                    reject(error);
+                })
+            }))
+
         },
 
         DeletePhoto({commit},id){
@@ -47,8 +69,8 @@ export default {
             return new Promise( (resolve, reject)=>{
                 getThumbnailPhoto(photo.id).then(response =>{
                     photo.url = URL.createObjectURL(response.data);
-                    commit('addUrlId',photo);
-                    commit('sortUrlIdByTime');
+                    commit('addUrlId',photo,{root:true});
+                    commit('sortUrlIdByTime',{root:true});
                     resolve(photo);
                 }).catch(error=>{
                     reject(error);
@@ -60,7 +82,6 @@ export default {
         GetThumbnailPhotoInCover({commit}, id){
             return new Promise( (resolve, reject)=>{
                 getThumbnailPhoto(id).then(response =>{
-
                     resolve(response);
                 }).catch(error=>{
                     reject(error);
@@ -68,14 +89,43 @@ export default {
             })
         },
 
+        RiseDetailsDialog({commit}, pic){
+            commit('updatePicDetails', pic);
+            commit('changeDialogPhotoVisible');
+            return new Promise( (resolve, reject)=>{
+                getPhoto(pic.id).then(response =>{
+                    pic.url = URL.createObjectURL(response.data);
+                    commit('updatePicDetails', pic);
+                    resolve(response);
+                }).catch(error=>{
+                    reject(error);
+                })
+            })
+
+
+        }
+
+
+
         //！！！！!
         //1. 用map 将所有图片信息以此存入 state 和 缓存
         //2. 将current_page 和 total_pages存入state
 
     },
     mutations:{
+        changeDialogPhotoVisible(state){
+            state.dialogPhotoVisible = !state.dialogPhotoVisible;
+        },
+        updatePicDetails(state,pic){
+            state.pic_detail = pic;
+        }
     },
     getters:{
-
+        getDialogPhotoVisible(state){
+            return state.dialogPhotoVisible;
+        },
+        getPicDetail(state){
+            return state.pic_detail;
+        }
     }
 }

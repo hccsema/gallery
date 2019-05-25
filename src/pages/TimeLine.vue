@@ -3,6 +3,7 @@
         <div class="buttons">
             <el-button type="primary"  @click="batchOptions">批量操作</el-button>
             <el-button type="primary"  @click="batchDel">删除照片</el-button>
+            <el-button type="primary"  @click="batchHide">加密照片</el-button>
             <el-dropdown class="drop">
                 <el-button type="primary">
                     移动照片<i class="el-icon-arrow-down el-icon--right"></i>
@@ -20,7 +21,6 @@
         <div v-for="(date, key) in photo_date" class="timeline_card" :key="key">
             <h1 class="pic_date">{{date}}</h1>
             <br><br>
-
             <el-row>
                 <el-col  :span="6" v-for=" (pic , index)  in getUrlId " :offset="0" :key="index">
                     <el-card v-if="date === pic.date"
@@ -30,111 +30,35 @@
                     </el-card>
                 </el-col>
             </el-row>
-
-
-
         </div>
-
-        <transition name="el-fade-in">
-            <div class="page-up" v-show="btnFlag" @click="backTop">
-                <i class="el-icon-caret-top"></i>
-            </div>
-        </transition>
-
-        <el-dialog :visible.sync="dialogPhotoVisible" center width="70%">
-            <div class="dialog">
-                <el-row>
-                    <el-col :span="16">
-                        <img :src="url_detail" class="detail_photo" >
-                    </el-col>
-                    <el-col :span="8" >
-                        <br>
-                        <h3>图片中可能包含:</h3>
-                        <el-button  v-for="(type, index) in pic_detail.type" :key="index"
-                                    round
-                                    type="primary"
-                                    size="small"
-                                    @click="enterType(type)">
-                            {{type}}
-                        </el-button>
-
-                        <br>
-                        <h3>相册:</h3>
-                        <p v-if="!pic_detail.album">该图片暂不归属于任一相册</p>
-                        <el-button round
-                                   type="primary"
-                                   v-if="pic_detail.album"
-                                   size="small"
-                                   @click="enterAlbum(pic_detail.album.name, pic_detail.album.id)">
-                            {{pic_detail.album.name}}
-                        </el-button>
-
-                        <h3>地点:</h3>
-                        <p v-if="pic_detail.address.country === '' ">该图片未含有位置信息</p>
-                        <el-button round
-                                   type="info"
-                                   v-if="!(pic_detail.address.country === '')"
-                                   size="small"
-                                   @click="enterType(pic_detail.type)">
-                            {{pic_detail.address.country}}
-                            {{pic_detail.address.province}}
-                            {{pic_detail.address.city}}
-                            {{pic_detail.address.district}}
-                        </el-button>
-
-                        <br>
-                    </el-col>
-                </el-row>
-            </div>
-            <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="deletePhoto(pic_detail.id)">Delete</el-button>
-                <el-button type="primary" @click="movePhoto(pic_detail.id)">Remove</el-button>
-            </div>
-        </el-dialog>
-
-
+        <details-dialog></details-dialog>
 
     </div>
 </template>
 
 <script>
-    import ScrollTop from "@/components/ScrollTop";
-    import router from "@/router";
-    import axios from "../axios";
-
+    import DetailsDialog from "@/components/DetailsDialog"
+    import axios from '../axios'
     export default {
         name: "TimeLine",
-        components: {ScrollTop},
+        components: {
+            DetailsDialog
+        },
         data(){
             return{
-                //被删除的属性如下：
-                // 1. url_id:[], 已经完整封装在state中，可通过getUrlId（见computed）直接获取，
-                //         使用： 行数 9
-                // 2. photo_all:[], 被简约
-                //当前页面中间全局量
+                //中间商
                 photo_id_all:[],
                 //页码信息
                 current_page:'',
                 total_pages:'',
-                //图片详情信息
-                url_detail:'',
-                pic_detail:{address:{
-                        country:'',
-                        city:'',
-                        province:'',
-                        district:''
-                    }},
-                dialogPhotoVisible:false,
                 //批量操作
                 batchState:false,
                 //图片选中状态 布尔数组
                 chosenState:[],
                 //选中图片id的数组
                 options_list:[],
-
                 photo_date:[],
                 show_url_id:[],
-                btnFlag : false,
             }
         },
         created() {
@@ -147,29 +71,8 @@
         },
         mounted(){
             window.addEventListener('scroll', this.windowScroll);
-            window.addEventListener('scroll', this.scrollToTop);
         },
         methods: {
-
-            backTop () {
-                let that = this;
-                let timer = setInterval(() => {
-                    let ispeed = Math.floor(-that.scrollTop / 5);
-                    document.documentElement.scrollTop = document.body.scrollTop = that.scrollTop + ispeed;
-                    if (that.scrollTop === 0) {
-                        clearInterval(timer);
-                    }
-                }, 16)
-            },
-
-            // 回到顶部
-            // 计算距离顶部的高度，当高度大于60显示回顶部图标，小于60则隐藏
-            scrollToTop () {
-                let that = this;
-                that.scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-                that.btnFlag = that.scrollTop > 60;
-            },
-
             //点击图片，根据条件选择执行事件
             chooseCondition(index, pic){
                 if(this.batchState){
@@ -180,32 +83,14 @@
                 }
             },
 
-
-
-            enterType(type){
-                router.push({name:'ClassifyPhoto', params:{type:type}});
-            },
-            enterAlbum(name,id){
-                router.push({name:'AlbumPhoto',params: {name:name, id:id}});
-            },
-            //单图片详情
             details(pic){
-                /*
-                此处完成单图片详情的展示
-                */
-
-                this.pic_detail = pic;
-                this.url_detail = '';
-                this.dialogPhotoVisible = true;
-                this.getPhoto(pic.id);
-                //console.log(this.url_detail);
+                this.$store.dispatch('RiseDetailsDialog', pic)
             },
 
             getAll(page, number=20){
                 let _this = this;
                 this.$store.dispatch('GetAll',page,number).then(res =>{
                     let data = res.data;
-                    console.log(data);
                     _this.current_page = data.page;
                     _this.total_pages = data.totalPages;
                     _this.photo_id_all = data.content.map(a => {
@@ -214,7 +99,7 @@
                             time : new Date(a.create ? a.create : a.upload),
                             date : _this.GMTToStr(new Date(a.create ?  a.create : a.upload)).slice(0,10),
                             type : a.type,
-                            album: a.album,
+                            album: a.album ? a.album : {name: ''},
                             address : a.address,
                         }
                     });
@@ -225,13 +110,16 @@
                             _this.photo_date.unshift(_this.photo_id_all[i].date);
                         }
                     }
+
                     _this.photo_date.sort(function (a, b) {
-                        return b - a;
+                        let _b = parseInt(b.replace(/-/g,""));
+                        let _a = parseInt(a.replace(/-/g,""));
+
+                        return _b - _a;
                     });
 
                     /*
-                    此处去重
-                    重复原因 ： 在滑块向下滑动的过程中会产生多次事件触发，
+                    此处去重 重复原因 ： 在滑块向下滑动的过程中会产生多次事件触发，
                                 可能产生多次请求，暂时无较优解
                                 （若直接设置最底部触发，则触发条件变得苛刻，体验变差
                                     ，同时加载过程中，依然会触发)
@@ -250,7 +138,6 @@
                 });
             },
 
-
             windowScroll(){
                 //滚动条距离页面顶部的距离
                 let scrollTop = document.documentElement.scrollTop; //可滑动高
@@ -261,19 +148,10 @@
 
                     if(this.current_page < this.total_pages ){
                         this.current_page = this.current_page + 1;
-                        console.log(this.current_page + ' '  + this.total_pages);
+                        //console.log(this.current_page + ' '  + this.total_pages);
                         this.getAll(this.current_page);
                     }
                 }
-            },
-
-            getPhoto(id) {
-                let _this = this;
-                this.$store.dispatch('GetPhoto',id).then(function (res) {
-                    _this.url_detail = URL.createObjectURL(res.data);
-                }).catch(function (error) {
-                    console.log(error);
-                });
             },
 
             getThumbnailPhoto(photo) {
@@ -283,7 +161,6 @@
                     console.log(error);
                 });
             },
-
 
             isChosen(index,id){
                 // let _this = this;
@@ -300,25 +177,6 @@
                         }
                     }
                 }
-            },
-
-
-            deletePhoto(id){
-                let _this = this;
-                this.$store.dispatch('DeletePhoto',id).then( res =>{
-                    alert('删除成功');
-                    //关闭dialog
-                    _this.dialogPhotoVisible=false;
-                }).catch(error =>{
-                    alert('删除失败');
-                    console.log(error);
-                })
-
-            },
-
-            //移动图片至隐藏空间
-            movePhoto(id){
-
             },
 
             batchOptions(){
@@ -346,21 +204,17 @@
                 if(obj<10) return "0"+ obj;
                 else return obj;
             },
-
-
-            //批量删除，循环调用DeletePhoto action
+            //批量删除
             batchDel(){
-
-                if(this.options_list.length === 0) {
-                    alert("请先选择照片!")
-                }
+                let faultNum = 0;
+                if( !this.options_list.length )  alert("请先选择照片!");
                 else{
                     for(let i=0; i<this.options_list.length; i++) {
                         this.$store.dispatch('DeletePhoto',this.options_list[i]).then( res =>{
                             this.chosenState.pop();
                             this.options_list.splice(i,1);
                         }).catch(error =>{
-                            alert("删除失败");
+                            faultNum ++;
                             console.log(error);
                         })
                     }
@@ -368,12 +222,45 @@
                         if(this.chosenState[i])
                             this.chosenState.splice(i,1,false);
                     }
-                    alert("删除成功");
-                    this.batchState = !this.batchState;
+                }
+                if(!faultNum) alert("删除成功");
+                else alert(faultNum +"张图片删除失败");
+            },
+            //批量隐藏
+            batchHide(){
+                if(window.localStorage.getItem('securityToken')) {
+                    if(this.options_list.length === 0) {
+                        alert("请先选择照片!")
+                    }
+                    else{
+                        for(let i=0; i<this.options_list.length; i++) {
+                            axios({
+                                method: 'post',
+                                url: 'http://photo.upc.pub/photo/change_to_security',
+                                headers: {
+                                    'authorization': 'Bearer ' + window.localStorage.getItem('Authorization'),
+                                },
+                                params: {'photoId':this.options_list[i], 'securityToken':window.localStorage.getItem('securityToken')},
+                            }).then(res => {
+                                console.log(res);
+                            }).catch(error => {
+                                console.log(error);
+                            })
+                        }
+                        for (let i=0; i<this.chosenState.length; i++){
+                            if(this.chosenState[i])
+                                this.chosenState.splice(i,1,false);
+                        }
+                        alert("隐藏成功");
+                    }
+                }
+                else{
+                    alert("暂未开启隐私空间，请前往设置");
+                    router.push('./sex');
                 }
             },
 
-
+            //批量移动
             batchMove(album){
                 if(this.options_list.length === 0) {
                     alert("请先选择照片!")
@@ -413,17 +300,10 @@
             },
 
         },
-        watch:{
 
-        },
         destroyed () {
             window.removeEventListener('scroll', this.windowScroll);
-            window.removeEventListener('scroll', this.scrollToTop);
-
         }
-
-
-
     }
 </script>
 
@@ -432,19 +312,10 @@
         width: 100%;
         height: 250px;
     }
-    .detail_photo{
-        padding: 30px 0;
-        height: 350px;
-    }
-    .dialog{
-    }
     .card{
         margin-bottom: 25px;
         border-width: 4px;
     }
-    /*.container{*/
-    /*    padding-top: 59px;*/
-    /*}*/
     .buttons{
         position: absolute;
         margin-left: 3px;
@@ -454,7 +325,6 @@
         margin-bottom: 25px;
         border-width: 4px;
         border-color: #1da2ff;
-
     }
     .timeline_card{
         padding-top: 80px;
@@ -464,35 +334,6 @@
         margin-left: 4px;
     }
 
-    .page-up{
-        background-color: #409eff;
-        position: fixed;
-        right: 50px;
-        bottom: 30px;
-        width: 40px;
-        height: 40px;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: .3s;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, .5);
-        opacity: .5;
-        z-index: 100;
-        .el-icon-caret-top{
-            color: #fff;
-            display: block;
-            line-height: 40px;
-            text-align: center;
-            font-size: 18px;
-        }
-        p{
-            display: none;
-            text-align: center;
-            color: #fff;
-        }
-        &:hover{
-            opacity: 1;
-        }
-    }
     .el-dropdown {
         vertical-align: top;
     }

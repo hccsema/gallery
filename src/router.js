@@ -12,9 +12,10 @@ import MapAlbum from "./pages/MapAlbum";
 import UserInfo from "./pages/UserInfo";
 import CreateAlbum from "./pages/CreateAlbum";
 import Classify from "./pages/Classify";
-import ClassifyPhoto from "./pages/ClassifyPhoto";
 import Album from "@/pages/Album";
-import AlbumPhoto from "@/pages/AlbumPhoto";
+import Privacy from '@/pages/Privacy';
+import LoginPrivacy from '@/pages/LoginPrivacy';
+import ATPhotos from "@/pages/ATPhotos";
 
 
 Vue.use(Router);
@@ -61,6 +62,14 @@ export default new Router({
                     component: Sex
                 },
                 {
+                    path: '/privacy',
+                    component: Privacy
+                },
+                {
+                    path: "/loginPrivacy",
+                    component: LoginPrivacy
+                },
+                {
                     path: '/about',
                     component: About
                 },
@@ -82,9 +91,9 @@ export default new Router({
                     component: Classify
                 },
                 {
-                    path: '/classifyPhoto/:type',
+                    path: '/classifyPhoto/:name',
                     name:'ClassifyPhoto',
-                    component: ClassifyPhoto
+                    component: ATPhotos
                 },
                 {
                     path: '/create',
@@ -98,7 +107,7 @@ export default new Router({
                 {
                     name: 'AlbumPhoto',
                     path:'albumPhoto/:name',
-                    component: AlbumPhoto,
+                    component: ATPhotos,
                 },
 
 

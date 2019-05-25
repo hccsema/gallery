@@ -11,6 +11,7 @@ export async function deletePhoto(id) {
 }
 
 
+
 export async function getPhoto(id) {
     return axios({
         method: 'get',
@@ -18,6 +19,7 @@ export async function getPhoto(id) {
         responseType: 'blob',
     })
 }
+
 
 
 export async function getThumbnailPhoto(id) {
@@ -34,3 +36,19 @@ export async function getAll(page, number=20) {
         url: 'http://photo.upc.pub/photo/get_all/' + page +'/' + number,
     })
 }
+
+
+export async function getAllByAlbum(id, page, number=20) {
+    return axios({
+        method:'get',
+        url: 'http://photo.upc.pub/photo/get_album_photos/' + id +'/' + page +'/' + number,
+    })
+}
+
+export async function getAllByType(type) {
+    return axios({
+        method:'get',
+        url: 'http://photo.upc.pub/photo/get_type_photos/'+type,
+    })
+}
+

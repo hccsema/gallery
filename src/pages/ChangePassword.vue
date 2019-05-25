@@ -1,18 +1,27 @@
 <template>
     <div>
-        <h1>{{$route.params.index}}</h1>
-    <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="密码" prop="pass">
-            <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码" prop="checkPass">
-            <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-            <el-button @click="resetForm('ruleForm')">重置</el-button>
-        </el-form-item>
-    </el-form>
+        <el-row >
+            <el-col :span="12" :offset="4">
+                <h1 v-if="$route.params.index === 1">隐私空间密码修改</h1>
+                <h1 v-else>登陆密码修改</h1>
+                <br>
+            <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="旧密码" prop="oldPass">
+                    <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="新密码" prop="newPass">
+                    <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="checkPass">
+                    <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+                    <el-button @click="resetForm('ruleForm')">重置</el-button>
+                </el-form-item>
+            </el-form>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -40,11 +49,12 @@
             };
             return {
                 ruleForm: {
-                    pass: '',
+                    oldPass:'',
+                    newPass: '',
                     checkPass: '',
                 },
                 rules: {
-                    pass: [
+                    newPass: [
                         { validator: validatePass, trigger: 'blur' }
                     ],
                     checkPass: [

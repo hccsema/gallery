@@ -1,9 +1,9 @@
 <template>
-        <transition name="el-fade-in">
-            <div class="page-up" v-show="btnFlag" @click="backTop">
-                <i class="el-icon-caret-top"></i>
-            </div>
-        </transition>
+    <transition name="el-fade-in">
+        <div class="page-up" v-show="btnFlag" @click="backTop">
+            <i class="el-icon-caret-top"></i>
+        </div>
+    </transition>
 </template>
 
 <script>
@@ -11,21 +11,19 @@
         name:"ScrollTop",
         data() {
             return {
-                return: {
                     btnFlag: false,
-                }
             }
         },
         mounted(){
             window.addEventListener('scroll', this.scrollToTop);
         },
-        method:{
+        methods:{
             // 点击图片回到顶部方法，加计时器是为了过渡顺滑
             backTop () {
                 let that = this;
                 let timer = setInterval(() => {
-                    let ispeed = Math.floor(-that.scrollTop / 5);
-                    document.documentElement.scrollTop = document.body.scrollTop = that.scrollTop + ispeed;
+                    let iSpeed = Math.floor(-that.scrollTop / 5);
+                    document.documentElement.scrollTop = document.body.scrollTop = that.scrollTop + iSpeed;
                     if (that.scrollTop === 0) {
                         clearInterval(timer);
                     }

@@ -15,10 +15,10 @@
                         <span @click="userInfo" >个人信息</span>
                     </el-dropdown-item>
                     <el-dropdown-item>
-                        <span @click="changePassword">修改密码</span>
+                        <span @click="changeLoginPass">修改密码</span>
                     </el-dropdown-item>
                     <el-dropdown-item>
-                        <span @click="changeSecret">二级密码</span>
+                        <span @click="changeSecretPass">二级密码</span>
                     </el-dropdown-item>
                     <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
                 </el-dropdown-menu>
@@ -45,7 +45,7 @@
 
             },
             methods: {
-                changePassword() {
+                changeLoginPass() {
                     router.push({name:'ChangePassword',params:{index:'0'}});
                 },
                 userInfo(){
@@ -64,7 +64,7 @@
                     }).catch(() => {});
                 },
 
-                changeSecret(){
+                changeSecretPass(){
                     router.push({name:'ChangePassword',params:{index:'1'}});
                 }
             },

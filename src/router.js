@@ -109,6 +109,11 @@ export default new Router({
                     path:'albumPhoto/:name',
                     component: ATPhotos,
                 },
+                {
+                    name:'MapPhoto',
+                    path:'mapPhoto/:name',
+                    component: ATPhotos,
+                }
 
 
             ]

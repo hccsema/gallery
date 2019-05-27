@@ -23,6 +23,18 @@
                 </el-col>
             </el-row>
 
+            <el-row  v-if="$route.params.lol === ''">
+                <el-col :span="6" v-for=" (pic, index)  in getUrlId " :offset="0" :key="index">
+                    <el-card v-if="pic.address.city === $route.params.name"
+                             :body-style="{padding: '0.5px'}"
+                             :class="chosenState[index]?  'card_chosen': 'card'">
+                        <img :src="pic.url"
+                             class="humbnail_photo"
+                             @click="chooseCondition(index, pic)">
+                    </el-card>
+                </el-col>
+            </el-row>
+
             <el-row  v-else>
                 <el-col :span="6" v-for=" (pic, index)  in getUrlId " :offset="0" :key="index">
                     <el-card v-if="pic.album.name === $route.params.name"
@@ -64,7 +76,11 @@
         created() {
             if(this.$route.params.id === ''){
                 this.getAllByType(this.$route.params.name);
-            }else {
+            }
+            else if(this.$route.params.lol === '') {
+                this.getAllByCity(this.$route.params.name);
+            }
+            else {
                 this.getAllByAlbum(this.$route.params.id);
             }
 
@@ -106,7 +122,6 @@
                 });
             },
             getAllByType(name){
-                console.log(name);
                 axios({
                     method: 'get',
                     url:'http://photo.upc.pub/photo/get_type_photos',
@@ -117,7 +132,6 @@
                 }).then(res =>{
                     let _this = this;
                     let data = res.data;
-                    console.log(data);
                     _this.current_page = data.page;
                     _this.total_pages = data.totalPages;
                     _this.photo_id_all = data.content.map(a => {
@@ -147,7 +161,47 @@
                     console.log(error);
                 });
             },
+            getAllByCity(name){
+                axios({
+                    method: 'get',
+                    url:'http://photo.upc.pub/photo/get_city_photos',
+                    headers:{
+                        'authorization': 'Bearer ' + window.localStorage.getItem('Authorization'),
+                    },
+                    params:{cityName: name}
+                }).then(res =>{
+                    let _this = this;
+                    let data = res.data;
+                    _this.current_page = data.page;
+                    _this.total_pages = data.totalPages;
+                    _this.photo_id_all = data.content.map(a => {
+                        return{
+                            id : a.id,
+                            time : new Date(a.create ? a.create : a.upload),
+                            date : _this.GMTToStr(new Date(a.create ?  a.create : a.upload)).slice(0,10),
+                            type : a.type,
+                            album: a.album,
+                            address : a.address,
+                        }
+                    });
 
+                    for(let i = 0; i< _this.photo_id_all.length; i++){
+                        _this.chosenState.push(false);
+                    }
+
+                    for(let i = 0; i< this.photo_id_all.length ; i++){
+                        if(!(_this.getUrlId.some(function (x) {
+                            return _this.photo_id_all[i].id === x.id;
+                        })))
+                        {
+                            _this.getThumbnailPhoto(_this.photo_id_all[i]);
+                        }
+                    }
+                }).catch(error =>{
+                    console.log(error);
+                });
+
+            },
 
             chooseCondition(index, pic){
                 if(this.batchState){

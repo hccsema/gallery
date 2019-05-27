@@ -38,7 +38,6 @@
         },
         created() {
             this.$store.dispatch('GetAlbumInfo').then(function (res) {
-
             }).catch(function (error) {
                 console.log(error);
             });
@@ -47,8 +46,9 @@
             createAlbum () {
                 router.push("create");
             },
+
             enterAlbum(id, name) {
-                router.push({name:'AlbumPhoto',params: {name:name, id:id }});
+                router.push({name:'AlbumPhoto',params: {name:name,id :id}});
             },
 
             deleteAlbum() {

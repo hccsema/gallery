@@ -1,65 +1,59 @@
 <template>
     <div class="amap-page-container">
-        <div :style="{width:'100%',height:'515px'}">
-            <el-amap vid="amap" :plugin="plugin"  :center="center">
-            </el-amap>
-        </div>
-
-
-        <div class="toolbar">
-        <span v-if="loaded">
-          location: lng = {{ lng }} lat = {{ lat }}
-        </span>
-        </div>
-        <div v-on:click="req_post()">
-<!--            查询周边-->
-        </div>
+        <el-amap vid="amapDemo" :zoom="5" :center="[103.9746093750,35.7821707033]" class="amap-demo">
+            <el-amap-marker v-for="city in city_info"
+                            :icon="city.url"
+                            :position="[parseFloat(city.location['longitude']),parseFloat(city.location['latitude'])]"
+                            :clickable="true">
+                <img :src="city.url" @click="enterCityPhoto(city.city)" height="60" width="60">
+            </el-amap-marker>
+        </el-amap>
     </div>
 </template>
+
 <script>
+    import router from "@/router";
     export default {
         data(){
-            const self = this;
-            return {
-                center: [120.176419, 35.942632],
-                lng: 0,
-                lat: 0,
-                loaded: false,
-                plugin: [{
-                    enableHighAccuracy: true,//是否使用高精度定位，默认:true
-                    timeout: 100,          //超过10秒后停止定位，默认：无穷大
-                    maximumAge: 0,           //定位结果缓存0毫秒，默认：0
-                    convert: true,           //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
-                    showButton: true,        //显示定位按钮，默认：true
-                    buttonPosition: 'RB',    //定位按钮停靠位置，默认：'LB'，左下角
-                    showMarker: true,        //定位成功后在定位到的位置显示点标记，默认：true
-                    showCircle: true,        //定位成功后用圆圈表示定位精度范围，默认：true
-                    panToLocation: true,     //定位成功后将定位到的位置作为地图中心点，默认：true
-                    zoomToAccuracy:true,//定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：f
-                    extensions:'all',
-                    pName: 'Geolocation',
-                    events: {
-                        init(o) {
-                            // o 是高德地图定位插件实例
-                            o.getCurrentPosition((status, result) => {
-                                console.log(result)
-                                if (result && result.position) {
-                                    self.lng = result.position.lng;
-                                    self.lat = result.position.lat;
-                                    self.center = [self.lng, self.lat];
-                                    self.loaded = true;
-                                    self.$nextTick();
-                                }
-                            });
-                        }
-                    }
-                }]
+            return{
+                city_info:[],
             }
-        }
+        },
+        created() {
+            this.$store.dispatch('GetCityList').then(res=>{
+                for(let key in res.data){
+                    this.getAllByCity(key);
+                }
+            }).catch(error =>{
+                console.log(error);
+            });
+        },
+        methods:{
+            getAllByCity(name){
+                this.$store.dispatch('GetCityCoverInfo',name).then(res => {
+                    this.getCityThumbnailPhotoCover(res.data.id,res.data.location,name);
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+            getCityThumbnailPhotoCover(id,location,name){
+                this.$store.dispatch('GetThumbnailPhotoInCover',id).then(res=> {
+                    let url = URL.createObjectURL(res.data);
+                    let cover = {'url':url,'city':name,'location':location};
+                    this.city_info.push(cover);
+                }).catch(error =>{
+                    console.log(error);
+                });
+            },
+            enterCityPhoto(name){
+                router.push({name:'MapPhoto', params:{name:name, lol:''}});
+            },
+        },
     }
 </script>
+
 <style>
-    .amap {
-        height: 200px;
+    .amap-page-container {
+        height: 620px;
     }
 </style>

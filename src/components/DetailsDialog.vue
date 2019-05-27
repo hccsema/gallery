@@ -36,10 +36,10 @@
                     <h3>地点:</h3>
                     <p v-if="picDetail.address.country === '' ">该图片未含有位置信息</p>
                     <el-button round
-                               type="info"
+                               type="primary"
                                v-if="!(picDetail.address.country === '')"
                                size="small"
-                               @click="enterType(picDetail.type)">
+                               @click="enterCity(picDetail.address.city)">
                         {{picDetail.address.country}}
                         {{picDetail.address.province}}
                         {{picDetail.address.city}}
@@ -59,13 +59,15 @@
 
 <script>
     import router from '../router'
-    import {getPhoto} from "@/api/photo";
+    import axios from '@/axios'
     export default {
         name: "DetailsDialog",
         data() {
             return {
                 dialogPhotoVisible:false,
-                pic_detail:{address:{
+                pic_detail:{
+                    album:'',
+                    address:{
                         country:'',
                         city:'',
                         province:'',
@@ -76,10 +78,14 @@
         },
         methods:{
             enterType(type){
-                router.push({name:'ClassifyPhoto', params:{name:type, id:''}});
+                router.push({name:'ClassifyPhoto', params:{name:type,id:''}});
+                this.closeDialog();
             },
             enterAlbum(name,id){
                 router.push({name:'AlbumPhoto',params:{name:name, id:id}});
+            },
+            enterCity(name){
+                router.push({name:'MapPhoto', params:{name:name,lol:''}});
             },
             closeDialog(){
                 this.$store.commit('changeDialogPhotoVisible');

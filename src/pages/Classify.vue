@@ -33,9 +33,7 @@
             });
         },
         methods:{
-
             getTypeCoverPhoto(type,number){
-
                 this.$store.dispatch('GetPhotoByType',type).then(res=>{
                     let data = res.data;
                     this.getThumbnailPhotoInCover(data.id, type, number)
@@ -43,7 +41,6 @@
                     console.log(error);
                 })
             },
-
 
             /*
                 在state.url_id中查找
@@ -65,7 +62,7 @@
             },
 
             enterClassifyPhoto(type){
-                router.push({name:'ClassifyPhoto', params:{name:type, id: ''}});
+                router.push({name:'ClassifyPhoto', params:{name:type, id:''}});
             },
         }
     }

@@ -3,7 +3,27 @@
         <div class="buttons">
             <el-button type="primary"  @click="batchOptions">批量操作</el-button>
             <el-button type="primary"  @click="batchDel">删除照片</el-button>
-            <el-button type="primary"  @click="batchHide">加密照片</el-button>
+            <el-button type="primary"  @click="batchHide">隐藏照片</el-button>
+            <el-button type="primary" @click="dialogFormVisible = true">分享照片</el-button>
+
+            <el-dialog title="分享照片" :visible.sync="dialogFormVisible" center :modal="false">
+                <el-form :model="form">
+                    <el-form-item label="分享密码" :label-width="formLabelWidth">
+                        <el-input v-model="form.password" placeholder="请设置分享密码" class="share_input"></el-input>
+                    </el-form-item>
+                    <el-form-item label="分享有效期" :label-width="formLabelWidth">
+                        <el-select v-model="form.expiration" placeholder="请选择分享有效期">
+                            <el-option label="3天期限" value="259200"></el-option>
+                            <el-option label="7天期限" value="604800"></el-option>
+                            <el-option label="永久期限" value="-1"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="dialogFormVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="batchShare">确 定</el-button>
+                </div>
+            </el-dialog>
             <el-dropdown class="drop">
                 <el-button type="primary">
                     移动照片<i class="el-icon-arrow-down el-icon--right"></i>
@@ -32,7 +52,6 @@
             </el-row>
         </div>
         <details-dialog></details-dialog>
-
     </div>
 </template>
 
@@ -59,6 +78,14 @@
                 options_list:[],
                 photo_date:[],
                 show_url_id:[],
+                dialogFormVisible: false,
+                form: {
+                    password: '',
+                    expiration: '',
+                },
+                formLabelWidth: '250px',
+                share_id:'',
+                base_password:'',
             }
         },
         created() {
@@ -222,9 +249,9 @@
                         if(this.chosenState[i])
                             this.chosenState.splice(i,1,false);
                     }
+                    if(!faultNum) alert("删除成功");
+                    else alert(faultNum +"张图片删除失败");
                 }
-                if(!faultNum) alert("删除成功");
-                else alert(faultNum +"张图片删除失败");
             },
             //批量隐藏
             batchHide(){
@@ -289,6 +316,37 @@
                 }
             },
 
+            //批量分享
+            batchShare(){
+                if(this.options_list.length === 0) {
+                    alert("请先选择照片!");
+                    this.dialogFormVisible = false;
+                }
+                else{
+                    let faultNum = 0;
+                    this.$store.dispatch('SharePhoto', {'list':this.options_list,'password':this.form.password,'expiration':this.form.expiration}).then(res => {
+                        this.share_id = res.data.id;
+                        alert("分享链接:http://photo.upc.pub/share/get/" + this.share_id +"  分享密码:" + this.base_password);
+                    }).catch(error => {
+                        faultNum++;
+                        console.log(error);
+                    });
+                    for (let i=0; i<this.chosenState.length; i++){
+                        if(this.chosenState[i]) {
+                            this.chosenState.splice(i, 1, false);
+                        }
+                    }
+                    if(!faultNum) alert("已添加到分享列表");
+                    else alert(faultNum+"张图片添加分享列表失败");
+                    this.batchState = !this.batchState;
+                    this.options_list = [];
+                    this.dialogFormVisible = false;
+                    this.base_password = this.form.password;
+                    this.form.password = '';
+                    this.form.expiration = '';
+                }
+            },
+
         },
 
         computed:{
@@ -345,6 +403,9 @@
     }
     .drop{
         margin-left: 10px;
+    }
+    .share_input{
+        width: 220px;
     }
 </style>
 

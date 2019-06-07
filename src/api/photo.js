@@ -10,8 +10,6 @@ export async function deletePhoto(id) {
     });
 }
 
-
-
 export async function getPhoto(id) {
     return axios({
         method: 'get',
@@ -19,8 +17,6 @@ export async function getPhoto(id) {
         responseType: 'blob',
     })
 }
-
-
 
 export async function getThumbnailPhoto(id) {
     return axios({
@@ -37,18 +33,15 @@ export async function getAll(page, number=20) {
     })
 }
 
-
-export async function getAllByAlbum(id, page, number=20) {
+export async function sharePhoto(share_info) {
     return axios({
-        method:'get',
-        url: 'http://photo.upc.pub/photo/get_album_photos/' + id +'/' + page +'/' + number,
+        method:'post',
+        url: 'http://photo.upc.pub/share/add/',
+        data: {
+            "type":"0",
+            "password":share_info.password,
+            "expiration":share_info.expiration,
+            "shareList":share_info.list,
+        }
     })
 }
-
-export async function getAllByType(type) {
-    return axios({
-        method:'get',
-        url: 'http://photo.upc.pub/photo/get_type_photos/'+type,
-    })
-}
-

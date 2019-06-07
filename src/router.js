@@ -16,6 +16,8 @@ import Album from "@/pages/Album";
 import Privacy from '@/pages/Privacy';
 import LoginPrivacy from '@/pages/LoginPrivacy';
 import ATPhotos from "@/pages/ATPhotos";
+import ShareLogin from "@/pages/ShareLogin"
+import SharePhoto from "./pages/SharePhoto";
 
 
 Vue.use(Router);
@@ -51,6 +53,14 @@ export default new Router({
                 {
                     path:'/',
                     component: TimeLine
+                },
+                {
+                    path:'/share/get/:id',
+                    component: ShareLogin
+                },
+                {
+                    path:'/sharephoto',
+                    component:SharePhoto
                 },
                 {
                     path: '/load',

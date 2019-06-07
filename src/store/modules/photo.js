@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex'
-import {deletePhoto, getAll, getPhoto, getThumbnailPhoto} from "../../api/photo";
+import {deletePhoto, getAll, getPhoto, getThumbnailPhoto, sharePhoto} from "../../api/photo";
 import {getAllByAlbum} from "@/api/photo";
 
 Vue.use(Vuex);
@@ -46,6 +46,17 @@ export default {
             return new Promise( (resolve, reject)=>{
                     deletePhoto(id).then(response=>{
                         commit("deletePhotoFromUrlId",id, {root:true});
+                        resolve(response);
+                    }).catch(error=>{
+                        reject(error);
+                    });
+                }
+            )
+        },
+
+        SharePhoto({commit},share_info){
+            return new Promise( (resolve, reject)=>{
+                    sharePhoto(share_info).then(response=>{
                         resolve(response);
                     }).catch(error=>{
                         reject(error);

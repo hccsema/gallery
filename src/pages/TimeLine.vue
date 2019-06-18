@@ -5,7 +5,6 @@
             <el-button type="primary"  @click="batchDel">删除照片</el-button>
             <el-button type="primary"  @click="batchHide">隐藏照片</el-button>
             <el-button type="primary" @click="dialogFormVisible = true">分享照片</el-button>
-
             <el-dialog title="分享照片" :visible.sync="dialogFormVisible" center :modal="false">
                 <el-form :model="form">
                     <el-form-item label="分享密码" :label-width="formLabelWidth">
@@ -24,6 +23,8 @@
                     <el-button type="primary" @click="batchShare">确 定</el-button>
                 </div>
             </el-dialog>
+
+
             <el-dropdown class="drop">
                 <el-button type="primary">
                     移动照片<i class="el-icon-arrow-down el-icon--right"></i>
@@ -38,7 +39,7 @@
             </el-dropdown>
         </div>
 
-        <div v-for="(date, key) in photo_date" class="timeline_card" :key="key">
+        <div v-for="(date, key) in photo_date" class="timeline_card" :key="key" >
             <h1 class="pic_date">{{date}}</h1>
             <br><br>
             <el-row>
@@ -111,13 +112,15 @@
             },
 
             details(pic){
-                this.$store.dispatch('RiseDetailsDialog', pic)
+                console.log(pic);
+                this.$store.dispatch('RiseDetailsDialog', pic);
             },
 
             getAll(page, number=20){
                 let _this = this;
                 this.$store.dispatch('GetAll',page,number).then(res =>{
                     let data = res.data;
+                    console.log(data);
                     _this.current_page = data.page;
                     _this.total_pages = data.totalPages;
                     _this.photo_id_all = data.content.map(a => {
@@ -125,9 +128,14 @@
                             id : a.id,
                             time : new Date(a.create ? a.create : a.upload),
                             date : _this.GMTToStr(new Date(a.create ?  a.create : a.upload)).slice(0,10),
-                            type : a.type,
+                            type : a.type ? a.type : [],
                             album: a.album ? a.album : {name: ''},
-                            address : a.address,
+                            address : a.address ? a.address :{
+                                country:'',
+                                city:'',
+                                province:'',
+                                district:'' },
+                            faces: a.faces ? a.faces : {},
                         }
                     });
 

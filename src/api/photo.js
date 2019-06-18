@@ -21,7 +21,7 @@ export async function getPhoto(id) {
 export async function getThumbnailPhoto(id) {
     return axios({
         method: 'get',
-        url: 'http://photo.upc.pub/photo/get_thumbnail_photo/' + id,
+        url: '/photo/get_thumbnail_photo/' + id,
         responseType: 'blob',
     })
 }
@@ -45,3 +45,5 @@ export async function sharePhoto(share_info) {
         }
     })
 }
+
+

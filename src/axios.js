@@ -4,13 +4,13 @@ import router from './router';
 
 const axios = Service.create({
     baseURL : 'http://photo.upc.pub',
-    timeout : 30000,
+    timeout : 15000,
 });
 
 
 
 axios.interceptors.request.use(function (config) {
-   if (config.url !== "/login") {
+   if (config.url !== "/login" && config.url !== "/share" ) {
            config.headers.common['authorization'] = 'Bearer ' + window.localStorage.getItem('Authorization');
    }
    return config;
@@ -19,7 +19,7 @@ axios.interceptors.request.use(function (config) {
     return Promise.reject(error);
 };
 
-axios.interceptors.response.use(function (response) {
+axios.interceptors.response.use( response => {
     if(typeof(response.headers.authorization) !== 'undefined'
         && response.headers.authorization !== null
         && response.headers.authorization !== ''
@@ -28,6 +28,7 @@ axios.interceptors.response.use(function (response) {
     }
     return response;
 }),error=> {
+    console.log(error);
     if (error.response){
         if(error.response.status === 401) {
                 store.commit('delToken');

@@ -16,7 +16,7 @@ export default {
             return new Promise(((resolve, reject) => {
                     getAlbumInfo().then(res=>{
                         let data = res.data;
-                        console.log(data);
+                        //console.log(data);
                         commit("clearAlbum");
                         for(let i=0; i < data.length ;i++)
                         {

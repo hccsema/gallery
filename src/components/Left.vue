@@ -18,6 +18,12 @@
                 <i class="el-icon-orange"></i>
                 <span slot="title">智能分类</span>
             </el-menu-item>
+
+            <el-menu-item index="face" :route="{path: '/facePage'}">
+                <i class="el-icon-s-check"></i>
+                <span slot="title">人像识别</span>
+            </el-menu-item>
+
             <el-menu-item index="load" :route="{path: '/load'}" >
                 <i class="el-icon-d-caret" ></i>
                 <span slot="title">上传图片</span>
@@ -42,7 +48,7 @@
 </template>
 
 <script>
-    import router from "@/router";
+    import router from "../router";
     export default {
         name: "Left",
         data(){
@@ -69,9 +75,6 @@
     }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    .aside{
-        width: 100%;
-    }
+
 </style>

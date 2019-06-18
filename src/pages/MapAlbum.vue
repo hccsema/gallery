@@ -46,7 +46,7 @@
                 });
             },
             enterCityPhoto(name){
-                router.push({name:'MapPhoto', params:{name:name, lol:''}});
+                router.push({name:'MapPhoto', params:{name:name, id:'-1'}});
             },
         },
     }

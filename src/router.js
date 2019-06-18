@@ -12,12 +12,14 @@ import MapAlbum from "./pages/MapAlbum";
 import UserInfo from "./pages/UserInfo";
 import CreateAlbum from "./pages/CreateAlbum";
 import Classify from "./pages/Classify";
-import Album from "@/pages/Album";
-import Privacy from '@/pages/Privacy';
-import LoginPrivacy from '@/pages/LoginPrivacy';
-import ATPhotos from "@/pages/ATPhotos";
-import ShareLogin from "@/pages/ShareLogin"
-import SharePhoto from "./pages/SharePhoto";
+import Album from "./pages/Album";
+import Privacy from './pages/Privacy';
+import LoginPrivacy from './pages/LoginPrivacy';
+import ATPhotos from "./pages/ATPhotos";
+import SharePage from './pages/SharePage';
+import FacePage from "./pages/FacePage";
+import Face from "./pages/Face";
+import ClassifyPage from "./pages/ClassifyPage";
 
 
 Vue.use(Router);
@@ -32,35 +34,27 @@ export default new Router({
                 title: '',
                 requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
             },
-            // beforeEnter: (to, from, next)=>{
-            //     if (to.matched.some(record => record.meta.requireAuth)) {
-            //         if (localStorage.userName) {
-            //             next();
-            //         } else {
-            //             next({
-            //                 path: '/login',
-            //                 // //登陆成功后跳转至该路由
-            //                  query: {
-            //                     redirect: to.fullPath
-            //                  }
-            //             });
-            //         }
-            //     } else {
-            //         next();
-            //     }
-            // },
+            beforeEnter: (to, from, next)=>{
+                if (to.matched.some(record => record.meta.requireAuth)) {
+                    if (localStorage.userName) {
+                        next();
+                    } else {
+                        next({
+                            path: '/login',
+                            // //登陆成功后跳转至该路由
+                             query: {
+                                redirect: to.fullPath
+                             }
+                        });
+                    }
+                } else {
+                    next();
+                }
+            },
             children:[
                 {
                     path:'/',
                     component: TimeLine
-                },
-                {
-                    path:'/share/get/:id',
-                    component: ShareLogin
-                },
-                {
-                    path:'/sharephoto',
-                    component:SharePhoto
                 },
                 {
                     path: '/load',
@@ -103,7 +97,7 @@ export default new Router({
                 {
                     path: '/classifyPhoto/:name',
                     name:'ClassifyPhoto',
-                    component: ATPhotos
+                    component: ClassifyPage
                 },
                 {
                     path: '/create',
@@ -123,46 +117,22 @@ export default new Router({
                     name:'MapPhoto',
                     path:'mapPhoto/:name',
                     component: ATPhotos,
+                },
+                {
+                    name:'FacePage',
+                    path:'facePage',
+                    component: FacePage
+                },
+                {
+                    name:'Face',
+                    path:'face/:id',
+                    component:Face
                 }
 
 
             ]
 
         },
-        // {
-        //     path: '/test/',
-        //     component: TestHome,
-        //     children:[
-        //         {
-        //             path:'/test/',
-        //             component: TimeLine
-        //         },
-        //         {
-        //             path: 'load',
-        //             component: Load,
-        //         },
-        //         {
-        //             path: 'sex',
-        //             component: Sex
-        //         },
-        //         {
-        //             path: 'about',
-        //             component: About
-        //         },
-        //         {
-        //             path: 'info',
-        //             component: UserInfo
-        //         },
-        //         {
-        //             path: 'map',
-        //             component: MapAlbum
-        //         },
-        //         {
-        //             path: 'changePwd',
-        //             component: ChangePassword
-        //         },
-        //     ]
-        // },
         {
             path:'/login',
             component: Login
@@ -172,6 +142,10 @@ export default new Router({
             path:'/register',
             component: Register
         },
+        {
+            path:'/share/:id',
+            component: SharePage,
+        }
     ]
 });
 

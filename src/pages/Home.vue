@@ -1,12 +1,12 @@
 <template>
     <div>
         <el-container ref="homePage">
-            <el-header>
+            <el-header class="el-header">
                 <Header></Header>
             </el-header>
             <el-container>
-                <el-aside style="width: 200px">
-                    <Left></Left>
+                <el-aside class="aside" style="width: 200px">
+                    <Left ></Left>
                 </el-aside>
                 <el-main>
                     <router-view></router-view>
@@ -60,38 +60,26 @@
 
 <style scoped>
 
-    .el-header, .el-footer {
+    .el-header {
         background-color: #545c64;
         color: #333;
         text-align: center;
         line-height: 60px;
     }
 
-    .el-aside {
+    .aside {
         background-color: #545c64;
         color: #333;
-        text-align: left;
-        line-height: 200px;
+        /*text-align: left;*/
+        /*width: 200px;*/
 
     }
 
     .el-main {
       background-color: white;
       color: #333;
-      text-align: center;
+      /*text-align: center;*/
       /*line-height: 160px;*/
     }
 
-    /*body > .el-container {*/
-    /*    margin-bottom: 40px;*/
-    /*}*/
-
-    /*.el-container:nth-child(5) .el-aside,*/
-    /*.el-container:nth-child(6) .el-aside {*/
-    /*    line-height: 260px;*/
-    /*}*/
-
-    /*.el-container:nth-child(7) .el-aside {*/
-    /*    line-height: 220px;*/
-    /*}*/
 </style>

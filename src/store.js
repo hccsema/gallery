@@ -24,15 +24,16 @@ export default new Vuex.Store({
 
     mutations:{
         addUrlId(state,photo){
-            state.url_id.push({
-                'id':photo.id,
-                'time':photo.time,
-                'date':photo.date,
-                'type':photo.type,
-                'url':photo.url,
-                'address':photo.address,
-                'album':photo.album,
-            });
+            // state.url_id.push({
+            //     'id':photo.id,
+            //     'time':photo.time,
+            //     'date':photo.date,
+            //     'type':photo.type,
+            //     'url':photo.url,
+            //     'address':photo.address,
+            //     'album':photo.album,
+            // });
+            state.url_id.push(photo)
         },
 
         deletePhotoFromUrlId(state, id){
@@ -51,7 +52,6 @@ export default new Vuex.Store({
                     let value2 = b['time'];
                     return value1 - value2;
                 });
-            //对缓存进行修改！！！！
         },
 
         moveToAlbumFromUrlId(state, all){

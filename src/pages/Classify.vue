@@ -1,9 +1,10 @@
 <template>
     <div class="containers" >
         <el-row>
-            <el-col :span="6" v-for=" (art, index) in classify_cover_photo  " :key="index">
+            <el-col :span="6" v-for=" (art, index) in classify_cover_photo " :key="index">
                 <el-card :body-style="{padding: '0px'}" class="card" >
-                    <img :src="art.url"  height="230" width="240" @click="enterClassifyPhoto(art.name)">
+                    <img :src="art.url" class="humbnail_photo"
+                         @click="enterClassifyPhoto(art.name)">
                     <p class="art_name">{{art.name}}</p>
                 </el-card>
             </el-col>
@@ -73,7 +74,7 @@
 
         margin-left: 17px;
         margin-bottom: 25px;
-        padding-top: 18px;
+        padding-top: 3px;
         /*border-radius:30px;*/
     }
     .containers :hover{
@@ -85,5 +86,9 @@
     }
     .art_name{
         font-size: large;
+    }
+    .humbnail_photo{
+        width: 100%;
+        height: 250px;
     }
 </style>

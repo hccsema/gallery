@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex'
 import {deletePhoto, getAll, getPhoto, getThumbnailPhoto, sharePhoto} from "../../api/photo";
-import {getAllByAlbum} from "@/api/photo";
+import {getAllByAlbum} from "../../api/album";
+import {getPhotoByFace} from "../../api/face";
 
 Vue.use(Vuex);
 
@@ -9,12 +10,19 @@ export default {
     state:{
         total_pages:'',
         dialogPhotoVisible : false,
-        pic_detail:{address:{
+        pic_detail:{
+            type : [],
+            album:  {name: ''},
+            address : {
                 country:'',
                 city:'',
                 province:'',
-                district:''
-            }},
+                district:'' },
+            faces: {},
+            },
+        face_list:[],
+        detail_url:'',
+
 
     },
     actions:{
@@ -65,23 +73,15 @@ export default {
             )
         },
 
-        GetPhoto({commit}, id){
-            const _id = id;
-            return new Promise( (resolve, reject)=>{
-                getPhoto(_id).then(response =>{
-                    resolve(response);
-                }).catch(error=>{
-                    reject(error);
-                })
-            })
-        },
+
 
         GetThumbnailPhoto({commit}, photo){
             return new Promise( (resolve, reject)=>{
                 getThumbnailPhoto(photo.id).then(response =>{
                     photo.url = URL.createObjectURL(response.data);
                     commit('addUrlId',photo,{root:true});
-                    commit('sortUrlIdByTime',{root:true});
+                    // console.log(photo);
+                   // commit('sortUrlIdByTime',{root:true});
                     resolve(photo);
                 }).catch(error=>{
                     reject(error);
@@ -100,18 +100,45 @@ export default {
             })
         },
 
-        RiseDetailsDialog({commit}, pic){
-            commit('updatePicDetails', pic);
-            commit('changeDialogPhotoVisible');
+        GetPhoto({commit}, id){
+            const _id = id;
             return new Promise( (resolve, reject)=>{
-                getPhoto(pic.id).then(response =>{
-                    pic.url = URL.createObjectURL(response.data);
-                    commit('updatePicDetails', pic);
+                getPhoto(_id).then(response =>{
                     resolve(response);
                 }).catch(error=>{
                     reject(error);
                 })
             })
+        },
+
+        RiseDetailsDialog({commit}, pic){
+            commit('updatePicDetails', pic);
+            // commit('updateDetailUrl', '');
+            commit('changeDialogPhotoVisible');
+
+            if (pic.faces.length) {
+                commit('zeroFaceList');
+                pic.faces.forEach(function (face) {
+                    getPhotoByFace(face.id).then(res=>{
+                        face.url = URL.createObjectURL(res.data);
+                        commit("updateFaceList", face);
+                    }).catch(error=>{
+                        console.log(error)
+                    })
+                })
+            }
+            // pic.face_list = [];
+                getPhoto(pic.id).then(response =>{
+                    // URL.revokeObjectURL(pic.url);
+                    let url = URL.createObjectURL(response.data);
+
+                    pic.url = url;
+                    console.log(pic);
+                    commit('updatePicDetails', pic);
+                    // commit('updateDetailUrl', url);
+                }).catch(error=>{
+                    console.log(error);
+                })
 
 
         }
@@ -127,8 +154,18 @@ export default {
         changeDialogPhotoVisible(state){
             state.dialogPhotoVisible = !state.dialogPhotoVisible;
         },
+        updateDetailUrl(state,url){
+           state.detail_url = url;
+        },
         updatePicDetails(state,pic){
+            // state.pic_detail = [];
             state.pic_detail = pic;
+        },
+        updateFaceList(state,data){
+            state.face_list.push(data);
+        },
+        zeroFaceList(state){
+            state.face_list = [];
         }
     },
     getters:{
@@ -137,6 +174,12 @@ export default {
         },
         getPicDetail(state){
             return state.pic_detail;
+        },
+        getFaceList(state){
+            return state.face_list;
+        },
+        getDetailUrl(state){
+            return state.detail_url;
         }
     }
 }

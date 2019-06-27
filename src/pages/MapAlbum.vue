@@ -50,9 +50,9 @@
             //     }
 
             this.$store.dispatch('GetCityList').then(res=>{
-                console.log(res.data);
-                for(let key in res.data){
-                    this.getAllByCity(res.data[key]);
+                // console.log(res.data);
+                for(let i = 0 ; i< res.data.length;i++){
+                    this.getAllByCity(res.data[i]);
                 }
             }).catch(error =>{
                 console.log(error);

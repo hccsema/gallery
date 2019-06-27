@@ -1,13 +1,14 @@
 <template>
-    <el-row class="container ">
-        <el-col :span="4" class="topbar-wrap fixed-top">
-            <div class="topbar-logo topbar-btn fixed-top">
+    <div>
+    <el-row >
+        <el-col :span="4" >
+            <div >
                <h2 style="color:#81D8CF">Gallery</h2>
             </div>
         </el-col>
         <el-col :offset="17" :span="3" >
             <el-dropdown>
-                <span class="topbar-logo topbar-btn fixed-top">
+                <span >
                     <img src="@/assets/1.jpg" class="round_icon" alt="error" @click="userInfo">
                 </span>
                 <el-dropdown-menu slot="dropdown" >
@@ -25,10 +26,11 @@
             </el-dropdown>
         </el-col>
     </el-row>
+    </div>
 </template>
 
 <script>
-    import 'element-ui/lib/theme-chalk/display.css'
+    // import 'element-ui/lib/theme-chalk/display.css'
     import router from '@/router.js'
         export default {
             data(){

@@ -26,15 +26,16 @@ axios.interceptors.response.use( response => {
         && (response.headers.authorization !== store.state.Authorization)){
         store.commit('saveToken', response.headers.authorization)
     }
+
+        if(response.status === 401) {
+            console.log('a');
+            store.commit('delToken');
+            router.push('/login');
+        }
     return response;
 }),error=> {
     console.log(error);
-    if (error.response){
-        if(error.response.status === 401) {
-                store.commit('delToken');
-                router.push('/login');
-        }
-    }
+
     return Promise.reject(error);
 };
 

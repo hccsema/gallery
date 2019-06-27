@@ -52,19 +52,19 @@
                 //将图片加入图片列表
                 sliders:[
                     {
-                        img : require('../assets/img/bg7.jpg')
+                        img : require('@/assets/img/bg7.jpg')
                     },
                     {
-                        img:require('../assets/img/bg5.jpg')
+                        img:require('@/assets/img/bg5.jpg')
                     },
                     {
-                        img:require('../assets/img/bg6.jpg')
+                        img:require('@/assets/img/bg6.jpg')
                     },
                     {
-                        img:require('../assets/familyphoto.jpg')
+                        img:require('@/assets/familyphoto.jpg')
                     },
                     {
-                        img:require('../assets/img/bg8.jpg')
+                        img:require('@/assets/img/bg8.jpg')
                     },
                 ],
                 imgWidth:1550,

@@ -32,7 +32,7 @@
 </template>
 
 <script>
-    import {getThumbnailPhotoByShare, getPhotoByShare, getAllBysShare, isPrivate} from "../api/share";
+    import {getThumbnailPhotoByShare, getPhotoByShare, getAllBysShare, isPrivate} from "@/api/share";
 
     export default {
         name: "SharePage",

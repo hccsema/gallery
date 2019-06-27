@@ -14,8 +14,8 @@
 </template>
 
 <script>
-    import {getAllByFace, getPhotoByFace} from "../api/face";
-    import router from '../router'
+    import {getAllByFace, getPhotoByFace} from "@/api/face";
+    import router from '@/router'
 
     export default {
         name: "FacePage",

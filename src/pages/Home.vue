@@ -18,9 +18,9 @@
 </template>
 
 <script>
-    import Left from '../components/Left'
-    import Header from '../components/Header'
-    import ScrollTop from '../components/ScrollTop'
+    import Left from '@/components/Left'
+    import Header from '@/components/Header'
+    import ScrollTop from '@/components/ScrollTop'
     export default {
         name: "Home",
         data(){

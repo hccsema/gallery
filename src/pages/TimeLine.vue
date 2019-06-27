@@ -58,7 +58,7 @@
 
 <script>
     import DetailsDialog from "@/components/DetailsDialog"
-    import axios from '../axios'
+    import axios from '@/axios'
     export default {
         name: "TimeLine",
         components: {
@@ -92,6 +92,7 @@
         created() {
             this.getAll(0);
             this.$store.dispatch('GetAlbumInfo').then(function (res) {
+                console.log(window.location.href);
 
             }).catch(function (error) {
                 console.log(error);
@@ -334,7 +335,7 @@
                     let faultNum = 0;
                     this.$store.dispatch('SharePhoto', {'list':this.options_list,'password':this.form.password,'expiration':this.form.expiration}).then(res => {
                         this.share_id = res.data.id;
-                        alert("分享链接:http://photo.upc.pub/share/get/" + this.share_id +"  分享密码:" + this.base_password);
+                        alert("分享链接:" + window.location.href + "share/" + this.share_id +"\n分享密码:" + this.base_password);
                     }).catch(error => {
                         faultNum++;
                         console.log(error);

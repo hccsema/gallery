@@ -22,7 +22,7 @@
 </template>
 
 <script>
-    import axios from '../axios'
+    import axios from '@/axios'
     import DetailsDialog from '@/components/DetailsDialog'
     export default {
         name: "Privacy",

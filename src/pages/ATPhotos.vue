@@ -53,8 +53,8 @@
 </template>
 
 <script>
-    import axios from "../axios"
-    import DetailsDialog from '../components/DetailsDialog'
+    import axios from "@/axios"
+    import DetailsDialog from '@/components/DetailsDialog'
     export default {
         name: "ATPhotos",
         components:{

@@ -12,9 +12,7 @@
 </template>
 
 <script>
-    import router from '../router'
-    import {getThumbnailPhoto} from "../api/photo";
-    import {getPhotoByFace, getFaceGroup} from "../api/face";
+    import {getPhotoByFace, getFaceGroup} from "@/api/face";
     export default {
         name: "Face",
         data(){

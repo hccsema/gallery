@@ -77,4 +77,7 @@
 
 <style scoped>
 
+    .aside{
+
+    }
 </style>

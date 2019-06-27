@@ -2,13 +2,13 @@
     <el-row class="container ">
         <el-col :span="4" class="topbar-wrap fixed-top">
             <div class="topbar-logo topbar-btn fixed-top">
-               <h3 style="color:#81D8CF">Gallery</h3>
+               <h2 style="color:#81D8CF">Gallery</h2>
             </div>
         </el-col>
-        <el-col :span="3" :offset="17">
+        <el-col :offset="17" :span="3" >
             <el-dropdown>
                 <span class="topbar-logo topbar-btn fixed-top">
-                    <img src="../assets/1.jpg" class="round_icon" alt="error" @click="userInfo">
+                    <img src="@/assets/1.jpg" class="round_icon" alt="error" @click="userInfo">
                 </span>
                 <el-dropdown-menu slot="dropdown" >
                     <el-dropdown-item>
@@ -29,7 +29,7 @@
 
 <script>
     import 'element-ui/lib/theme-chalk/display.css'
-    import router from '../router.js'
+    import router from '@/router.js'
         export default {
             data(){
                 return {

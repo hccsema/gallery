@@ -4,7 +4,7 @@
             <el-col :span="6" v-for=" (face, index) in url_id " :key="index">
                 <el-card :body-style="{padding: '0px' }" class="card" >
                     <img :src="face.url" class="thumbnail_photo" @click="enterFace(face.groupId)">
-                    <p class="art_name">这是谁？</p>
+<!--                    <p class="art_name">这是谁？</p>-->
                 </el-card>
             </el-col>
         </el-row>

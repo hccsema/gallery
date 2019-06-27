@@ -13,6 +13,7 @@
 
 <script>
     import {getPhotoByFace, getFaceGroup} from "@/api/face";
+    import {getThumbnailPhoto} from "@/api/photo";
     export default {
         name: "Face",
         data(){
@@ -30,9 +31,9 @@
                 let data = res.data;
                 console.log(res);
                 for (let i in data.faces){
-                    getPhotoByFace(i).then(response=>{
+                    getThumbnailPhoto(data.faces[i]).then(response=>{
                         let url =  URL.createObjectURL(response.data);
-                        that.url_id.push({id: i, url: url});
+                        that.url_id.push({id: data.faces[i], url: url});
 
                     }).catch(error=>{
                         console.log(error)

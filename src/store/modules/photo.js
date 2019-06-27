@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex'
-import {deletePhoto, getAll, getPhoto, getThumbnailPhoto, sharePhoto} from "../../api/photo";
-import {getAllByAlbum} from "../../api/album";
-import {getPhotoByFace} from "../../api/face";
+import {deletePhoto, getAll, getPhoto, getThumbnailPhoto, sharePhoto} from "@/api/photo";
+import {getAllByAlbum} from "@/api/album";
+import {getPhotoByFace} from "@/api/face";
 
 Vue.use(Vuex);
 

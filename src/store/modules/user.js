@@ -1,4 +1,4 @@
-import {login, getUserInfo, changeNickName} from '../../api/user'
+import {login, getUserInfo, changeNickName} from '@/api/user'
 import Vuex from 'vuex';
 import Vue from 'vue';
 

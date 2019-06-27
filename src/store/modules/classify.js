@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {getPhotoByType, getTypeList} from "../../api/classify";
+import {getPhotoByType, getTypeList} from "@/api/classify";
 import {getThumbnailPhoto} from "@/api/photo";
 
 Vue.use(Vuex);

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {getAlbumInfo,moveToAlbum} from '../../api/album'
+import {getAlbumInfo,moveToAlbum} from '@/api/album'
 
 
 Vue.use(Vuex);

@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import user from './store/modules/user'
-import photo from './store/modules/photo'
-import classify from './store/modules/classify'
-import album from './store/modules/album'
-import map from './store/modules/map'
+import user from '@/store/modules/user'
+import photo from '@/store/modules/photo'
+import classify from '@/store/modules/classify'
+import album from '@/store/modules/album'
+import map from '@/store/modules/map'
 
 
 Vue.use(Vuex);

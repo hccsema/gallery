@@ -1,6 +1,6 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
-import {getCityCoverInfo, getCityList} from "../../api/map";
+import {getCityCoverInfo, getCityList} from "@/api/map";
 
 Vue.use(Vuex);
 

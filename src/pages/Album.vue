@@ -24,9 +24,9 @@
 </template>
 
 <script>
-    import axios from '../axios'
+    import axios from '@/axios'
     import qs from 'qs'
-    import router from '../router'
+    import router from '@/router'
     export default {
         name: "Album",
         data(){

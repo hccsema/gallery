@@ -1,6 +1,6 @@
 import Service from 'axios';
-import store from './store';
-import router from './router';
+import store from '@/store';
+import router from '@/router';
 
 const axios = Service.create({
     baseURL : 'http://photo.upc.pub',

@@ -131,6 +131,7 @@
                             date : _this.GMTToStr(new Date(a.create ?  a.create : a.upload)).slice(0,10),
                             type : a.type ? a.type : [],
                             album: a.album ? a.album : {name: ''},
+                            location : a.location,
                             address : a.address ? a.address :{
                                 country:'',
                                 city:'',
@@ -184,7 +185,7 @@
 
                     if(this.current_page < this.total_pages ){
                         this.current_page = this.current_page + 1;
-                        //console.log(this.current_page + ' '  + this.total_pages);
+                        console.log(this.getUrlId);
                         this.getAll(this.current_page);
                     }
                 }

@@ -1,5 +1,4 @@
 import axiox from '@/axios'
-import axios from "../axios";
 
 export async function getAlbumInfo() {
     return axiox({

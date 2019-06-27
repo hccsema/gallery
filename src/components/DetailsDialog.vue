@@ -100,7 +100,7 @@
                 router.push({name:'AlbumPhoto',params:{name:name, id:id}});
             },
             enterCity(name){
-                router.push({name:'MapPhoto', params:{name:name,lol:''}});
+                router.push({name:'MapPhoto', params:{name:name, lol:''}});
             },
             closeDialog(){
                 this.$store.commit('changeDialogPhotoVisible');

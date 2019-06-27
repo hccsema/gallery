@@ -17,12 +17,42 @@
         data(){
             return{
                 city_info:[],
+                city_all:[],
+
             }
         },
         created() {
+
+            // let url_id = this.getUrlId;
+            // for (let i = 0; this.getUrlId.length; i++ ){
+            //         if (url_id[i].address.city){
+            //             if(this.city_all.length === 0){
+            //                 this.city_all.push(url_id(i).address.city);
+            //             }
+            //             // let a = url_id(i).address.city;
+            //             // // else {
+            //             // //     for (let j = 0; this.city_info.length; j++){
+            //             // //         if(url_id(i).address.city === city_info[j]){
+            //             // //
+            //             // //         }
+            //             // // }
+            //             // this.city_info.find(function ( a ) {
+            //             //     if()
+            //             //
+            //             // })
+            //
+            //         }
+            //
+            // }
+            //
+            //     for(let key in this.city_all){
+            //         this.getAllByCity(key);
+            //     }
+
             this.$store.dispatch('GetCityList').then(res=>{
+                console.log(res.data);
                 for(let key in res.data){
-                    this.getAllByCity(key);
+                    this.getAllByCity(res.data[key]);
                 }
             }).catch(error =>{
                 console.log(error);
@@ -30,12 +60,15 @@
         },
         methods:{
             getAllByCity(name){
+                console.log(name);
                 this.$store.dispatch('GetCityCoverInfo',name).then(res => {
+                    console.log(res.data);
                     this.getCityThumbnailPhotoCover(res.data.id,res.data.location,name);
                 }).catch(error => {
                     console.log(error);
                 });
             },
+
             getCityThumbnailPhotoCover(id,location,name){
                 this.$store.dispatch('GetThumbnailPhotoInCover',id).then(res=> {
                     let url = URL.createObjectURL(res.data);
@@ -46,9 +79,14 @@
                 });
             },
             enterCityPhoto(name){
-                router.push({name:'MapPhoto', params:{name:name, id:'-1'}});
+                router.push({name:'MapPhoto', params:{name:name, lol:''}});
             },
         },
+        computed:{
+            getUrlId(){
+                this.$store.getters.getUrlId();
+            }
+        }
     }
 </script>
 

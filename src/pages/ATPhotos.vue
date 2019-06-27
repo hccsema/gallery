@@ -2,6 +2,7 @@
     <div>
         <h1>
             {{$route.params.name}}
+            {{$route.params.id}}
         </h1>
         <div class="buttons">
             <el-button type="primary"  @click="batchOptions" >批量操作</el-button>
@@ -23,7 +24,7 @@
                 </el-col>
             </el-row>
 
-            <el-row  v-if="$route.params.id === -1 ">
+            <el-row  v-if="$route.params.lol === '' ">
                 <el-col :span="6" v-for=" (pic, index)  in getUrlId " :offset="0" :key="index">
                     <el-card v-if="pic.address.city === $route.params.name"
                              :body-style="{padding: '0.5px'}"
@@ -78,7 +79,8 @@
                 console.log(this.$route.params.name);
                 this.getAllByType(this.$route.params.name);
             }
-            else if(this.$route.params.id === '-1') {
+            else if(this.$route.params.lol === '') {
+                console.log(this.$route.params.name);
                 this.getAllByCity(this.$route.params.name);
             }
             else {
@@ -123,14 +125,14 @@
                 });
             },
             getAllByType(name){
-                let cname = name;
+                console.log(name);
                 axios({
                     method: 'get',
                     url:'http://photo.upc.pub/photo/get_type_photos',
                     headers:{
                         'authorization': 'Bearer ' + window.localStorage.getItem('Authorization'),
                     },
-                    params:{typeName: cname}
+                    params:{typeName: name}
                 }).then(res =>{
                     let _this = this;
                     let data = res.data;
@@ -163,7 +165,9 @@
                     console.log(error);
                 });
             },
+
             getAllByCity(name){
+                console.log(name);
                 axios({
                     method: 'get',
                     url:'http://photo.upc.pub/photo/get_city_photos',

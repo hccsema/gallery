@@ -6,7 +6,6 @@
             <el-form
                     :model="userInfo"
                     status-icon
-                    :rules="rules"
                     ref="userInfo"
                     label-width="100px"
                     class="ruleForm">

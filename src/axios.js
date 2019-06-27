@@ -20,6 +20,12 @@ axios.interceptors.request.use(function (config) {
 };
 
 axios.interceptors.response.use( response => {
+    console.log(response.status);
+
+    if(response.status === 401) {
+        store.commit('delToken');
+        router.push('/login');
+    }
     if(typeof(response.headers.authorization) !== 'undefined'
         && response.headers.authorization !== null
         && response.headers.authorization !== ''
@@ -27,15 +33,12 @@ axios.interceptors.response.use( response => {
         store.commit('saveToken', response.headers.authorization)
     }
 
-        if(response.status === 401) {
-            console.log('a');
-            store.commit('delToken');
-            router.push('/login');
-        }
+
     return response;
 }),error=> {
-    console.log(error);
-
+    console.log('a');
+    console.log(error.status);
+    console.log(error.response);
     return Promise.reject(error);
 };
 
